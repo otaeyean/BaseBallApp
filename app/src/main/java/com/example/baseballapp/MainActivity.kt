@@ -1,24 +1,50 @@
 package com.example.baseballapp
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import com.example.baseballapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding : ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding=ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setFragment(ScheduleFragment()) //시작 프래그먼트
+
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            val fragment= when(item.itemId){
+                R.id.ScheduleFragment ->ScheduleFragment()
+                R.id.RankingFragment -> RankingFragment()
+                R.id.InformationFragment -> InformationFragment()
+                R.id.CommunityFragment -> CommunityFragment()
+                R.id.ShopFragment-> ShopFragment()
+                else -> null
+            }
+            if(fragment!=null){
+                setFragment(fragment)
+            }
+            true
         }
+
     }
 
-    fun setBottomNavigationView(){
+    private fun setFragment(fragment:Fragment){
+        val manager:FragmentManager=supportFragmentManager
+        val fragTransaction=manager.beginTransaction()
 
+        val currentFragment=manager.primaryNavigationFragment
+        if(currentFragment!=null){
+            fragTransaction.hide(currentFragment)
+        }
+
+        fragTransaction.replace(R.id.frame, fragment)
+        fragTransaction.setPrimaryNavigationFragment(fragment)
+        fragTransaction.commitAllowingStateLoss()
     }
 }
