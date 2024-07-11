@@ -1,5 +1,11 @@
 <resources>
-    <string name="app_name">BaseballApp</string>
+    <string name="app_name">YourAppName</string>
+    <string-array name="ranking_categories">
+
+        <item>팀순위</item>
+        <item>타자 주요순위</item>
+        <item>투수 주요순위</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

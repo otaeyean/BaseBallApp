@@ -5,10 +5,53 @@
     android:layout_height="match_parent"
     tools:context=".RankingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="ranking fragment" />
+        android:orientation="vertical"
+        android:paddingTop="50dp"
+        android:paddingBottom="16dp"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
+        <!-- 순위 선택을 위한 스피너 -->
+        <Spinner
+            android:id="@+id/spinner_ranking_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+
+            android:background="@drawable/spinner_background"
+            android:textSize="20sp"
+            android:entries="@array/ranking_categories" />
+
+        <!-- 스피너랑 순위테이블의 간격 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <!-- 순위를 표시할 레이아웃 -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/layout_rankings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+
+                </LinearLayout>
+            </ScrollView>
+        </HorizontalScrollView>
+    </LinearLayout>
 </FrameLayout>
