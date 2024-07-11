@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="team_array">
+        <item>팀 선택</item>
+        <item>KIA</item>
+        <item>LG</item>
+        <item>두산</item>
+        <item>삼성</item>
+        <item>SSG</item>
+        <item>NC</item>
+        <item>KT</item>
+        <item>롯데</item>
+        <item>한화</item>
+        <item>키움</item>
+    </string-array>
+</resources>
