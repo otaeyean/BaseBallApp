@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".WritePostFragment">
+
+    <Spinner
+        android:id="@+id/boardSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/board_array" />
+
+    <EditText
+        android:id="@+id/postTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="제목" />
+
+    <EditText
+        android:id="@+id/postContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="내용"
+        android:inputType="textMultiLine"
+        android:minLines="5" />
+
+    <Button
+        android:id="@+id/uploadImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/ligthGreen"
+        android:text="사진 업로드" />
+
+    <Button
+        android:id="@+id/submitPostButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="작성 완료"
+        android:backgroundTint= "@color/ligthGreen"
+        android:textColor="@color/black"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp" />
+</LinearLayout>
