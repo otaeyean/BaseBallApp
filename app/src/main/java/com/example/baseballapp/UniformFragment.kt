@@ -23,7 +23,7 @@ class UniformFragment : Fragment() {
         _binding = FragmentUniformBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val teams = resources.getStringArray(R.array.team_array)
+        val teams = resources.getStringArray(R.array.teams_array)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, teams)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinner.adapter = adapter

@@ -52,7 +52,7 @@
                 android:background="@drawable/spinner_option"
                 android:spinnerMode="dropdown"
                 android:textSize="15sp"
-                android:entries="@array/team_array"/>
+                android:entries="@array/teams_array"/>
 
         </LinearLayout>
 
@@ -65,8 +65,8 @@
         android:text="구매하기"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#FFFFFF"
-        android:textColor="@color/Green"
+        android:backgroundTint="#1E90FF"
+        android:textColor="@color/white"
         />
 
     <TextView
