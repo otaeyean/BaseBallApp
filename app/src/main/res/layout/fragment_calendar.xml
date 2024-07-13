@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="310dp"
         app:itemActiveIndicatorStyle="@color/white"
-        app:itemRippleColor="@color/Green"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

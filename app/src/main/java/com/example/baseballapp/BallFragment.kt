@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
-class KeyholderFragment : Fragment() {
+class BallFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        return inflater.inflate(R.layout.fragment_keyholder, container, false)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_ball, container, false)
     }
 }
