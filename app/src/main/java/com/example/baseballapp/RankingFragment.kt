@@ -17,17 +17,15 @@ class RankingFragment : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_ranking, container, false)
 
-        // 스피너와 레이아웃 초기화
         val spinner = rootView.findViewById<Spinner>(R.id.spinner_ranking_category)
         val layoutRankings = rootView.findViewById<LinearLayout>(R.id.layout_rankings)
 
-        // 커스텀 어댑터 설정
         val categories = resources.getStringArray(R.array.ranking_categories)
         val adapter = object : ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, categories) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val view = super.getView(position, convertView, parent) as TextView
                 view.setTextColor(Color.parseColor("#123269")) // 파란색으로 변경
-                view.setTypeface(null, Typeface.BOLD) // 진하게 변경
+                view.setTypeface(null, Typeface.BOLD)
                 view.textSize = 18f // 글자 크기 변경
                 return view
             }
@@ -55,7 +53,6 @@ class RankingFragment : Fragment() {
                 // 아무것도 선택되지 않았을 때 처리
             }
         }
-
         return rootView
     }
 
@@ -106,8 +103,8 @@ class RankingFragment : Fragment() {
             textView.setTypeface(null, android.graphics.Typeface.BOLD)
             textView.setPadding(30, 30, 30, 30)
             textView.textSize = 18f
-            textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.ligthGreen)) // 헤더 배경 색상 설정
-            textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue)) // 글씨 색상 설정
+            textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white)) // 헤더 배경 색상 설정
+            textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.black)) // 글씨 색상 설정
 
             // 정렬 가능 열인지 확인
             if (sortableColumns.contains(index)) {
@@ -116,7 +113,6 @@ class RankingFragment : Fragment() {
                     highlightColumnHeader(tableLayout, index)
                 }
             }
-
             tableRow.addView(textView)
         }
         tableLayout.addView(tableRow)
@@ -160,9 +156,9 @@ class RankingFragment : Fragment() {
         for (i in 0 until headerRow.childCount) {
             val textView = headerRow.getChildAt(i) as TextView
             if (i == columnIndex) {
-                textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.Green))
+                textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
             } else {
-                textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.ligthGreen))
+                textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
             }
         }
     }

@@ -1,8 +1,11 @@
 package com.example.baseballapp
 
+import InformationFragment
+import RankingFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.baseballapp.databinding.ActivityMainBinding
+import com.example.yourapp.CommunityFragment
 
 class MainActivity : AppCompatActivity() {
 

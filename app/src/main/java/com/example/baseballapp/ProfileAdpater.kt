@@ -34,21 +34,39 @@ class ProfileAdapter(private val context: Context, private val fragmentManager: 
 
             binding.productName.setOnClickListener {
                 when (item.name) {
-                    "유니폼" -> {
+                    "구단별 유니폼" -> {
                         fragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, UniformFragment())
                             .addToBackStack(null)
                             .commit()
                     }
-                    "하프 집업(네이비)" -> {
+                    "구단별 모자" -> {
                         fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, ZipupFragment())
+                            .replace(R.id.fragment_container, CapFragment())
                             .addToBackStack(null)
                             .commit()
                     }
-                    "유니폼 키홀더" -> {
+                    "[TEAMKOREA] 폼배트" -> {
                         fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, KeyholderFragment())
+                            .replace(R.id.fragment_container, BatFragment())
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    "[KBO]2024 KBO 공인구" -> {
+                        fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, BallFragment())
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    "[TEAMKOREA] KOREA 응원 머플러" -> {
+                        fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, BatFragment())
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    "[TEAM KOREA] PVC 글러브" -> {
+                        fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, GLoveFragment())
                             .addToBackStack(null)
                             .commit()
                     }

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".WritePostFragment">
+    >
 
     <Spinner
         android:id="@+id/boardSpinner"
@@ -30,8 +30,8 @@
         android:id="@+id/uploadImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:backgroundTint="@color/ligthGreen"
+        android:textColor="@color/white"
+        android:backgroundTint="#1E90FF"
         android:text="사진 업로드" />
 
     <Button
@@ -39,8 +39,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="작성 완료"
-        android:backgroundTint= "@color/ligthGreen"
-        android:textColor="@color/black"
+        android:backgroundTint="#1E90FF"
+        android:textColor="@color/white"
         android:layout_gravity="end"
         android:layout_marginTop="16dp" />
 </LinearLayout>

@@ -22,7 +22,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:padding="8dp"
-
             android:background="@drawable/spinner_background"
             android:textSize="20sp"
             android:entries="@array/ranking_categories" />
@@ -47,9 +46,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
-
-
                 </LinearLayout>
             </ScrollView>
         </HorizontalScrollView>

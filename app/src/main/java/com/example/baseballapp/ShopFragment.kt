@@ -41,12 +41,12 @@ class ShopFragment : Fragment() {
         binding.rvProfile.adapter = profileAdapter
 
         datas.apply {
-            add(ProfileData(img = R.drawable.uniform, name = "유니폼", price = 90000))
-            add(ProfileData(img = R.drawable.zip_up, name = "하프 집업(네이비)", price = 75000))
-            add(ProfileData(img = R.drawable.cap, name = "레트로 모자", price = 33000))
-            add(ProfileData(img = R.drawable.key_holder, name = "유니폼 키홀더", price = 7000))
-            add(ProfileData(img = R.drawable.patch, name = "최다연승 기념 패치", price = 7000))
-            add(ProfileData(img = R.drawable.patch, name = "여섯번째", price = 7000))
+            add(ProfileData(img = R.drawable.uniform, name = "구단별 유니폼", price = 90000))
+            add(ProfileData(img = R.drawable.cap, name = "구단별 모자", price = 35000))
+            add(ProfileData(img = R.drawable.bat, name = "[TEAMKOREA] 폼배트", price = 18000))
+            add(ProfileData(img = R.drawable.ball, name = "[KBO]2024 KBO 공인구", price = 20000))
+            add(ProfileData(img = R.drawable.muffler, name = "[TEAMKOREA] KOREA 응원 머플러", price = 15000))
+            add(ProfileData(img = R.drawable.glove, name = "[TEAM KOREA] PVC 글러브", price = 32000))
         }
 
         profileAdapter.datas = datas
