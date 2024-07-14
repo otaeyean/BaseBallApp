@@ -1,7 +1,12 @@
 package com.example.baseballapp
 
 data class PlayerData(
-    val player_img:Int,
-    val player_name:String,
-    val player_pos:String?
+    val team: String?,
+    val number: String?,
+    val name: String,
+    val position: String?,
+    val height: String?,
+    val weight: String?,
+    val birthday: String?,
+    val handedInfo: String?,
 )
