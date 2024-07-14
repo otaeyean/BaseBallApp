@@ -9,7 +9,8 @@
         android:layout_width="80dp"
         android:layout_height="75dp"
         android:scaleType="centerInside"
-        android:src="@drawable/hcg" />
+        android:src="@drawable/baseball
+" />
 
     <LinearLayout
         android:layout_width="267dp"

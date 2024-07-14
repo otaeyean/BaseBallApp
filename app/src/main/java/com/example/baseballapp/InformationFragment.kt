@@ -37,7 +37,7 @@ class InformationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val teams = resources.getStringArray(R.array.teams_array)
+        val teams = resources.getStringArray(R.array.team_array)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, teams)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinner.adapter = adapter
