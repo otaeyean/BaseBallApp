@@ -16,4 +16,5 @@ object ApiObject {
     val getRetrofitService:UpbitAPI by lazy {
         getRetrofit.create(UpbitAPI::class.java)
     }
+
 }
