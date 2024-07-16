@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/tv_rank"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="순위"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="선수"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_team"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="팀"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_games"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="경기"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_wins"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="승"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_losses"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="패"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_save"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="세이브"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_hold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="홀드"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_innings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="이닝"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_pitchCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="투구수"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_hits"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="피안타"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_homeRuns"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="피홈런"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_strikeout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="탈삼진"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_baseOnBall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="사사구"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_runs"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="실점"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_earnedRuns"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="자책"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_earnedRunsAVG"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="평균자책"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_whip"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="WHIP"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_qs"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="QS"
+        android:textSize="16sp" />
+</LinearLayout>
