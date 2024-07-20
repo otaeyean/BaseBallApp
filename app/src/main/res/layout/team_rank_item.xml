@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/tv_rank"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="순위"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_teamName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="이름"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/tv_games"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="경기"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/tv_wins"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="승"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/tv_losses"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="패"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/tv_draws"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="무"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/tv_winRate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="승률"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/tv_winningMargin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="게임차"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/tv_continuity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="연속"
+        android:textSize="16sp" />
+
+</LinearLayout>

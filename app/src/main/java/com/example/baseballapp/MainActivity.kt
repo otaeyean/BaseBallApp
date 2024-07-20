@@ -1,5 +1,4 @@
 package com.example.baseballapp
-
 import RankingFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

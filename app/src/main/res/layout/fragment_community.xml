@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <!-- 상단 배너 또는 이미지 -->
@@ -15,7 +15,6 @@
         />
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -25,7 +24,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="자유게시판"
+            android:text="자유"
+            android:textSize="18dp"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:backgroundTint="@color/white"
@@ -36,7 +36,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="질문게시판"
+            android:textSize="18dp"
+            android:text="질문"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:backgroundTint="@color/white"/>
@@ -46,8 +47,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="중고거래게시판"
-            android:textSize="13dp"
+            android:text="나눔"
+            android:textSize="18dp"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:backgroundTint="@color/white"/>
@@ -62,15 +63,14 @@
         android:layout_weight="2" />
 
     <!-- 글쓰기 버튼 -->
-    <Button
+    <ImageButton
         android:id="@+id/writePostButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginStart="300dp"
-        android:text="글쓰기"
-        android:textStyle="bold"
-        android:textSize="15dp"
         android:layout_marginBottom="74dp"
-        android:backgroundTint="#1E90FF"
-        android:textColor="@color/white"/>
+        android:background="@drawable/round_button"
+        android:contentDescription="@string/write_post"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/pencil" />
 </LinearLayout>
