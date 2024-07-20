@@ -20,6 +20,7 @@ class PlayerAdapter : RecyclerView.Adapter<PlayerAdapter.PlayerView>() {
         val playerHeight:TextView=binding.height
         val playerHandedInfo:TextView=binding.handedInfo
         val playerImage:ImageView=binding.playerImg
+        val playerPosImage:ImageView=binding.playerPosImg
 
     }
 
@@ -52,6 +53,11 @@ class PlayerAdapter : RecyclerView.Adapter<PlayerAdapter.PlayerView>() {
             "키움" -> holder.playerImage.setImageResource(R.drawable.kiwoom_logo)
             else -> holder.playerImage.setImageResource(R.drawable.baseball)
         }
+
+        when(player.position){
+            "외야수", "내야수", "포수" ->holder.playerPosImage.setImageResource(R.drawable.hitter)
+            "투수" ->holder.playerPosImage.setImageResource(R.drawable.pitcher)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -63,4 +69,3 @@ class PlayerAdapter : RecyclerView.Adapter<PlayerAdapter.PlayerView>() {
         notifyDataSetChanged()
     }
 }
-

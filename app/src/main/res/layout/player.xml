@@ -5,17 +5,16 @@
     android:padding="15dp">
 
     <ImageView
-        android:id="@+id/player_img"
+        android:id="@+id/playerImg"
         android:layout_width="80dp"
         android:layout_height="75dp"
         android:scaleType="centerInside"
-        android:src="@drawable/baseball
-" />
+        android:src="@drawable/baseball"/>
 
     <LinearLayout
-        android:layout_width="267dp"
+        android:layout_width="wrap_content"
         android:layout_height="68dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="10dp"
         android:orientation="vertical"
         android:padding="5dp">
 
@@ -100,4 +99,9 @@
         </LinearLayout>
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/playerPosImg"
+        android:layout_width="47dp"
+        android:layout_height="68dp"
+        android:scaleType="fitXY"/>
 </LinearLayout>
