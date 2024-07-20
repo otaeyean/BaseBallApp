@@ -1,19 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RankingFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_ranking"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="?attr/colorPrimary"
+        android:backgroundTint="@color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintBottom_toTopOf="@+id/ranking_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/ranking_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/ranking_image_desc"
+        android:src="@drawable/ranking" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="50dp"
-        android:paddingBottom="16dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
         android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        android:layout_marginTop="200dp">
 
         <!-- 순위 선택을 위한 스피너 -->
         <Spinner
@@ -26,28 +50,12 @@
             android:textSize="20sp"
             android:entries="@array/ranking_categories" />
 
-        <!-- 스피너랑 순위테이블의 간격 -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
-        <!-- 순위를 표시할 레이아웃 -->
-        <HorizontalScrollView
+        <!-- RecyclerView 추가 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_rankings"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp">
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/layout_rankings"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                </LinearLayout>
-            </ScrollView>
-        </HorizontalScrollView>
+            android:layout_marginTop="16dp"
+            android:orientation="vertical" />
     </LinearLayout>
 </FrameLayout>
