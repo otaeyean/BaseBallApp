@@ -34,8 +34,8 @@ class RankingFragment : Fragment() {
         headerScrollView = rootView.findViewById(R.id.header_scroll_view)
 
         teamRankAdapter = TeamRankAdapter()
-        hitterRankAdapter = HitterRankAdapter()
-        pitcherRankAdapter = PitcherRankAdapter(emptyList(), ::registerScrollView) // 빈 리스트 전달
+        hitterRankAdapter = HitterRankAdapter(emptyList(), ::registerScrollView)
+        pitcherRankAdapter = PitcherRankAdapter(emptyList(), ::registerScrollView)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = teamRankAdapter // 기본적으로 팀 순위 어댑터 설정
@@ -106,16 +106,23 @@ class RankingFragment : Fragment() {
     }
 
     private fun showHitterRankings() {
-        headerScrollView.visibility = View.GONE
+        headerScrollView.visibility = View.VISIBLE
+        headerScrollView.removeAllViews()
+        val hitterHeaderView = layoutInflater.inflate(R.layout.hitter_rank_header_item, headerScrollView, false)
+        headerScrollView.addView(hitterHeaderView)
         recyclerView.adapter = hitterRankAdapter
         fetchHitterRankings()
     }
 
     private fun showPitcherRankings() {
         headerScrollView.visibility = View.VISIBLE
+        headerScrollView.removeAllViews()
+        val pitcherHeaderView = layoutInflater.inflate(R.layout.pitcher_rank_header_item, headerScrollView, false)
+        headerScrollView.addView(pitcherHeaderView)
         recyclerView.adapter = pitcherRankAdapter
         fetchPitcherRankings()
     }
+
 
     private fun fetchTeamRankings() {
         ApiObject.getRetrofitService.getAllTeams().enqueue(object : Callback<List<TeamRankData>> {

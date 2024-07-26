@@ -3,48 +3,14 @@ package com.example.baseballapp
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.HorizontalScrollView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class HitterRankAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private var hitterList: List<HitterRankData> = emptyList()
-
-    companion object {
-        private const val VIEW_TYPE_HEADER = 0
-        private const val VIEW_TYPE_ITEM = 1
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (position == 0) VIEW_TYPE_HEADER else VIEW_TYPE_ITEM
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == VIEW_TYPE_HEADER) {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.hitter_rank_header_item, parent, false)
-            HeaderViewHolder(view)
-        } else {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.hitter_rank_item, parent, false)
-            HitterRankViewHolder(view)
-        }
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is HitterRankViewHolder && position > 0) {
-            holder.bind(hitterList[position - 1])  // Position을 1 감소시켜야 리스트 인덱스와 맞춤
-        }
-    }
-
-    override fun getItemCount(): Int = hitterList.size + 1  // Header를 위해 +1
-
-    fun setList(newList: List<HitterRankData>) {
-        hitterList = newList
-        notifyDataSetChanged()
-    }
-
-    inner class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+class HitterRankAdapter(
+    private var hitterList: List<HitterRankData> = emptyList(),
+    private val registerScrollView: (HorizontalScrollView) -> Unit
+) : RecyclerView.Adapter<HitterRankAdapter.HitterRankViewHolder>() {
 
     inner class HitterRankViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val rank: TextView = itemView.findViewById(R.id.tv_rank)
@@ -66,6 +32,7 @@ class HitterRankAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val onBaseAVG: TextView = itemView.findViewById(R.id.tv_onBaseAVG)
         private val sluggingAVG: TextView = itemView.findViewById(R.id.tv_sluggingAVG)
         private val ops: TextView = itemView.findViewById(R.id.tv_ops)
+        private val dataScrollView: HorizontalScrollView = itemView.findViewById(R.id.data_scroll_view)
 
         fun bind(hitterRankData: HitterRankData) {
             rank.text = hitterRankData.rank.toString()
@@ -87,6 +54,26 @@ class HitterRankAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             onBaseAVG.text = hitterRankData.onBaseAVG.toString()
             sluggingAVG.text = hitterRankData.sluggingAVG.toString()
             ops.text = hitterRankData.ops.toString()
+
+            // 스크롤뷰 등록
+            registerScrollView(dataScrollView)
         }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HitterRankViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.hitter_rank_item, parent, false)
+        return HitterRankViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: HitterRankViewHolder, position: Int) {
+        holder.bind(hitterList[position])
+    }
+
+    override fun getItemCount(): Int = hitterList.size
+
+    fun setList(newList: List<HitterRankData>) {
+        hitterList = newList
+        notifyDataSetChanged()
     }
 }
