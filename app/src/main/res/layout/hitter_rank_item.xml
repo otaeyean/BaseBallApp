@@ -6,155 +6,145 @@
     android:padding="8dp"
     android:background="?android:attr/selectableItemBackground">
 
-    <TextView
-        android:id="@+id/tv_rank"
-        android:layout_width="0dp"
+<LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="순위"
-        android:textSize="16sp" />
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="선수"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_team"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="팀"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Player"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_games"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="경기"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_team"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Team"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_plateAppearance"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="타석"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_games"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_atBat"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="타수"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_plateAppearance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="400"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_hits"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="안타"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_atBat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="350"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_doubles"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="2타"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_hits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="120"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_triples"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="3타"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_doubles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_homeRuns"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="홈런"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_triples"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_runBattedln"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="타점"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_homeRuns"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_runScored"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="득점"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_runBattedln"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="60"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_stolenBases"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="도루"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_runScored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="70"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_baseOnBall"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="사사구"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_stolenBases"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_strikeOuts"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="삼진"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_baseOnBall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="40"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_battingAVG"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="타율"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_strikeOuts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="80"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_onBaseAVG"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="출루율"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_battingAVG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=".300"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_sluggingAVG"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="장타율"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_onBaseAVG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=".350"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_ops"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="OPS"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_sluggingAVG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=".500"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_ops"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=".850"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 </LinearLayout>
+

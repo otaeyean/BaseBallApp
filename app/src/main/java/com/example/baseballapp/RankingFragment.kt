@@ -5,18 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.baseballapp.ApiObject
-import com.example.baseballapp.HitterRankAdapter
-import com.example.baseballapp.HitterRankData
-import com.example.baseballapp.PitcherRankAdapter
-import com.example.baseballapp.PitcherRankData
-import com.example.baseballapp.R
-import com.example.baseballapp.TeamRankAdapter
-import com.example.baseballapp.TeamRankData
+import com.example.baseballapp.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,6 +19,8 @@ class RankingFragment : Fragment() {
     private lateinit var teamRankAdapter: TeamRankAdapter
     private lateinit var hitterRankAdapter: HitterRankAdapter
     private lateinit var pitcherRankAdapter: PitcherRankAdapter
+    private lateinit var headerScrollView: HorizontalScrollView
+    private val dataScrollViews = mutableListOf<HorizontalScrollView>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,10 +31,11 @@ class RankingFragment : Fragment() {
         val rankingImage = rootView.findViewById<ImageView>(R.id.ranking_image)
         val spinner = rootView.findViewById<Spinner>(R.id.spinner_ranking_category)
         recyclerView = rootView.findViewById(R.id.recycler_view_rankings)
+        headerScrollView = rootView.findViewById(R.id.header_scroll_view)
 
         teamRankAdapter = TeamRankAdapter()
         hitterRankAdapter = HitterRankAdapter()
-        pitcherRankAdapter = PitcherRankAdapter()
+        pitcherRankAdapter = PitcherRankAdapter(emptyList(), ::registerScrollView) // 빈 리스트 전달
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = teamRankAdapter // 기본적으로 팀 순위 어댑터 설정
@@ -89,20 +84,35 @@ class RankingFragment : Fragment() {
             }
         }
 
+        headerScrollView.setOnScrollChangeListener { _, scrollX, _, _, _ ->
+            dataScrollViews.forEach { it.scrollTo(scrollX, 0) }
+        }
+
         return rootView
     }
 
+    private fun registerScrollView(scrollView: HorizontalScrollView) {
+        dataScrollViews.add(scrollView)
+        scrollView.setOnScrollChangeListener { _, scrollX, _, _, _ ->
+            headerScrollView.scrollTo(scrollX, 0)
+            dataScrollViews.forEach { if (it != scrollView) it.scrollTo(scrollX, 0) }
+        }
+    }
+
     private fun showTeamRankings() {
+        headerScrollView.visibility = View.GONE
         recyclerView.adapter = teamRankAdapter
         fetchTeamRankings()
     }
 
     private fun showHitterRankings() {
+        headerScrollView.visibility = View.GONE
         recyclerView.adapter = hitterRankAdapter
         fetchHitterRankings()
     }
 
     private fun showPitcherRankings() {
+        headerScrollView.visibility = View.VISIBLE
         recyclerView.adapter = pitcherRankAdapter
         fetchPitcherRankings()
     }

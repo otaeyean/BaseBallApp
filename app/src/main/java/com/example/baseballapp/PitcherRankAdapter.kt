@@ -1,73 +1,78 @@
-package com.example.baseballapp
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.HorizontalScrollView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.baseballapp.databinding.PitcherRankItemBinding
-class PitcherRankAdapter : RecyclerView.Adapter<PitcherRankAdapter.PitcherRankViewHolder>() {
+import com.example.baseballapp.PitcherRankData
+import com.example.baseballapp.R
 
-    private var pitcherList: List<PitcherRankData> = emptyList()
+class PitcherRankAdapter(
+    private var items: List<PitcherRankData>,
+    private val registerScrollView: (HorizontalScrollView) -> Unit
+) : RecyclerView.Adapter<PitcherRankAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PitcherRankViewHolder {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val tvRank: TextView = view.findViewById(R.id.tv_rank)
+        val tvName: TextView = view.findViewById(R.id.tv_name)
+        val tvTeam: TextView = view.findViewById(R.id.tv_team)
+        val tvGames: TextView = view.findViewById(R.id.tv_games)
+        val tvWins: TextView = view.findViewById(R.id.tv_wins)
+        val tvLosses: TextView = view.findViewById(R.id.tv_losses)
+        val tvSave: TextView = view.findViewById(R.id.tv_save)
+        val tvHold: TextView = view.findViewById(R.id.tv_hold)
+        val tvInnings: TextView = view.findViewById(R.id.tv_innings)
+        val tvPitchCount: TextView = view.findViewById(R.id.tv_pitchCount)
+        val tvHits: TextView = view.findViewById(R.id.tv_hits)
+        val tvHomeRuns: TextView = view.findViewById(R.id.tv_homeRuns)
+        val tvStrikeout: TextView = view.findViewById(R.id.tv_strikeout)
+        val tvBaseOnBall: TextView = view.findViewById(R.id.tv_baseOnBall)
+        val tvRuns: TextView = view.findViewById(R.id.tv_runs)
+        val tvEarnedRuns: TextView = view.findViewById(R.id.tv_earnedRuns)
+        val tvEarnedRunsAVG: TextView = view.findViewById(R.id.tv_earnedRunsAVG)
+        val tvWhip: TextView = view.findViewById(R.id.tv_whip)
+        val tvQs: TextView = view.findViewById(R.id.tv_qs)
+        val dataScrollView: HorizontalScrollView = view.findViewById(R.id.data_scroll_view)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.pitcher_rank_item, parent, false)
-        return PitcherRankViewHolder(view)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: PitcherRankViewHolder, position: Int) {
-        holder.bind(pitcherList[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = items[position]
+        holder.tvRank.text = item.rank.toString()
+        holder.tvName.text = item.name
+        holder.tvTeam.text = item.team
+        holder.tvGames.text = item.games.toString()
+        holder.tvWins.text = item.wins.toString()
+        holder.tvLosses.text = item.losses.toString()
+        holder.tvSave.text = item.save.toString()
+        holder.tvHold.text = item.hold.toString()
+        holder.tvInnings.text = item.innings.toString()
+        holder.tvPitchCount.text = item.pitchCount.toString()
+        holder.tvHits.text = item.hits.toString()
+        holder.tvHomeRuns.text = item.homeRuns.toString()
+        holder.tvStrikeout.text = item.strikeout.toString()
+        holder.tvBaseOnBall.text = item.baseOnBall.toString()
+        holder.tvRuns.text = item.runs.toString()
+        holder.tvEarnedRuns.text = item.earnedRuns.toString()
+        holder.tvEarnedRunsAVG.text = item.earnedRunsAVG.toString()
+        holder.tvWhip.text = item.whip.toString()
+        holder.tvQs.text = item.qs.toString()
+
+        // 스크롤뷰 등록
+        registerScrollView(holder.dataScrollView)
     }
 
-    override fun getItemCount(): Int = pitcherList.size
+    override fun getItemCount(): Int {
+        return items.size
+    }
 
-    fun setList(newList: List<PitcherRankData>) {
-        pitcherList = newList
+    fun setList(newItems: List<PitcherRankData>) {
+        items = newItems
         notifyDataSetChanged()
-    }
-
-    inner class PitcherRankViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val rank: TextView = itemView.findViewById(R.id.tv_rank)
-        private val name: TextView = itemView.findViewById(R.id.tv_name)
-        private val team: TextView = itemView.findViewById(R.id.tv_team)
-        private val games: TextView = itemView.findViewById(R.id.tv_games)
-        private val wins: TextView = itemView.findViewById(R.id.tv_wins)
-        private val losses: TextView = itemView.findViewById(R.id.tv_losses)
-        private val save: TextView = itemView.findViewById(R.id.tv_save)
-        private val hold: TextView = itemView.findViewById(R.id.tv_hold)
-        private val innings: TextView = itemView.findViewById(R.id.tv_innings)
-        private val pitchCount: TextView = itemView.findViewById(R.id.tv_pitchCount)
-        private val hits: TextView = itemView.findViewById(R.id.tv_hits)
-        private val homeRuns: TextView = itemView.findViewById(R.id.tv_homeRuns)
-        private val strikeout: TextView = itemView.findViewById(R.id.tv_strikeout)
-        private val baseOnBall: TextView = itemView.findViewById(R.id.tv_baseOnBall)
-        private val runs: TextView = itemView.findViewById(R.id.tv_runs)
-        private val earnedRuns: TextView = itemView.findViewById(R.id.tv_earnedRuns)
-        private val earnedRunsAVG: TextView = itemView.findViewById(R.id.tv_earnedRunsAVG)
-        private val whip: TextView = itemView.findViewById(R.id.tv_whip)
-        private val qs: TextView = itemView.findViewById(R.id.tv_qs)
-
-        fun bind(pitcherRankData: PitcherRankData) {
-            rank.text = pitcherRankData.rank.toString()
-            name.text = pitcherRankData.name
-            team.text = pitcherRankData.team
-            games.text = pitcherRankData.games.toString()
-            wins.text = pitcherRankData.wins.toString()
-            losses.text = pitcherRankData.losses.toString()
-            save.text = pitcherRankData.save.toString()
-            hold.text = pitcherRankData.hold.toString()
-            innings.text = pitcherRankData.innings.toString()
-            pitchCount.text = pitcherRankData.pitchCount.toString()
-            hits.text = pitcherRankData.hits.toString()
-            homeRuns.text = pitcherRankData.homeRuns.toString()
-            strikeout.text = pitcherRankData.strikeout.toString()
-            baseOnBall.text = pitcherRankData.baseOnBall.toString()
-            runs.text = pitcherRankData.runs.toString()
-            earnedRuns.text = pitcherRankData.earnedRuns.toString()
-            earnedRunsAVG.text = pitcherRankData.earnedRunsAVG.toString()
-            whip.text = pitcherRankData.whip.toString()
-            qs.text = pitcherRankData.qs.toString()
-        }
     }
 }
