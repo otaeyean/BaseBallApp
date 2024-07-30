@@ -22,7 +22,7 @@ class WritePostFragment : Fragment() {
     private var _binding: FragmentWritePostBinding? = null
     private val binding get() = _binding!!
 
-    // 프래그먼트의 뷰를 생성하는 메서드.
+    // 프래그먼트의 뷰를 생성하는 메서드..
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
