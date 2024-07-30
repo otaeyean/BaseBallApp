@@ -6,12 +6,13 @@
     <string name="right">&gt;</string>
     <string name="ranking_image_desc">Ranking Image</string>
     <string-array name="team_array">
+        <item>팀 선택</item>
         <item>LG 트윈스</item>
         <item>KT 위즈</item>
         <item>SSG 랜더스</item>
         <item>NC 다이노스</item>
         <item>두산 베어스</item>
-        <item>기아 타이거즈</item>
+        <item>KIA 타이거즈</item>
         <item>롯데 자이언츠</item>
         <item>삼성 라이온즈</item>
         <item>한화 이글스</item>

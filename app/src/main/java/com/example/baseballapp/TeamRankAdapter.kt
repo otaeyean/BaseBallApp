@@ -3,6 +3,7 @@ package com.example.baseballapp
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -49,6 +50,7 @@ class TeamRankAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class TeamRankViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val rank: TextView = itemView.findViewById(R.id.tv_rank)
         private val teamName: TextView = itemView.findViewById(R.id.tv_teamName)
+        private val teamLogo: ImageView = itemView.findViewById(R.id.img_team_logo)
         private val games: TextView = itemView.findViewById(R.id.tv_games)
         private val wins: TextView = itemView.findViewById(R.id.tv_wins)
         private val losses: TextView = itemView.findViewById(R.id.tv_losses)
@@ -67,6 +69,21 @@ class TeamRankAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             winRate.text = teamRankData.winRate.toString()
             winningMargin.text = teamRankData.winningMargin.toString()
             continuity.text = teamRankData.continuity
+
+            val logoResource = when (teamRankData.teamName) {
+                "두산" -> R.drawable.doosan_logo
+                "KIA" -> R.drawable.kia_logo
+                "키움" -> R.drawable.kiwoom_logo
+                "KT" -> R.drawable.kt_logo
+                "LG" -> R.drawable.lg_logo
+                "롯데" -> R.drawable.lotte_logo
+                "NC" -> R.drawable.nc_logo
+                "삼성" -> R.drawable.samsung_logo
+                "SSG" -> R.drawable.ssg_logo
+                "한화" -> R.drawable.hanwha_logo
+                else -> R.drawable.baseball // 기본 로고 (팀 이름이 일치하지 않을 경우)
+            }
+            teamLogo.setImageResource(logoResource)
         }
     }
 }
