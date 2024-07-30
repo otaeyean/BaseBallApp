@@ -1,7 +1,9 @@
 package com.example.baseballapp
 
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface UpbitAPI {
     @GET("player")
@@ -15,5 +17,9 @@ interface UpbitAPI {
 
     @GET("pitcher")
     fun getAllPitchers(): Call<List<PitcherRankData>>
+
+
+    @POST("boards/create")
+    fun submitPost(@Body post: Post): Call<Void>
 }
 

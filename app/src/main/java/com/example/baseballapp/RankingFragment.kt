@@ -123,7 +123,6 @@ class RankingFragment : Fragment() {
         fetchPitcherRankings()
     }
 
-
     private fun fetchTeamRankings() {
         ApiObject.getRetrofitService.getAllTeams().enqueue(object : Callback<List<TeamRankData>> {
             override fun onResponse(call: Call<List<TeamRankData>>, response: Response<List<TeamRankData>>) {

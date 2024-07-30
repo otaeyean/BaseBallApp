@@ -4,8 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.baseballapp.ApiObject
+import com.example.baseballapp.Post
 import com.example.baseballapp.databinding.FragmentWritePostBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 class WritePostFragment : Fragment() {
 
@@ -27,17 +35,34 @@ class WritePostFragment : Fragment() {
             val boardType = binding.boardSpinner.selectedItem.toString()
             val title = binding.postTitle.text.toString()
             val content = binding.postContent.text.toString()
+            val author = "작성자 이름"  // 실제 작성자 이름으로 교체
+            val createdAt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 
-            // 데이터를 서버로 전송하거나 로컬에 저장하는 코드 작성
-            // 예시: submitPost(boardType, title, content)
+            if (title.isEmpty() || content.isEmpty()) {
+                Toast.makeText(context, "제목과 내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-            // 작성 완료 후 이전 화면으로 이동
-            parentFragmentManager.popBackStack()
+            val post = Post(boardType, title, content, author, createdAt)
+            submitPost(post)
         }
+    }
 
-        binding.uploadImageButton.setOnClickListener {
-            // 이미지 업로드 기능 구현
-        }
+    private fun submitPost(post: Post) {
+        ApiObject.getRetrofitService.submitPost(post).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(context, "게시글이 성공적으로 작성되었습니다.", Toast.LENGTH_SHORT).show()
+                    parentFragmentManager.popBackStack()
+                } else {
+                    Toast.makeText(context, "게시글 작성에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Toast.makeText(context, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     override fun onDestroyView() {
