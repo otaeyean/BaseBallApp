@@ -39,11 +39,11 @@ class WritePostFragment : Fragment() {
         // 게시글 제출 버튼 클릭 리스너 설정
         binding.submitPostButton.setOnClickListener {
             // 사용자가 선택한 게시판 종류, 입력한 제목과 내용을 가져옴
-            val boardType = binding.boardSpinner.selectedItem.toString()
             val title = binding.postTitle.text.toString()
             val content = binding.postContent.text.toString()
             val author = "작성자 이름"  // 실제 작성자 이름으로 교체
-            val createdAt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+            val createdAt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).format(Date())
+            val updatedAt = createdAt // updatedAt을 createdAt과 동일하게 설정
 
             // 제목과 내용이 비어있으면 경고 메시지를 표시하고 리스너 종료
             if (title.isEmpty() || content.isEmpty()) {
@@ -52,7 +52,7 @@ class WritePostFragment : Fragment() {
             }
 
             // Post 객체 생성
-            val post = Post(boardType, title, content, author, createdAt)
+            val post = Post(title, content, author, createdAt, updatedAt)
             // Post 객체를 서버로 제출하는 메서드 호출
             submitPost(post)
         }
@@ -70,7 +70,7 @@ class WritePostFragment : Fragment() {
                     parentFragmentManager.popBackStack()
                 } else {
                     // 실패 메시지를 표시
-                    Toast.makeText(context, "게시글 작성에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "게시글 작성에 실패했습니다. 오류 코드: ${response.code()}", Toast.LENGTH_SHORT).show()
                 }
             }
 
