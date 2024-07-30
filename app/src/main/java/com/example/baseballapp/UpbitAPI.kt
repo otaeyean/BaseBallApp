@@ -8,6 +8,9 @@ interface UpbitAPI {
     @GET("player")
     fun getAllPlayers(): Call<List<PlayerData>>
 
+    @GET("schedule")
+    fun getAllSchedule():Call<List<GameListData>>
+
     @GET("team")
     fun getAllTeams(): Call<List<TeamRankData>>
 
@@ -19,5 +22,7 @@ interface UpbitAPI {
 
     @GET("schedule")
     fun getSchedule(@Query("date") date: String): Call<List<ScheduleData>>
+
 }
+
 
