@@ -16,4 +16,3 @@ class FreeBoardFragment : Fragment() {
     }
 }
 
-// QuestionBoardFragment.kt, TradeBoardFragment.kt 도 동일한 방식으로 작성

@@ -7,18 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.example.baseballapp.ApiObject.getRetrofitService
 import com.example.baseballapp.databinding.FragmentScheduleBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
 import java.util.Locale
 
 class ScheduleFragment : Fragment() {
     private lateinit var binding: FragmentScheduleBinding
     private lateinit var schedule:TextView
-    private lateinit var day:TextView
-    private var gamelist=ArrayList<GameListData>()
+    private lateinit var gameListAdapter: GameListAdapter
+    private var gameList=ArrayList<GameListData>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,36 +44,26 @@ class ScheduleFragment : Fragment() {
                 .commitAllowingStateLoss()
         }
 
-        val gamelistAdapter=GameListAdapter(gamelist)
-        binding.gamelist.adapter=gamelistAdapter
+        gameListAdapter=GameListAdapter(gameList)
+        binding.gamelist.adapter=gameListAdapter
 
-        gamelist.add(GameListData("LG", "두산"))
-        gamelist.add(GameListData("삼성", "기아"))
-        gamelist.add(GameListData("키움", "한화"))
-        gamelist.add(GameListData("kt", "NC"))
-        gamelist.add(GameListData("롯데", "SSG"))
-
-        gamelistAdapter.notifyDataSetChanged()
+        gameListAdapter.notifyDataSetChanged()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupDate() {
         schedule = binding.schedule
-        day = binding.day
 
         var currentDate=LocalDate.now()
 
         fun updateDate(date: LocalDate) {
             //오늘 날짜
-            val dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+            val dateFormat = DateTimeFormatter.ofPattern("MM.dd(E)", Locale.KOREAN)
             val formattedDate = date.format(dateFormat)
 
-            //오늘 요일
-            val dayOfWeek = date.dayOfWeek
-            val dayOfWeekText = dayOfWeek.getDisplayName(TextStyle.FULL, Locale.KOREAN).substring(0, 1)
+            schedule.text = formattedDate
 
-            schedule.text = formattedDate //날짜
-            day.text = "($dayOfWeekText)" //요일
+            fetchSchedule(formattedDate)
         }
 
         updateDate(currentDate)
@@ -84,5 +78,33 @@ class ScheduleFragment : Fragment() {
             updateDate(currentDate)
         }
 
+    }
+
+    private fun fetchSchedule(selectedDate:String){
+        val call= getRetrofitService.getAllSchedule()
+        call.enqueue(object :Callback<List<GameListData>>{
+            override fun onResponse(
+                call: Call<List<GameListData>>,
+                response: Response<List<GameListData>>
+            ) {
+                if(response.isSuccessful){
+                    response.body()?.let{
+                        val filterGame=it.filter { game ->game.date== selectedDate}
+                        gameList.clear()
+                        gameList.addAll(filterGame)
+                        if (selectedDate.endsWith("(월)") || filterGame.isEmpty()) {
+                            gameList.add(GameListData("", "", "", "", "", "", "오늘은 경기가 없습니다.", ""))
+                        }
+                        gameListAdapter.notifyDataSetChanged()
+                    }
+                }else {
+                    Toast.makeText(requireContext(), "Failed to load data", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<GameListData>>, t: Throwable) {
+                Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
