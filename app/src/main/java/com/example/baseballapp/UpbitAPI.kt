@@ -27,7 +27,4 @@ interface UpbitAPI {
 
     @POST("boards/create")
     fun submitPost(@Body post: Post): Call<Void>
-
 }
-
-
