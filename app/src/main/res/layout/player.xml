@@ -27,7 +27,7 @@
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="3dp"
                 android:text="홍창기"
                 android:layout_marginRight="5dp"
                 android:textSize="21dp" />
@@ -35,7 +35,7 @@
                 android:id="@+id/number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginRight="7dp"
                 android:text="51"
                 android:textSize="21dp" />
@@ -44,7 +44,7 @@
                 android:id="@+id/handedInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="3dp"
                 android:text="외야수"
                 android:layout_marginRight="5dp"
                 android:textSize="17dp" />
@@ -53,7 +53,7 @@
                 android:id="@+id/position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginRight="20dp"
                 android:text="좌타"
                 android:textSize="17dp" />
@@ -75,7 +75,7 @@
                 android:id="@+id/birthday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginRight="8dp"
                 android:text="1993.05.05"
                 android:textSize="16dp" />
@@ -84,7 +84,7 @@
                 android:id="@+id/height"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginRight="5dp"
                 android:text="189cm"
                 android:textSize="16dp" />
@@ -92,7 +92,7 @@
                 android:id="@+id/weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginRight="5dp"
                 android:text="90kg"
                 android:textSize="16dp" />
@@ -101,7 +101,7 @@
 
     <ImageView
         android:id="@+id/playerPosImg"
-        android:layout_width="47dp"
-        android:layout_height="68dp"
-        android:scaleType="fitXY"/>
+        android:layout_width="60dp"
+        android:layout_height="75dp"
+        android:scaleType="centerCrop"/>
 </LinearLayout>

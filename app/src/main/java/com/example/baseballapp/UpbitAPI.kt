@@ -7,6 +7,9 @@ interface UpbitAPI {
     @GET("player")
     fun getAllPlayers(): Call<List<PlayerData>>
 
+    @GET("schedule")
+    fun getAllSchedule():Call<List<GameListData>>
+
     @GET("team")
     fun getAllTeams(): Call<List<TeamRankData>>
 

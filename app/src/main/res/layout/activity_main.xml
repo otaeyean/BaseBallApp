@@ -23,7 +23,16 @@
         app:menu="@menu/navi_menu"
         app:itemActiveIndicatorStyle="@null"
         app:itemIconTint="@drawable/menu_selector_color"
-        app:itemTextColor="@drawable/menu_selector_color" />
+        app:itemTextColor="@drawable/menu_selector_color" >
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:background="@color/black"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteY="655dp" />
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar3"
@@ -36,6 +45,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -60,7 +70,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
+
     </FrameLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
