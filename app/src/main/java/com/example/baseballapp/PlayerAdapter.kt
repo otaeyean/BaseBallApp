@@ -20,6 +20,7 @@ class PlayerAdapter : RecyclerView.Adapter<PlayerAdapter.PlayerView>() {
         val playerHeight:TextView=binding.height
         val playerHandedInfo:TextView=binding.handedInfo
         val playerImage:ImageView=binding.playerImg
+        val playerPosImage:ImageView=binding.playerPosImg
 
     }
 
@@ -51,6 +52,13 @@ class PlayerAdapter : RecyclerView.Adapter<PlayerAdapter.PlayerView>() {
             "한화" -> holder.playerImage.setImageResource(R.drawable.hanwha_logo)
             "키움" -> holder.playerImage.setImageResource(R.drawable.kiwoom_logo)
             else -> holder.playerImage.setImageResource(R.drawable.baseball)
+        }
+
+        if(player.position=="외야수" || player.position=="내야수" ||player.position=="포수"){
+            holder.playerPosImage.setImageResource(R.drawable.hitter)
+        }
+        else if(player.position=="투수"){
+            holder.playerPosImage.setImageResource(R.drawable.pitcher)
         }
     }
 
