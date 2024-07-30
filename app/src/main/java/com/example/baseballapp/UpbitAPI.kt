@@ -2,6 +2,7 @@ package com.example.baseballapp
 
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface UpbitAPI {
     @GET("player")
@@ -15,5 +16,8 @@ interface UpbitAPI {
 
     @GET("pitcher")
     fun getAllPitchers(): Call<List<PitcherRankData>>
+
+    @GET("schedule")
+    fun getSchedule(@Query("date") date: String): Call<List<ScheduleData>>
 }
 

@@ -60,13 +60,13 @@ class ProfileAdapter(private val context: Context, private val fragmentManager: 
                     }
                     "[TEAMKOREA] KOREA 응원 머플러" -> {
                         fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, BatFragment())
+                            .replace(R.id.fragment_container, MufflerFragment())
                             .addToBackStack(null)
                             .commit()
                     }
                     "[TEAM KOREA] PVC 글러브" -> {
                         fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, GLoveFragment())
+                            .replace(R.id.fragment_container, GloveFragment())
                             .addToBackStack(null)
                             .commit()
                     }

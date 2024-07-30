@@ -70,6 +70,8 @@ class UniformFragment : Fragment() {
                 binding.textView4.text = "브랜드: ?"
                 binding.textView5.text = "제조사: ?"
                 binding.textView6.text = "원산지: ?"
+                binding.textView7.text = "상품코드: ?"
+                binding.textView8.text = "제조일: ?"
                 binding.imageView.setImageResource(R.drawable.kia_uniform)
             }
             "KIA" -> {
@@ -78,6 +80,8 @@ class UniformFragment : Fragment() {
                 binding.textView4.text = "브랜드: 기아 타이거즈"
                 binding.textView5.text = "제조사: KIA FANSHOP"
                 binding.textView6.text = "원산지: KOREA"
+                binding.textView7.text = "상품코드: 1000004068"
+                binding.textView8.text = "제조일: 2024-03-26"
                 binding.imageView.setImageResource(R.drawable.kia_uniform)
             }
             "두산" -> {
@@ -86,6 +90,8 @@ class UniformFragment : Fragment() {
                 binding.textView4.text = "브랜드: 두산베어스"
                 binding.textView5.text = "제조사: WeFAN"
                 binding.textView6.text = "원산지: KOREA"
+                binding.textView7.text = "상품코드: 1000004035"
+                binding.textView8.text = "제조일: 2024-03-07"
                 binding.imageView.setImageResource(R.drawable.doosan_uniform)
             }
             "LG" -> {
@@ -94,6 +100,8 @@ class UniformFragment : Fragment() {
                 binding.textView4.text = "브랜드: LG 트윈스"
                 binding.textView5.text = "제조사: FANDOME"
                 binding.textView6.text = "원산지: KOREA"
+                binding.textView7.text = "상품코드: 1000004037"
+                binding.textView8.text = "제조일: 2024-03-07"
                 binding.imageView.setImageResource(R.drawable.lg_uniform)
             }
             "삼성" -> {
@@ -102,6 +110,8 @@ class UniformFragment : Fragment() {
                 binding.textView4.text = "브랜드: 삼성 라이온즈"
                 binding.textView5.text = "제조사: SAMFAN"
                 binding.textView6.text = "원산지: KOREA"
+                binding.textView7.text = "상품코드: 1000004047"
+                binding.textView8.text = "제조일: 2024-01-01"
                 binding.imageView.setImageResource(R.drawable.samsung_uniform)
             }
             "SSG" -> {
@@ -110,6 +120,8 @@ class UniformFragment : Fragment() {
                 binding.textView4.text = "브랜드: SSG 랜더스"
                 binding.textView5.text = "제조사: SSG FANSHOP"
                 binding.textView6.text = "원산지: KOREA"
+                binding.textView7.text = "상품코드: 1000004099"
+                binding.textView8.text = "제조일: 2024-04-16"
                 binding.imageView.setImageResource(R.drawable.ssg_uniform)
             }
             "NC" -> {
@@ -118,6 +130,8 @@ class UniformFragment : Fragment() {
                 binding.textView4.text = "브랜드: NC 다이노스"
                 binding.textView5.text = "제조사: NC FANSHOP"
                 binding.textView6.text = "원산지: KOREA"
+                binding.textView7.text = "상품코드: 1000004085"
+                binding.textView8.text = "제조일: 2024-04-05"
                 binding.imageView.setImageResource(R.drawable.nc_uniform)
             }
             "KT" -> {
@@ -126,6 +140,8 @@ class UniformFragment : Fragment() {
                 binding.textView4.text = "브랜드: KT 위즈"
                 binding.textView5.text = "제조사: KT FANSHOP"
                 binding.textView6.text = "원산지: KOREA"
+                binding.textView7.text = "상품코드: 1000004078"
+                binding.textView8.text = "제조일: 2024-04-04"
                 binding.imageView.setImageResource(R.drawable.kt_uniform)
             }
             "롯데" -> {
@@ -134,6 +150,8 @@ class UniformFragment : Fragment() {
                 binding.textView4.text = "브랜드: 롯데 자이언츠"
                 binding.textView5.text = "제조사: LOTTE FANSHOP"
                 binding.textView6.text = "원산지: KOREA"
+                binding.textView7.text = "상품코드: 1000004111"
+                binding.textView8.text = "제조일: 2024-04-24"
                 binding.imageView.setImageResource(R.drawable.lotte_uniform)
             }
             "한화" -> {
@@ -142,6 +160,8 @@ class UniformFragment : Fragment() {
                 binding.textView4.text = "브랜드: 한화 이글스"
                 binding.textView5.text = "제조사: HANWHA FANSHOP"
                 binding.textView6.text = "원산지: KOREA"
+                binding.textView7.text = "상품코드: 1000004024"
+                binding.textView8.text = "제조일: 2024-03-12"
                 binding.imageView.setImageResource(R.drawable.hanwha_uniform)
             }
             "키움" -> {
@@ -150,6 +170,8 @@ class UniformFragment : Fragment() {
                 binding.textView4.text = "브랜드: 키움 히어로즈"
                 binding.textView5.text = "제조사: KIUM FANSHOP"
                 binding.textView6.text = "원산지: KOREA"
+                binding.textView7.text = "상품코드: 1000003929"
+                binding.textView8.text = "제조일: 2023-09-18"
                 binding.imageView.setImageResource(R.drawable.kiwoom_uniform)
             }
         }

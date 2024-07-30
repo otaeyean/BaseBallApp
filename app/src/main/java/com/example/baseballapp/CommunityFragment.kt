@@ -27,11 +27,9 @@ class CommunityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 초기 게시판 프래그먼트 로드
         replaceFragment(FreeBoardFragment())
         updateButtonState(binding.freeBoardButton)
 
-        // 버튼 클릭 리스너 설정
         binding.freeBoardButton.setOnClickListener {
             replaceFragment(FreeBoardFragment())
             updateButtonState(binding.freeBoardButton)
@@ -45,9 +43,7 @@ class CommunityFragment : Fragment() {
             updateButtonState(binding.tradeBoardButton)
         }
 
-        // 글쓰기 버튼 클릭 리스너
         binding.writePostButton.setOnClickListener {
-            // 글쓰기 프래그먼트로 이동
             parentFragmentManager.beginTransaction()
                 .replace(R.id.boardContainer, WritePostFragment())
                 .addToBackStack(null)
@@ -55,7 +51,6 @@ class CommunityFragment : Fragment() {
         }
     }
 
-    // 프래그먼트 교체 함수
     private fun replaceFragment(fragment: Fragment) {
         parentFragmentManager.beginTransaction()
             .replace(R.id.boardContainer, fragment)
@@ -63,7 +58,6 @@ class CommunityFragment : Fragment() {
             .commit()
     }
 
-    // 버튼 상태 업데이트 함수
     private fun updateButtonState(activeButton: Button) {
         val buttons = listOf(binding.freeBoardButton, binding.questionBoardButton, binding.tradeBoardButton)
         buttons.forEach { button ->

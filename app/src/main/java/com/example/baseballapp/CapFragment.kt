@@ -1,5 +1,6 @@
 package com.example.baseballapp
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,8 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.baseballapp.databinding.FragmentCapBinding
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class CapFragment : Fragment() {
 
@@ -39,10 +43,24 @@ class CapFragment : Fragment() {
             }
         }
 
-        binding.button2.setOnClickListener {
+        binding.btnAddToCart.setOnClickListener {
             val selectedTeam = binding.spinner.selectedItem.toString()
-            navigateToTeamWebsite(selectedTeam)
+            if (selectedTeam != "팀 선택") {
+                addToCart(selectedTeam)
+                Toast.makeText(requireContext(), "$selectedTeam 모자가 장바구니에 추가되었습니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "모자를 선택해 주세요.", Toast.LENGTH_SHORT).show()
+            }
         }
+
+        binding.button3.setOnClickListener {
+            val fragmentManager = requireActivity().supportFragmentManager
+            val transaction = fragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, CartFragment())
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+
         return view
     }
 
@@ -122,7 +140,7 @@ class CapFragment : Fragment() {
             }
             "롯데" -> {
                 binding.textView2.text = "[롯데자이언츠] 레플리카 사이즈캡"
-                binding.textView3.text = "80,000원"
+                binding.textView3.text = "25,000원"
                 binding.textView4.text = "상품코드: 1000004126"
                 binding.textView5.text = "제조사: ㈜코어커뮤니케이션"
                 binding.textView6.text = "원산지: 중국"
@@ -150,16 +168,54 @@ class CapFragment : Fragment() {
         }
     }
 
-    private fun navigateToTeamWebsite(team: String) {
-        val url = when (team) {
-            "KIA" -> "https://teamstore.tigers.co.kr/"
-            // 다른 팀들에 대한 URL 추가
-            else -> ""
-        }
+    private fun addToCart(team: String) {
+        val cartItem = CartItem(
+            productName = team,
+            productPrice = getPriceForTeam(team),
+            productImage = getImageForTeam(team),
+            productQuantity = 1
+        )
 
-        if (url.isNotEmpty()) {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            startActivity(intent)
+        val sharedPreferences = requireActivity().getSharedPreferences("cart", Context.MODE_PRIVATE)
+        val cartItemsJson = sharedPreferences.getString("cartItems", "[]")
+        val type = object : TypeToken<MutableList<CartItem>>() {}.type
+        val cartItems = Gson().fromJson<MutableList<CartItem>>(cartItemsJson, type) ?: mutableListOf()
+
+        cartItems.add(cartItem)
+
+        val newCartItemsJson = Gson().toJson(cartItems)
+        sharedPreferences.edit().putString("cartItems", newCartItemsJson).apply()
+    }
+
+    private fun getPriceForTeam(team: String): Int {
+        return when (team) {
+            "KIA" -> 33000
+            "두산" -> 25000
+            "LG" -> 29000
+            "삼성" -> 42000
+            "SSG" -> 39000
+            "NC" -> 33000
+            "KT" -> 32000
+            "롯데" -> 25000
+            "한화" -> 21000
+            "키움" -> 29000
+            else -> 0
+        }
+    }
+
+    private fun getImageForTeam(team: String): Int {
+        return when (team) {
+            "KIA" -> R.drawable.kia_cap
+            "두산" -> R.drawable.doosan_cap
+            "LG" -> R.drawable.lg_cap
+            "삼성" -> R.drawable.samsung_cap
+            "SSG" -> R.drawable.ssg_cap
+            "NC" -> R.drawable.nc_cap
+            "KT" -> R.drawable.kt_cap
+            "롯데" -> R.drawable.lotte_cap
+            "한화" -> R.drawable.hanwha_cap
+            "키움" -> R.drawable.kiwoom_cap
+            else -> R.drawable.hanwha_cap
         }
     }
 

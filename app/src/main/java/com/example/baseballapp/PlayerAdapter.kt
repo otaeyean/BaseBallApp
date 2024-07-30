@@ -20,7 +20,6 @@ class PlayerAdapter : RecyclerView.Adapter<PlayerAdapter.PlayerView>() {
         val playerHeight:TextView=binding.height
         val playerHandedInfo:TextView=binding.handedInfo
         val playerImage:ImageView=binding.playerImg
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerView {
