@@ -29,7 +29,12 @@ class TradeBoardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        postAdapter = PostAdapter(emptyList())
+        postAdapter = PostAdapter(emptyList()) { post ->
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.boardContainer, PostDetailFragment.newInstance(post))
+                .addToBackStack(null)
+                .commit()
+        }
         binding.recyclerViewPosts.adapter = postAdapter
         binding.recyclerViewPosts.layoutManager = LinearLayoutManager(context)
 

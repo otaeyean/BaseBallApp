@@ -6,11 +6,25 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class PostAdapter(private var postList: List<BoardData>) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
+class PostAdapter(
+    private var postList: List<BoardData>,
+    private val onItemClick: (BoardData) -> Unit
+) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
+
+    inner class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val title: TextView = itemView.findViewById(R.id.tv_title)
+        val content: TextView = itemView.findViewById(R.id.tv_content)
+        val author: TextView = itemView.findViewById(R.id.tv_author)
+        val createdAt: TextView = itemView.findViewById(R.id.tv_created_at)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_post, parent, false)
-        return PostViewHolder(itemView)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_post, parent, false)
+        return PostViewHolder(view).apply {
+            itemView.setOnClickListener {
+                onItemClick(postList[adapterPosition])
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -21,19 +35,10 @@ class PostAdapter(private var postList: List<BoardData>) : RecyclerView.Adapter<
         holder.createdAt.text = post.createdAt
     }
 
-    override fun getItemCount(): Int {
-        return postList.size
-    }
+    override fun getItemCount(): Int = postList.size
 
     fun setPosts(posts: List<BoardData>) {
-        this.postList = posts
+        postList = posts
         notifyDataSetChanged()
-    }
-
-    inner class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title: TextView = itemView.findViewById(R.id.tv_title)
-        val content: TextView = itemView.findViewById(R.id.tv_content)
-        val author: TextView = itemView.findViewById(R.id.tv_author)
-        val createdAt: TextView = itemView.findViewById(R.id.tv_created_at)
     }
 }

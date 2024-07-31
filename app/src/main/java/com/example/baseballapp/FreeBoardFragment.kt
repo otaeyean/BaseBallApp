@@ -22,17 +22,19 @@ class FreeBoardFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // 레이아웃 파일을 올바르게 인플레이트하고 있는지 확인
         return inflater.inflate(R.layout.fragment_free_board, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // findViewById로 뷰를 찾을 때 올바른 뷰를 사용하는지 확인
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        postAdapter = PostAdapter(boardDataList)
+        postAdapter = PostAdapter(boardDataList) { post ->
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.boardContainer, PostDetailFragment.newInstance(post))
+                .addToBackStack(null)
+                .commit()
+        }
         recyclerView.adapter = postAdapter
 
         loadBoardData()
