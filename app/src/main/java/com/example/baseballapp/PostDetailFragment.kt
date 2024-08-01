@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.baseballapp.databinding.FragmentPostDetailBinding
 
@@ -18,8 +17,9 @@ class PostDetailFragment : Fragment() {
 
         fun newInstance(post: BoardData): PostDetailFragment {
             val fragment = PostDetailFragment()
-            val args = Bundle()
-            args.putParcelable(ARG_POST, post)
+            val args = Bundle().apply {
+                putParcelable(ARG_POST, post)
+            }
             fragment.arguments = args
             return fragment
         }
@@ -36,8 +36,7 @@ class PostDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val post = arguments?.getParcelable<BoardData>(ARG_POST)
-        if (post != null) {
+        arguments?.getParcelable<BoardData>(ARG_POST)?.let { post ->
             binding.tvTitle.text = post.title
             binding.tvContent.text = post.content
             binding.tvAuthor.text = post.authorId

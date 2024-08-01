@@ -11,7 +11,7 @@ data class Post(
     val authorId: String,
     val createdAt: String,
     val updatedAt: String,
-    val type: String  // 추가된 필드
+    val type: String
 ) : Parcelable
 
 @Parcelize
@@ -23,5 +23,21 @@ data class BoardData(
     val createdAt: String,
     val updatedAt: String,
     val upVote: Int,
-    val type: String  // 추가된 필드
+    val type: String
 ) : Parcelable
+
+data class BoardPageResponse(
+    val totalPages: Int,
+    val totalElements: Int,
+    val content: List<BoardData>,
+    val number: Int,
+    val size: Int,
+    val first: Boolean,
+    val last: Boolean,
+    val numberOfElements: Int
+)
+data class PagedBoardResponse(
+    val totalPages: Int,
+    val totalElements: Int,
+    val content: List<BoardData>
+)

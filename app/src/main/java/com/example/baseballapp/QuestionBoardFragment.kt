@@ -17,6 +17,8 @@ class QuestionBoardFragment : Fragment() {
     private var _binding: FragmentQuestionBoardBinding? = null
     private val binding get() = _binding!!
     private lateinit var postAdapter: PostAdapter
+    private var currentPage = 0
+    private val pageSize = 10
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,18 +44,19 @@ class QuestionBoardFragment : Fragment() {
     }
 
     private fun fetchPosts() {
-        ApiObject.getRetrofitService.getAllBoards("질문게시판").enqueue(object : Callback<List<BoardData>> {
-            override fun onResponse(call: Call<List<BoardData>>, response: Response<List<BoardData>>) {
+        ApiObject.getRetrofitService.getBoardsByPage("질문게시판", currentPage, pageSize).enqueue(object : Callback<PagedBoardResponse> {
+            override fun onResponse(call: Call<PagedBoardResponse>, response: Response<PagedBoardResponse>) {
                 if (response.isSuccessful) {
-                    response.body()?.let { boards ->
-                        postAdapter.setPosts(boards)
+                    response.body()?.let { pagedResponse ->
+                        postAdapter.setPosts(pagedResponse.content)
+                        currentPage++
                     }
                 } else {
                     Toast.makeText(context, "게시글을 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onFailure(call: Call<List<BoardData>>, t: Throwable) {
+            override fun onFailure(call: Call<PagedBoardResponse>, t: Throwable) {
                 Toast.makeText(context, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
