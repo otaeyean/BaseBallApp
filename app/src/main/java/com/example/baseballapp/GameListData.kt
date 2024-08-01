@@ -8,5 +8,6 @@ data class GameListData(
     val team1Score:String,
     val team2Score: String,
     val place:String,
-    var note:String
+    var note:String,
+    val roomId: String
 )
