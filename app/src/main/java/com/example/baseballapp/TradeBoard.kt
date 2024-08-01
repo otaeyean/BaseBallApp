@@ -35,14 +35,14 @@ class TradeBoardFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
-        binding.recyclerViewPosts.adapter = postAdapter
-        binding.recyclerViewPosts.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.adapter = postAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
 
         fetchPosts()
     }
 
     private fun fetchPosts() {
-        ApiObject.getRetrofitService.getAllBoards().enqueue(object : Callback<List<BoardData>> {
+        ApiObject.getRetrofitService.getAllBoards("중고거래게시판").enqueue(object : Callback<List<BoardData>> {
             override fun onResponse(call: Call<List<BoardData>>, response: Response<List<BoardData>>) {
                 if (response.isSuccessful) {
                     response.body()?.let { boards ->

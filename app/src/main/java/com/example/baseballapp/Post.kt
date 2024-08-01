@@ -1,3 +1,4 @@
+// post.kt
 package com.example.baseballapp
 
 import android.os.Parcelable
@@ -9,7 +10,8 @@ data class Post(
     val content: String,
     val authorId: String,
     val createdAt: String,
-    val updatedAt: String
+    val updatedAt: String,
+    val type: String  // 추가된 필드
 ) : Parcelable
 
 @Parcelize
@@ -20,5 +22,6 @@ data class BoardData(
     val authorId: String,
     val createdAt: String,
     val updatedAt: String,
-    val upVote: Int
+    val upVote: Int,
+    val type: String  // 추가된 필드
 ) : Parcelable

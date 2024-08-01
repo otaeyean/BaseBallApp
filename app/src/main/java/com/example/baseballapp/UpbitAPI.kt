@@ -29,5 +29,5 @@ interface UpbitAPI {
     fun submitPost(@Body post: Post): Call<Void>
 
     @GET("boards/getAllBoard")
-    fun getAllBoards(): Call<List<BoardData>>
+    fun getAllBoards(@Query("type") type: String): Call<List<BoardData>>
 }
