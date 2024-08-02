@@ -52,6 +52,8 @@ class ChatingFragment : Fragment() {
                 val chatMessage = ChatMessageData(R.drawable.lg_logo, nickname, message)
                 binding.editTextMessage.text.clear()
                 addMessage(chatMessage)
+
+                webSocket.send(message)
             }
         }
     }
