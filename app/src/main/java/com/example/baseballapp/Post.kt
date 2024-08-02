@@ -1,9 +1,43 @@
+// post.kt
 package com.example.baseballapp
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Post(
-    val boardType: String,
     val title: String,
     val content: String,
-    val author: String,
-    val createdAt: String
+    val authorId: String,
+    val createdAt: String,
+    val updatedAt: String,
+    val type: String
+) : Parcelable
+
+@Parcelize
+data class BoardData(
+    val id: Int,
+    val title: String,
+    val content: String,
+    val authorId: String,
+    val createdAt: String,
+    val updatedAt: String,
+    val upVote: Int,
+    val type: String
+) : Parcelable
+
+data class BoardPageResponse(
+    val totalPages: Int,
+    val totalElements: Int,
+    val content: List<BoardData>,
+    val number: Int,
+    val size: Int,
+    val first: Boolean,
+    val last: Boolean,
+    val numberOfElements: Int
+)
+data class PagedBoardResponse(
+    val totalPages: Int,
+    val totalElements: Int,
+    val content: List<BoardData>
 )

@@ -8,7 +8,10 @@ import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.example.baseballapp.FreeBoardFragment
+import com.example.baseballapp.QuestionBoardFragment
 import com.example.baseballapp.R
+import com.example.baseballapp.TradeBoardFragment
 import com.example.baseballapp.databinding.FragmentCommunityBinding
 
 class CommunityFragment : Fragment() {

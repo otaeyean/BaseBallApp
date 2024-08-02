@@ -27,4 +27,7 @@ interface UpbitAPI {
 
     @POST("boards/create")
     fun submitPost(@Body post: Post): Call<Void>
+
+    @GET("boards/getBoardsByPage")
+    fun getBoardsByPage(@Query("type") type: String, @Query("page") page: Int, @Query("size") size: Int): Call<PagedBoardResponse>
 }
