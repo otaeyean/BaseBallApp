@@ -20,9 +20,9 @@ import java.util.Locale
 
 class ScheduleFragment : Fragment() {
     private lateinit var binding: FragmentScheduleBinding
-    private lateinit var schedule:TextView
+    private lateinit var schedule: TextView
     private lateinit var gameListAdapter: GameListAdapter
-    private var gameList=ArrayList<GameListData>()
+    private var gameList = ArrayList<GameListData>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,26 +38,43 @@ class ScheduleFragment : Fragment() {
 
         setupDate()
 
-        binding.calendar.setOnClickListener{
+        binding.calendar.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.frame, CalendarFragment())
                 .commitAllowingStateLoss()
         }
 
-        gameListAdapter=GameListAdapter(gameList)
-        binding.gamelist.adapter=gameListAdapter
+        gameListAdapter = GameListAdapter(gameList)
+        binding.gamelist.adapter = gameListAdapter
 
         gameListAdapter.notifyDataSetChanged()
+
+        binding.gamelist.setOnItemClickListener { parent, view, position, id ->
+            val game = gameList[position]
+            val roomId = game.roomId
+            val nickname = "sumin"
+
+            val fragment = ChatingFragment().apply {
+                arguments = Bundle().apply {
+                    putString("ROOM_ID", roomId)
+                    putString("NICKNAME", nickname)
+                }
+            }
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frame, fragment)
+                .commitAllowingStateLoss()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupDate() {
         schedule = binding.schedule
 
-        var currentDate=LocalDate.now()
+        var currentDate = LocalDate.now()
 
         fun updateDate(date: LocalDate) {
-            //오늘 날짜
+            // 오늘 날짜
             val dateFormat = DateTimeFormatter.ofPattern("MM.dd(E)", Locale.KOREAN)
             val formattedDate = date.format(dateFormat)
 
@@ -68,36 +85,35 @@ class ScheduleFragment : Fragment() {
 
         updateDate(currentDate)
 
-        binding.left.setOnClickListener{ //전날로 이동
-            currentDate=currentDate.minusDays(1)
+        binding.left.setOnClickListener { // 전날로 이동
+            currentDate = currentDate.minusDays(1)
             updateDate(currentDate)
         }
 
-        binding.right.setOnClickListener { //다음날로 이동
-            currentDate=currentDate.plusDays(1)
+        binding.right.setOnClickListener { // 다음날로 이동
+            currentDate = currentDate.plusDays(1)
             updateDate(currentDate)
         }
-
     }
 
-    private fun fetchSchedule(selectedDate:String){
-        val call= getRetrofitService.getAllSchedule()
-        call.enqueue(object :Callback<List<GameListData>>{
+    private fun fetchSchedule(selectedDate: String) {
+        val call = getRetrofitService.getAllSchedule()
+        call.enqueue(object : Callback<List<GameListData>> {
             override fun onResponse(
                 call: Call<List<GameListData>>,
                 response: Response<List<GameListData>>
             ) {
-                if(response.isSuccessful){
-                    response.body()?.let{
-                        val filterGame=it.filter { game ->game.date== selectedDate}
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        val filterGame = it.filter { game -> game.date == selectedDate }
                         gameList.clear()
                         gameList.addAll(filterGame)
                         if (selectedDate.endsWith("(월)") || filterGame.isEmpty()) {
-                            gameList.add(GameListData("", "", "", "", "", "", "오늘은 경기가 없습니다.", ""))
+                            gameList.add(GameListData("", "", "", "", "", "", "오늘은 경기가 없습니다.", "", ""))
                         }
                         gameListAdapter.notifyDataSetChanged()
                     }
-                }else {
+                } else {
                     Toast.makeText(requireContext(), "Failed to load data", Toast.LENGTH_SHORT).show()
                 }
             }
