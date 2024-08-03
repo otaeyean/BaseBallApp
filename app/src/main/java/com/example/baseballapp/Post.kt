@@ -1,4 +1,3 @@
-// post.kt
 package com.example.baseballapp
 
 import android.os.Parcelable
@@ -36,6 +35,7 @@ data class BoardPageResponse(
     val last: Boolean,
     val numberOfElements: Int
 )
+
 data class PagedBoardResponse(
     val totalPages: Int,
     val totalElements: Int,
