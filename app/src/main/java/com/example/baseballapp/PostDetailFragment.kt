@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.baseballapp.databinding.FragmentPostDetailBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class PostDetailFragment : Fragment() {
 
@@ -40,7 +43,7 @@ class PostDetailFragment : Fragment() {
         binding.tvDetailTitle.text = post.title
         binding.tvDetailContent.text = post.content
         binding.tvDetailAuthor.text = post.authorId
-        binding.tvDetailCreatedAt.text = post.createdAt
+        binding.tvDetailCreatedAt.text = post.createdAt.substring(0, 10)
 
         binding.btnDetailUpvote.setOnClickListener {
             // 추천 버튼 클릭 시 처리
@@ -57,6 +60,27 @@ class PostDetailFragment : Fragment() {
                 Toast.makeText(context, "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
+
+        binding.btnDetailDelete.setOnClickListener {
+            deletePost(post.id.toLong())
+        }
+    }
+
+    private fun deletePost(postId: Long) {
+        ApiObject.getRetrofitService.deletePost(postId).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(context, "게시글이 성공적으로 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    parentFragmentManager.popBackStack()
+                } else {
+                    Toast.makeText(context, "게시글 삭제에 실패했습니다. 오류 코드: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Toast.makeText(context, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     override fun onDestroyView() {

@@ -2,8 +2,10 @@ package com.example.baseballapp
 
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface UpbitAPI {
@@ -30,4 +32,11 @@ interface UpbitAPI {
 
     @GET("boards/getBoardsByPage")
     fun getBoardsByPage(@Query("type") type: String, @Query("page") page: Int, @Query("size") size: Int): Call<PagedBoardResponse>
+
+    @DELETE("boards/delete/{id}")
+    fun deletePost(@Path("id") id: Long): Call<Void>
+
+    @POST("boards/upvote/{id}")
+    fun upvotePost(@Path("id") id: Long): Call<Void>
 }
+
