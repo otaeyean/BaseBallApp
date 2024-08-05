@@ -49,16 +49,16 @@ class ChatingFragment : Fragment() {
         binding.buttonSend.setOnClickListener {
             val message = binding.editTextMessage.text.toString()
             if (message.isNotEmpty()) {
-                val formattedMessage = "$nickname\n$message"
-                webSocket.send(formattedMessage)
+                val chatMessage = ChatMessageData(R.drawable.lg_logo, nickname, message)
                 binding.editTextMessage.text.clear()
+                addMessage(chatMessage)
             }
         }
     }
 
     fun showMessage(message: String) {
         Log.d("ChatFragment", "Received message: $message")
-        val chatMessage = ChatMessageData(R.drawable.lg_logo, message)
+        val chatMessage = ChatMessageData(R.drawable.lg_logo, "Server", message)
         addMessage(chatMessage)
     }
 
