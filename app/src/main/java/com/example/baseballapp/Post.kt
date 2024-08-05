@@ -14,6 +14,15 @@ data class Post(
 ) : Parcelable
 
 @Parcelize
+data class CommentData(
+    val id: Int,
+    val content: String,
+    val authorId: String,
+    val createdAt: String,
+    val board: String
+) : Parcelable
+
+@Parcelize
 data class BoardData(
     val id: Int,
     val title: String,
@@ -22,7 +31,8 @@ data class BoardData(
     val createdAt: String,
     val updatedAt: String,
     val upVote: Int,
-    val type: String
+    val type: String,
+    var comments: List<CommentData> = emptyList() // 빈 리스트로 초기화
 ) : Parcelable
 
 data class BoardPageResponse(

@@ -38,5 +38,13 @@ interface UpbitAPI {
 
     @POST("boards/upvote/{id}")
     fun upvotePost(@Path("id") id: Long): Call<Void>
+
+    @POST("comments/create")
+        fun submitComment(@Query("boardId") boardId: Long, @Body comment: CommentData): Call<Void>
+
+    @GET("comments/board/{boardId}")
+        fun getComments(@Path("boardId") boardId: Long): Call<List<CommentData>>
+
+
 }
 
