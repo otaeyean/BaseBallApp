@@ -53,7 +53,7 @@ class ScheduleFragment : Fragment() {
         binding.gamelist.setOnItemClickListener { parent, view, position, id ->
             val game = gameList[position]
             val roomId = game.roomId
-            val nickname = "sumin"
+            val nickname = "soo_ob"
 
             val fragment = ChatingFragment().apply {
                 arguments = Bundle().apply {
