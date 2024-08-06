@@ -1,5 +1,6 @@
 package com.example.baseballapp
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -64,6 +65,13 @@ class ScheduleFragment : Fragment() {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.frame, fragment)
                 .commitAllowingStateLoss()
+        }
+
+        binding.switch1.setOnCheckedChangeListener{CompoundButton, onSwitch ->
+            if(onSwitch){
+                val intent=Intent(requireContext(), Metaverse1Activity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
