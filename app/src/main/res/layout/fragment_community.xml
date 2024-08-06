@@ -6,13 +6,6 @@
     android:orientation="vertical">
 
     <!-- 상단 배너 또는 이미지 -->
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/informationbar"
-        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,8 +21,7 @@
             android:textSize="18dp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:backgroundTint="@color/white"
-            />
+            android:backgroundTint="@color/white" />
 
         <Button
             android:id="@+id/questionBoardButton"
@@ -40,7 +32,7 @@
             android:text="질문"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:backgroundTint="@color/white"/>
+            android:backgroundTint="@color/white" />
 
         <Button
             android:id="@+id/tradeBoardButton"
@@ -51,8 +43,32 @@
             android:textSize="18dp"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:backgroundTint="@color/white"/>
+            android:backgroundTint="@color/white" />
+    </LinearLayout>
 
+    <!-- 검색창 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="검색어를 입력하세요"
+            android:padding="8dp"
+            android:background="@android:drawable/edit_text" />
+
+        <ImageButton
+            android:id="@+id/searchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="검색"
+            app:srcCompat="@drawable/ic_search" />
     </LinearLayout>
 
     <!-- 게시판 컨테이너 -->
@@ -60,15 +76,15 @@
         android:id="@+id/boardContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2" />
+        android:layout_weight="1" />
 
     <!-- 글쓰기 버튼 -->
     <ImageButton
         android:id="@+id/writePostButton"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="300dp"
-        android:layout_marginBottom="74dp"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="end|bottom"
         android:background="@drawable/round_button"
         android:contentDescription="@string/write_post"
         android:scaleType="centerInside"

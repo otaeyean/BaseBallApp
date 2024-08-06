@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -52,6 +53,15 @@ class CommunityFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+
+        binding.searchButton.setOnClickListener {
+            val query = binding.searchEditText.text.toString()
+            if (query.isNotEmpty()) {
+                performSearch(query)
+            } else {
+                Toast.makeText(context, "검색어를 입력하세요", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -72,6 +82,12 @@ class CommunityFragment : Fragment() {
                 button.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             }
         }
+    }
+
+    private fun performSearch(query: String) {
+        // TODO: Implement the search functionality
+        // You can replace the current fragment with a search result fragment or update the current fragment with search results
+        Toast.makeText(context, "검색 기능을 구현하세요. 검색어: $query", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {
