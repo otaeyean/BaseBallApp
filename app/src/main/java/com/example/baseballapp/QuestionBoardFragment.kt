@@ -13,7 +13,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class QuestionBoardFragment : Fragment() {
-
     private var _binding: FragmentQuestionBoardBinding? = null
     private val binding get() = _binding!!
     private lateinit var postAdapter: PostAdapter

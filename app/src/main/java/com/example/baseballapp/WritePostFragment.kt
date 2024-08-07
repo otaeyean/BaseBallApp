@@ -37,6 +37,7 @@ class WritePostFragment : Fragment() {
             val content = binding.postContent.text.toString()
             val createdAt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).format(Date())
             val updatedAt = createdAt
+
             val selectedBoardType = binding.boardSpinner.selectedItem.toString()
 
             if (author.isEmpty() || title.isEmpty() || content.isEmpty()) {

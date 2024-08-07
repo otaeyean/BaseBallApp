@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class PostAdapter(
+
     private var postList: List<BoardData>,
     private val onItemClick: (BoardData) -> Unit
 ) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {

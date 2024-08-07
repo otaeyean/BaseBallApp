@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class CommentAdapter(private var commentList: List<CommentData>) :
     RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
-
     inner class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val userImage: ImageView = itemView.findViewById(R.id.iv_user_image)
         val author: TextView = itemView.findViewById(R.id.tv_comment_author)

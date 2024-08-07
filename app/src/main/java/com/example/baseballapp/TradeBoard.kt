@@ -13,7 +13,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class TradeBoardFragment : Fragment() {
-
     private var _binding: FragmentTradeBoardBinding? = null
     private val binding get() = _binding!!
     private lateinit var postAdapter: PostAdapter

@@ -9,6 +9,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface UpbitAPI {
+
     @GET("player")
     fun getAllPlayers(): Call<List<PlayerData>>
 

@@ -72,7 +72,6 @@ class CommunityFragment : Fragment() {
                 Toast.makeText(context, "검색어를 입력하세요", Toast.LENGTH_SHORT).show()
             }
         }
-
         // RecyclerView 설정
         binding.searchRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.searchRecyclerView.adapter = postAdapter
@@ -128,7 +127,6 @@ class CommunityFragment : Fragment() {
             }
         })
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

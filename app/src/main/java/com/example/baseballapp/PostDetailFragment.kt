@@ -61,7 +61,6 @@ class PostDetailFragment : Fragment() {
                 Toast.makeText(context, "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
-
         binding.btnDetailDelete.setOnClickListener {
             deletePost(post.id.toLong())
         }
