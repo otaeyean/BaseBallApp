@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+
 class PostAdapter(
     private var postList: List<BoardData>,
     private val onItemClick: (BoardData) -> Unit
@@ -31,8 +32,8 @@ class PostAdapter(
         val post = postList[position]
         holder.author.text = post.authorId
         holder.title.text = post.title
-        holder.createdAt.text = post.createdAt.substring(0, 10) // "2024-08-02" 형식으로 변환
-        holder.comments.text = "3"
+        holder.createdAt.text = post.createdAt.substring(0, 10)
+        holder.comments.text = (post.comments?.size ?: 0).toString()  // 댓글 수를 표시, null인 경우 0으로 표시
         holder.upVote.text = post.upVote.toString()
     }
 

@@ -1,6 +1,7 @@
 package com.example.yourapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +10,18 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.example.baseballapp.FreeBoardFragment
-import com.example.baseballapp.QuestionBoardFragment
-import com.example.baseballapp.R
-import com.example.baseballapp.TradeBoardFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.baseballapp.*
 import com.example.baseballapp.databinding.FragmentCommunityBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CommunityFragment : Fragment() {
 
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
+    private lateinit var postAdapter: PostAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +33,13 @@ class CommunityFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        postAdapter = PostAdapter(emptyList()) { post ->
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.boardContainer, PostDetailFragment.newInstance(post))
+                .addToBackStack(null)
+                .commit()
+        }
 
         replaceFragment(FreeBoardFragment())
         updateButtonState(binding.freeBoardButton)
@@ -62,6 +72,10 @@ class CommunityFragment : Fragment() {
                 Toast.makeText(context, "검색어를 입력하세요", Toast.LENGTH_SHORT).show()
             }
         }
+
+        // RecyclerView 설정
+        binding.searchRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.searchRecyclerView.adapter = postAdapter
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -83,12 +97,38 @@ class CommunityFragment : Fragment() {
             }
         }
     }
-
     private fun performSearch(query: String) {
-        // TODO: Implement the search functionality
-        // You can replace the current fragment with a search result fragment or update the current fragment with search results
-        Toast.makeText(context, "검색 기능을 구현하세요. 검색어: $query", Toast.LENGTH_SHORT).show()
+        Log.d("CommunityFragment", "Performing search for: $query")
+        ApiObject.getRetrofitService.searchBoards(query, "자유게시판", 0).enqueue(object : Callback<PagedBoardResponse> {
+            override fun onResponse(call: Call<PagedBoardResponse>, response: Response<PagedBoardResponse>) {
+                Log.d("CommunityFragment", "Search response received")
+                if (response.isSuccessful) {
+                    response.body()?.let { pagedResponse ->
+                        Log.d("CommunityFragment", "Search results: ${pagedResponse.content}")
+                        if (pagedResponse.content.isNotEmpty()) {
+                            binding.searchRecyclerView.visibility = View.VISIBLE
+                            postAdapter.setPosts(pagedResponse.content)
+                        } else {
+                            binding.searchRecyclerView.visibility = View.GONE
+                            Toast.makeText(context, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show()
+                            postAdapter.setPosts(emptyList()) // 검색 결과가 없을 경우 빈 리스트 설정
+                        }
+                    }
+                } else {
+                    Log.e("CommunityFragment", "Search failed: ${response.errorBody()?.string()}")
+                    Toast.makeText(context, "검색 결과를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    postAdapter.setPosts(emptyList()) // 검색 실패 시 빈 리스트 설정
+                }
+            }
+
+            override fun onFailure(call: Call<PagedBoardResponse>, t: Throwable) {
+                Log.e("CommunityFragment", "Search network error: ${t.message}")
+                Toast.makeText(context, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                postAdapter.setPosts(emptyList()) // 네트워크 오류 시 빈 리스트 설정
+            }
+        })
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

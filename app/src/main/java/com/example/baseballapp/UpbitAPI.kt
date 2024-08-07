@@ -40,11 +40,16 @@ interface UpbitAPI {
     fun upvotePost(@Path("id") id: Long): Call<Void>
 
     @POST("comments/create")
-        fun submitComment(@Query("boardId") boardId: Long, @Body comment: CommentData): Call<Void>
+    fun submitComment(@Query("boardId") boardId: Long, @Body comment: CommentData): Call<Void>
 
     @GET("comments/board/{boardId}")
-        fun getComments(@Path("boardId") boardId: Long): Call<List<CommentData>>
+    fun getComments(@Path("boardId") boardId: Long): Call<List<CommentData>>
 
-
+    // 검색 API 엔드포인트 추가
+    @GET("api/boards/search")
+    fun searchBoards(
+        @Query("keyword") keyword: String,
+        @Query("type") type: String,
+        @Query("page") page: Int
+    ): Call<PagedBoardResponse>
 }
-

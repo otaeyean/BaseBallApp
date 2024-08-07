@@ -14,6 +14,12 @@
         android:entries="@array/board_array" />
 
     <EditText
+        android:id="@+id/authorId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="사용자이름" />
+
+    <EditText
         android:id="@+id/postTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,14 +32,6 @@
         android:hint="내용"
         android:inputType="textMultiLine"
         android:minLines="5" />
-
-    <Button
-        android:id="@+id/uploadImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:backgroundTint="@color/white"
-        android:text="사진 업로드" />
 
     <Button
         android:id="@+id/submitPostButton"

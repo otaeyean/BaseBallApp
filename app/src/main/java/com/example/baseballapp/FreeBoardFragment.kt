@@ -11,6 +11,7 @@ import com.example.baseballapp.databinding.FragmentFreeBoardBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 class FreeBoardFragment : Fragment() {
 
     private var _binding: FragmentFreeBoardBinding? = null
@@ -52,6 +53,24 @@ class FreeBoardFragment : Fragment() {
                     }
                 } else {
                     Toast.makeText(context, "게시글을 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<PagedBoardResponse>, t: Throwable) {
+                Toast.makeText(context, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    fun performSearch(query: String) {
+        ApiObject.getRetrofitService.searchBoards(query, "자유게시판", 0).enqueue(object : Callback<PagedBoardResponse> {
+            override fun onResponse(call: Call<PagedBoardResponse>, response: Response<PagedBoardResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { pagedResponse ->
+                        postAdapter.setPosts(pagedResponse.content)
+                    }
+                } else {
+                    Toast.makeText(context, "검색 결과를 불러오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 

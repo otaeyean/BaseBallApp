@@ -71,6 +71,14 @@
             app:srcCompat="@drawable/ic_search" />
     </LinearLayout>
 
+    <!-- 검색 결과 RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone"/>
+
     <!-- 게시판 컨테이너 -->
     <FrameLayout
         android:id="@+id/boardContainer"
