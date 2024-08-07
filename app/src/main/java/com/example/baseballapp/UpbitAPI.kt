@@ -2,8 +2,10 @@ package com.example.baseballapp
 
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface UpbitAPI {
@@ -11,7 +13,7 @@ interface UpbitAPI {
     fun getAllPlayers(): Call<List<PlayerData>>
 
     @GET("schedule")
-    fun getAllSchedule():Call<List<GameListData>>
+    fun getAllSchedule(): Call<List<GameListData>>
 
     @GET("team")
     fun getAllTeams(): Call<List<TeamRankData>>
@@ -30,4 +32,24 @@ interface UpbitAPI {
 
     @GET("boards/getBoardsByPage")
     fun getBoardsByPage(@Query("type") type: String, @Query("page") page: Int, @Query("size") size: Int): Call<PagedBoardResponse>
+
+    @DELETE("boards/delete/{id}")
+    fun deletePost(@Path("id") id: Long): Call<Void>
+
+    @POST("boards/upvote/{id}")
+    fun upvotePost(@Path("id") id: Long): Call<Void>
+
+    @POST("comments/create")
+    fun submitComment(@Query("boardId") boardId: Long, @Body comment: CommentData): Call<Void>
+
+    @GET("comments/board/{boardId}")
+    fun getComments(@Path("boardId") boardId: Long): Call<List<CommentData>>
+
+    // 검색 API 엔드포인트 추가
+    @GET("api/boards/search")
+    fun searchBoards(
+        @Query("keyword") keyword: String,
+        @Query("type") type: String,
+        @Query("page") page: Int
+    ): Call<PagedBoardResponse>
 }

@@ -12,10 +12,11 @@ class PostAdapter(
 ) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
     inner class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title: TextView = itemView.findViewById(R.id.tv_title)
-        val content: TextView = itemView.findViewById(R.id.tv_content)
         val author: TextView = itemView.findViewById(R.id.tv_author)
+        val title: TextView = itemView.findViewById(R.id.tv_title)
         val createdAt: TextView = itemView.findViewById(R.id.tv_created_at)
+        val comments: TextView = itemView.findViewById(R.id.tv_comments)
+        val upVote: TextView = itemView.findViewById(R.id.tv_upvote)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -29,10 +30,11 @@ class PostAdapter(
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val post = postList[position]
-        holder.title.text = post.title
-        holder.content.text = post.content
         holder.author.text = post.authorId
-        holder.createdAt.text = post.createdAt
+        holder.title.text = post.title
+        holder.createdAt.text = post.createdAt.substring(0, 10)
+        holder.comments.text = (post.comments?.size ?: 0).toString()  // 댓글 수를 표시, null인 경우 0으로 표시
+        holder.upVote.text = post.upVote.toString()
     }
 
     override fun getItemCount(): Int = postList.size

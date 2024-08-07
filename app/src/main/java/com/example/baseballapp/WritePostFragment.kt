@@ -32,16 +32,15 @@ class WritePostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.submitPostButton.setOnClickListener {
+            val author = binding.authorId.text.toString()
             val title = binding.postTitle.text.toString()
             val content = binding.postContent.text.toString()
-            val author = "작성자 이름"
             val createdAt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).format(Date())
             val updatedAt = createdAt
-
             val selectedBoardType = binding.boardSpinner.selectedItem.toString()
 
-            if (title.isEmpty() || content.isEmpty()) {
-                Toast.makeText(context, "제목과 내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            if (author.isEmpty() || title.isEmpty() || content.isEmpty()) {
+                Toast.makeText(context, "사용자 이름, 제목, 내용을 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
