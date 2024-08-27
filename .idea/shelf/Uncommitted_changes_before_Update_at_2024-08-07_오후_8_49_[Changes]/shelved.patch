@@ -1,0 +1,185 @@
+Index: app/src/main/java/com/example/baseballapp/Metaverse1Activity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.baseballapp\r\n\r\nimport android.content.Intent\r\nimport android.os.Bundle\r\nimport android.util.Log\r\nimport android.widget.Button\r\nimport android.widget.HorizontalScrollView\r\nimport android.widget.ImageView\r\nimport android.widget.ScrollView\r\nimport androidx.appcompat.app.AppCompatActivity\r\n\r\nclass Metaverse1Activity : AppCompatActivity() {\r\n\r\n    private lateinit var character: ImageView\r\n    private lateinit var horizontalScrollView: HorizontalScrollView\r\n    private lateinit var verticalScrollView: ScrollView\r\n    private lateinit var backgroundMap: ImageView\r\n\r\n    private val step = 30\r\n\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_metaverse_1)\r\n\r\n        character = findViewById(R.id.character)\r\n        horizontalScrollView = findViewById(R.id.horizontal_scroll_view)\r\n        verticalScrollView = findViewById(R.id.vertical_scroll_view)\r\n        backgroundMap = findViewById(R.id.background_map)\r\n\r\n        val buttonUp: Button = findViewById(R.id.button_up)\r\n        val buttonDown: Button = findViewById(R.id.button_down)\r\n        val buttonLeft: Button = findViewById(R.id.button_left)\r\n        val buttonRight: Button = findViewById(R.id.button_right)\r\n\r\n        buttonUp.setOnClickListener { moveCharacter(-step, -step) }\r\n        buttonDown.setOnClickListener { moveCharacter(step, step) }\r\n        buttonLeft.setOnClickListener { moveCharacter(-step, step) }\r\n        buttonRight.setOnClickListener { moveCharacter(step, -step) }\r\n    }\r\n\r\n    private fun moveCharacter(deltaX: Int, deltaY: Int) {\r\n        val frameWidth = horizontalScrollView.width\r\n        val frameHeight = verticalScrollView.height\r\n\r\n        val backgroundWidth = backgroundMap.width\r\n        val backgroundHeight = backgroundMap.height\r\n\r\n        // 스크롤 이동\r\n        val currentScrollX = horizontalScrollView.scrollX\r\n        val currentScrollY = verticalScrollView.scrollY\r\n\r\n        var newScrollX = currentScrollX + deltaX\r\n        var newScrollY = currentScrollY + deltaY\r\n\r\n        val maxScrollX = backgroundWidth - frameWidth\r\n        val maxScrollY = backgroundHeight - frameHeight\r\n\r\n        newScrollX = newScrollX.coerceIn(0, maxScrollX)\r\n        newScrollY = newScrollY.coerceIn(0, maxScrollY)\r\n\r\n        horizontalScrollView.scrollTo(newScrollX, newScrollY)\r\n        verticalScrollView.scrollTo(newScrollX, newScrollY)\r\n\r\n        val characterCurrentX = character.x\r\n        val characterCurrentY = character.y\r\n\r\n        val newCharacterX = characterCurrentX + deltaX\r\n        val newCharacterY = characterCurrentY + deltaY\r\n\r\n        val adjustedCharacterX = newCharacterX.coerceIn(0f, (backgroundWidth - character.width).toFloat())\r\n        val adjustedCharacterY = newCharacterY.coerceIn(0f, (backgroundHeight - character.height).toFloat())\r\n\r\n        character.x = adjustedCharacterX\r\n        character.y = adjustedCharacterY\r\n\r\n        if (adjustedCharacterX.toDouble() ==671.0 && adjustedCharacterY.toDouble() ==188.0\r\n            || adjustedCharacterX.toDouble() ==551.0 && adjustedCharacterY.toDouble() ==188.0 ) {\r\n            val intent = Intent(this, Metaverse2Activity::class.java)\r\n            startActivity(intent)\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/baseballapp/Metaverse1Activity.kt b/app/src/main/java/com/example/baseballapp/Metaverse1Activity.kt
+--- a/app/src/main/java/com/example/baseballapp/Metaverse1Activity.kt	
++++ b/app/src/main/java/com/example/baseballapp/Metaverse1Activity.kt	
+@@ -1,13 +1,15 @@
+ package com.example.baseballapp
+ 
++import com.example.baseballapp.Metaverse2Activity
++import com.example.baseballapp.R
+ import android.content.Intent
+ import android.os.Bundle
+-import android.util.Log
+ import android.widget.Button
+ import android.widget.HorizontalScrollView
+ import android.widget.ImageView
+ import android.widget.ScrollView
+ import androidx.appcompat.app.AppCompatActivity
++import com.bumptech.glide.Glide
+ 
+ class Metaverse1Activity : AppCompatActivity() {
+ 
+@@ -32,10 +34,23 @@
+         val buttonLeft: Button = findViewById(R.id.button_left)
+         val buttonRight: Button = findViewById(R.id.button_right)
+ 
+-        buttonUp.setOnClickListener { moveCharacter(-step, -step) }
+-        buttonDown.setOnClickListener { moveCharacter(step, step) }
+-        buttonLeft.setOnClickListener { moveCharacter(-step, step) }
+-        buttonRight.setOnClickListener { moveCharacter(step, -step) }
++        buttonUp.setOnClickListener {
++            moveCharacter(0, -step)
++            Glide.with(this).asGif().load(R.drawable.standing).into(character)
++        }
++        buttonDown.setOnClickListener {
++            moveCharacter(0, step)
++            Glide.with(this).asGif().load(R.drawable.standing).into(character)
++        }
++        buttonLeft.setOnClickListener {
++            moveCharacter(-step, 0)
++            Glide.with(this).asGif().load(R.drawable.left_running).into(character)
++        }
++        buttonRight.setOnClickListener {
++            moveCharacter(step, 0)
++            Glide.with(this).asGif().load(R.drawable.right_running).into(character)
++        }
++        Glide.with(this).asGif().load(R.drawable.standing).into(character)
+     }
+ 
+     private fun moveCharacter(deltaX: Int, deltaY: Int) {
+@@ -45,7 +60,6 @@
+         val backgroundWidth = backgroundMap.width
+         val backgroundHeight = backgroundMap.height
+ 
+-        // 스크롤 이동
+         val currentScrollX = horizontalScrollView.scrollX
+         val currentScrollY = verticalScrollView.scrollY
+ 
+@@ -59,7 +73,7 @@
+         newScrollY = newScrollY.coerceIn(0, maxScrollY)
+ 
+         horizontalScrollView.scrollTo(newScrollX, newScrollY)
+-        verticalScrollView.scrollTo(newScrollX, newScrollY)
++        verticalScrollView.scrollTo(newScrollY, newScrollY)
+ 
+         val characterCurrentX = character.x
+         val characterCurrentY = character.y
+@@ -73,8 +87,8 @@
+         character.x = adjustedCharacterX
+         character.y = adjustedCharacterY
+ 
+-        if (adjustedCharacterX.toDouble() ==671.0 && adjustedCharacterY.toDouble() ==188.0
+-            || adjustedCharacterX.toDouble() ==551.0 && adjustedCharacterY.toDouble() ==188.0 ) {
++        if (adjustedCharacterX.toDouble() == 671.0 && adjustedCharacterY.toDouble() == 188.0
++            || adjustedCharacterX.toDouble() == 551.0 && adjustedCharacterY.toDouble() == 188.0 ) {
+             val intent = Intent(this, Metaverse2Activity::class.java)
+             startActivity(intent)
+         }
+Index: app/src/main/res/layout/activity_metaverse2.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/main\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".Metaverse2Activity\">\r\n\r\n    <ImageView\r\n        android:id=\"@+id/imageView2\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.608\"\r\n        app:srcCompat=\"@drawable/background2\" />\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_metaverse2.xml b/app/src/main/res/layout/activity_metaverse2.xml
+--- a/app/src/main/res/layout/activity_metaverse2.xml	
++++ b/app/src/main/res/layout/activity_metaverse2.xml	
+@@ -9,13 +9,27 @@
+ 
+     <ImageView
+         android:id="@+id/imageView2"
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
++        android:layout_width="455dp"
++        android:layout_height="383dp"
++        android:scaleType="centerCrop"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintHorizontal_bias="0.0"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+-        app:layout_constraintVertical_bias="0.608"
++        app:layout_constraintVertical_bias="0.428"
+         app:srcCompat="@drawable/background2" />
++
++    <ImageView
++        android:id="@+id/character"
++        android:layout_width="150dp"
++        android:layout_height="153dp"
++        android:layout_marginStart="164dp"
++        android:layout_marginTop="300dp"
++        android:layout_marginBottom="32dp"
++        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toTopOf="@+id/imageView2"
++        app:layout_constraintVertical_bias="0.686"
++        tools:srcCompat="@drawable/standing" />
+ </androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/example/baseballapp/Metaverse2Activity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.baseballapp\r\n\r\nimport android.os.Bundle\r\nimport androidx.appcompat.app.AppCompatActivity\r\n\r\nclass Metaverse2Activity : AppCompatActivity() {\r\n    override fun onCreate(savedInstanceState: Bundle?) {\r\n        super.onCreate(savedInstanceState)\r\n        setContentView(R.layout.activity_metaverse2)\r\n        // Metaverse2Activity 관련 코드를 추가합니다.\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/baseballapp/Metaverse2Activity.kt b/app/src/main/java/com/example/baseballapp/Metaverse2Activity.kt
+--- a/app/src/main/java/com/example/baseballapp/Metaverse2Activity.kt	
++++ b/app/src/main/java/com/example/baseballapp/Metaverse2Activity.kt	
+@@ -1,12 +1,23 @@
+ package com.example.baseballapp
+ 
+ import android.os.Bundle
++import android.widget.ImageView
++import androidx.activity.enableEdgeToEdge
+ import androidx.appcompat.app.AppCompatActivity
++import androidx.core.view.ViewCompat
++import androidx.core.view.WindowInsetsCompat
++import com.bumptech.glide.Glide
+ 
+ class Metaverse2Activity : AppCompatActivity() {
++
++    private lateinit var character: ImageView
++
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+         setContentView(R.layout.activity_metaverse2)
+-        // Metaverse2Activity 관련 코드를 추가합니다.
++
++        character = findViewById(R.id.character)
++
++        Glide.with(this).asGif().load(R.drawable.standing).into(character)
+     }
+ }
+\ No newline at end of file
+Index: .idea/deviceManager.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/deviceManager.xml b/.idea/deviceManager.xml
+new file mode 100644
+--- /dev/null	
++++ b/.idea/deviceManager.xml	
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="DeviceTable">
++    <option name="columnSorters">
++      <list>
++        <ColumnSorterState>
++          <option name="column" value="Type" />
++          <option name="order" value="DESCENDING" />
++        </ColumnSorterState>
++      </list>
++    </option>
++  </component>
++</project>
+\ No newline at end of file

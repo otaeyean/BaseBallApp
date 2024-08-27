@@ -1,34 +1,129 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/metverse1"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <HorizontalScrollView
-        android:id="@+id/horizontal_scroll_view"
+    <ImageView
+        android:id="@+id/background_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:scaleType="centerCrop"
+        android:src="@drawable/background" />
 
-        <ScrollView
-            android:id="@+id/vertical_scroll_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="none">
-
-            <ImageView
-                android:id="@+id/background_map"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/background" />
-        </ScrollView>
-    </HorizontalScrollView>
+    <ImageView
+        android:id="@+id/metainfo"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="550dp"
+        android:layout_marginLeft="970dp"
+        android:src="@drawable/metaverse_info" />
 
     <ImageView
         android:id="@+id/character"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="570dp"
+        android:layout_marginLeft="1110dp"
+        android:src="@drawable/standing" />
+
+    <TextView
+        android:id="@+id/chat_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/chat_bubble_background"
+        android:padding="8dp"
+        android:textColor="@android:color/black"
+        android:visibility="gone"
+        android:layout_marginTop="16dp" />
+
+    <ImageView
+        android:id="@+id/npc1"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/standing"
-        android:layout_gravity="center" />
+        android:layout_marginStart="500dp"
+        android:layout_marginTop="300dp"
+        android:src="@drawable/npc1"
+        android:layout_gravity="start|top" />
+
+    <TextView
+        android:id="@+id/npc1text"
+        android:background="@drawable/balloon_background"
+        android:layout_marginLeft="440dp"
+        android:layout_marginTop="295dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:visibility="invisible"
+        android:text="TextView" />
+
+    <ImageView
+        android:id="@+id/npc2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="90dp"
+        android:src="@drawable/npc2" />
+
+    <TextView
+        android:id="@+id/npc2text"
+        android:background="@drawable/balloon_background"
+        android:layout_marginLeft="670dp"
+        android:layout_marginTop="400dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:visibility="invisible"
+        android:text="TextView" />
+
+    <ImageView
+        android:id="@+id/npc3"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="430dp"
+        android:layout_marginLeft="1000dp"
+        android:src="@drawable/npc3" />
+
+    <TextView
+        android:id="@+id/npc3text"
+        android:background="@drawable/balloon_background"
+        android:layout_marginLeft="960dp"
+        android:layout_marginTop="415dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:visibility="invisible"
+        android:text="TextView" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/editTextMessage"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_background"
+            android:hint="채팅을 통해 소통하세요!"
+            android:inputType="text"
+            android:padding="12dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/gray"
+            android:layout_marginEnd="8dp"
+            />
+
+        <Button
+            android:id="@+id/chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:text="전송"
+            />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/control_buttons"
@@ -74,4 +169,5 @@
                 android:text="우" />
         </LinearLayout>
     </LinearLayout>
+
 </FrameLayout>

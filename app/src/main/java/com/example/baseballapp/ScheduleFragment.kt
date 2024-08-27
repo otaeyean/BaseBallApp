@@ -52,8 +52,8 @@ class ScheduleFragment : Fragment() {
 
         binding.gamelist.setOnItemClickListener { parent, view, position, id ->
             val game = gameList[position]
-            val roomId = game.roomId
-            val nickname = "soo_ob"
+            val roomId = "${game.date}_${game.team1}"
+            val nickname = "sumin"
 
             val fragment = ChatingFragment().apply {
                 arguments = Bundle().apply {
@@ -73,6 +73,11 @@ class ScheduleFragment : Fragment() {
                 startActivity(intent)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.switch1.isChecked=false
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
