@@ -32,7 +32,8 @@ data class BoardData(
     val updatedAt: String,
     val upVote: Int,
     val type: String,
-    var comments: List<CommentData>? = emptyList()
+    val commentCount: Int,
+    var comments: List<CommentData>? = emptyList() // 빈 리스트로 초기화, nullable로 변경
 ) : Parcelable
 
 data class BoardPageResponse(
@@ -50,4 +51,14 @@ data class PagedBoardResponse(
     val totalPages: Int,
     val totalElements: Int,
     val content: List<BoardData>
+)
+data class MatchResponse(
+    val teamName: String,
+    val matchDate: String,
+    val innings: List<Inning>
+)
+
+data class Inning(
+    val inningNumber: Int,
+    val details: List<String>
 )

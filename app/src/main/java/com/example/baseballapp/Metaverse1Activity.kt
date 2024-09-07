@@ -1,14 +1,17 @@
 package com.example.baseballapp
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -27,13 +30,14 @@ import java.util.Locale
 import okhttp3.WebSocket
 import org.json.JSONArray
 
-class Metaverse1Activity : AppCompatActivity() {
+class Metaverse1Activity : AppCompatActivity(),MetaverseListener {
 
     private lateinit var character: ImageView
     private lateinit var chatMessage: TextView
     private lateinit var npc1Text: TextView
     private lateinit var npc2Text: TextView
     private lateinit var npc3Text: TextView
+    private val chatBubbles = mutableMapOf<String, TextView>()
 
     private val step = 30
     private val handler = Handler(Looper.getMainLooper())
@@ -42,7 +46,7 @@ class Metaverse1Activity : AppCompatActivity() {
     private val userPositions = mutableMapOf<String, Pair<Float, Float>>()
     private var nickname = "soo_.ob"
     private val userList= mutableListOf<String>()
-    private var hasJoined = false
+    private val userCharacters = mutableMapOf<String, ImageView>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,10 +71,22 @@ class Metaverse1Activity : AppCompatActivity() {
             showInfoDialog()
         }
 
-        buttonUp.setOnClickListener { moveCharacter(0, -step) }
-        buttonDown.setOnClickListener { moveCharacter(0, step) }
-        buttonLeft.setOnClickListener { moveCharacter(-step, 0) }
-        buttonRight.setOnClickListener { moveCharacter(step, 0) }
+        buttonUp.setOnClickListener {
+            moveCharacter(0, -step)
+            Glide.with(this).asGif().load(R.drawable.standing).into(character)
+        }
+        buttonDown.setOnClickListener {
+            moveCharacter(0, step)
+            Glide.with(this).asGif().load(R.drawable.standing).into(character)
+        }
+        buttonLeft.setOnClickListener {
+            moveCharacter(-step, 0)
+            Glide.with(this).asGif().load(R.drawable.left_running).into(character)
+        }
+        buttonRight.setOnClickListener {
+            moveCharacter(step, 0)
+            Glide.with(this).asGif().load(R.drawable.right_running).into(character)
+        }
 
         chatButton.setOnClickListener {
             val message = editTextMessage.text.toString()
@@ -85,19 +101,16 @@ class Metaverse1Activity : AppCompatActivity() {
         initializeWebSocket()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (hasJoined) {
-            notifyUserLeft()
-        }
-        webSocket.close(1000, "Activity destroyed")  // WebSocket 종료
-    }
     private fun initializeWebSocket() {
         val client = OkHttpClient()
         val request = Request.Builder().url("ws://35.216.0.159:8080/ws/map/1234").build()
         val listener = MetaverseWebSocketListener(this)
         webSocket = client.newWebSocket(request, listener)
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        webSocket.close(1000, "Activity destroyed")
     }
 
     private fun showNicknameDialog() {
@@ -118,13 +131,182 @@ class Metaverse1Activity : AppCompatActivity() {
             }
 
             Toast.makeText(this, "닉네임이 설정되었습니다: $nickname", Toast.LENGTH_SHORT).show()
+
+            sendNicknameData(nickname)
             showUserJoined(nickname)
-            notifyUserJoined()
-            hasJoined = true
             dialog.dismiss()
         }
+
         dialogBuilder.setCancelable(false)
         dialogBuilder.show()
+    }
+
+    private fun sendNicknameData(nickname: String) {
+        val NicknameData = """{
+            "type": "set-nickname",
+            "nickname": "$nickname"
+        }"""
+        webSocket.send(NicknameData)
+    }
+
+    fun sendMovementData(x: Float, y: Float) {
+        val movementData = """{
+        "type": "move",
+        "nickname": "$nickname",
+        "x": ${x.toInt()},
+        "y": ${y.toInt()}
+    }"""
+        webSocket.send(movementData)
+    }
+
+    private fun sendChatMessage(message: String) {
+        val chatData = """{
+        "type": "chat",
+        "nickname": "$nickname",
+        "message": "$message"
+    }"""
+        webSocket.send(chatData)
+
+        showChatMessage(nickname, message)
+    }
+
+    private fun updateChatMessagePosition() {
+        val characterLocation = IntArray(2)
+        character.getLocationOnScreen(characterLocation)
+
+        val characterX = characterLocation[0].toFloat()
+        val characterY = characterLocation[1].toFloat()
+
+        chatMessage.x = characterX + (character.width / 2) - (chatMessage.width / 2)
+        chatMessage.y = characterY - chatMessage.height
+    }
+
+    override fun showChatMessage(nickname: String, message: String) {
+        val chatBubble = chatBubbles[nickname] ?: createChatBubbleForUser(nickname)
+
+        chatBubble.text = "$nickname: $message"
+        chatBubble.visibility = TextView.VISIBLE
+
+        updateChatBubblePosition(nickname)
+
+        handler.postDelayed({
+            chatBubble.visibility = TextView.GONE
+        }, 3000)
+    }
+
+    private fun createChatBubbleForUser(nickname: String): TextView {
+        val chatBubble = TextView(this)
+        chatBubble.setBackgroundResource(R.drawable.chat_bubble_background)
+        chatBubble.setTextColor(Color.BLACK)
+        chatBubble.setPadding(8, 8, 8, 8)
+        chatBubble.layoutParams = FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        val rootLayout: ViewGroup = findViewById(R.id.metverse1)
+        rootLayout.addView(chatBubble)
+        chatBubbles[nickname] = chatBubble
+
+        return chatBubble
+    }
+
+    private fun updateChatBubblePosition(nickname: String) {
+        val chatBubble = chatBubbles[nickname] ?: return
+        val characterView = if (nickname == this.nickname) character else userCharacters[nickname] ?: return
+
+        val characterLocation = IntArray(2)
+        characterView.getLocationOnScreen(characterLocation)
+
+        val characterX = characterLocation[0].toFloat()
+        val characterY = characterLocation[1].toFloat()
+
+        chatBubble.x = characterX + (characterView.width / 2) - (chatBubble.width / 2)
+        chatBubble.y = characterY - chatBubble.height
+
+        val rootLayout = findViewById<ViewGroup>(R.id.metverse1)
+        chatBubble.x = chatBubble.x.coerceIn(0f, (rootLayout.width - chatBubble.width).toFloat())
+        chatBubble.y = chatBubble.y.coerceIn(0f, (rootLayout.height - chatBubble.height).toFloat())
+    }
+
+    override fun updateUserPosition(nickname: String, x: Float, y: Float) {
+        userPositions[nickname] = Pair(x, y)
+        runOnUiThread {
+            val characterView = if (nickname == this.nickname) character else userCharacters[nickname]
+
+            if (characterView == null) {
+                createCharacterForUser(nickname, x, y)
+            } else {
+                characterView.x = x
+                characterView.y = y
+            }
+
+            updateChatBubblePosition(nickname)
+        }
+    }
+
+    private fun createCharacterForUser(nickname: String, x: Float, y: Float) {
+        if (nickname == this.nickname || userCharacters.containsKey(nickname)) {
+            return
+        }
+
+        val newCharacter = ImageView(this)
+        newCharacter.setImageResource(R.drawable.standing)
+        newCharacter.layoutParams = ViewGroup.LayoutParams(70, 70)
+        newCharacter.x = x
+        newCharacter.y = y
+        val rootLayout: ViewGroup = findViewById(R.id.metverse1)
+        rootLayout.addView(newCharacter)
+        userCharacters[nickname] = newCharacter
+    }
+
+    override fun showUserJoined(nickname: String) {
+        userList.add(nickname)
+
+        runOnUiThread {
+            Toast.makeText(this, "$nickname 님이 입장했습니다.", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun updateUserList(userListJson: String) {
+        val jsonArray = JSONArray(userListJson)
+        userList.clear()
+        for (i in 0 until jsonArray.length()) {
+            userList.add(jsonArray.getString(i))
+        }
+        runOnUiThread {
+        }
+    }
+
+    override fun showUserLeft(nickname: String) {
+        sendNicknameData(nickname)
+        userPositions.remove(nickname)
+        userList.remove(nickname)
+
+        val characterView = userCharacters[nickname]
+        characterView?.let {
+            val rootLayout: ViewGroup = findViewById(R.id.metverse1)
+            rootLayout.removeView(it)
+            userCharacters.remove(nickname)
+        }
+
+        runOnUiThread {
+            Toast.makeText(this, "$nickname 님이 퇴장했습니다.", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun showError(errorMessage: String) {
+        runOnUiThread {
+            AlertDialog.Builder(this)
+                .setTitle("오류")
+                .setMessage(errorMessage)
+                .setPositiveButton("확인", null)
+                .show()
+        }
+    }
+
+    override fun getContext(): Context {
+        return this
     }
 
     private fun moveCharacter(deltaX: Int, deltaY: Int) {
@@ -147,23 +329,16 @@ class Metaverse1Activity : AppCompatActivity() {
         Log.d("Metaverse1Activity", "Character Position: x = $adjustedCharacterX, y = $adjustedCharacterY")
 
         sendMovementData(adjustedCharacterX, adjustedCharacterY)
-        moveBackground(adjustedCharacterX, adjustedCharacterY)
-    }
 
-    private fun sendMovementData(x: Float, y: Float) {
-        val movementData = """{
-            "type": "move",
-            "nickname": "$nickname",
-            "x": $x,
-            "y": $y
-        }"""
-        webSocket.send(movementData)
+        moveBackground(adjustedCharacterX, adjustedCharacterY)
     }
 
     private fun moveBackground(adjustedCharacterX: Float, adjustedCharacterY: Float) {
         if ((adjustedCharacterX == 420f && adjustedCharacterY == 210f)
-            || (adjustedCharacterX == 450f && adjustedCharacterY == 210f)) {
-            startActivity(Intent(this, Metaverse2Activity::class.java))
+            || (adjustedCharacterX == 420f && adjustedCharacterY == 180f)) {
+            val intent=Intent(this, Metaverse2Activity::class.java)
+            intent.putExtra("nickname", nickname)
+            startActivity(intent)
         }
 
         if (adjustedCharacterX == 510f && adjustedCharacterY == 300f) {
@@ -189,36 +364,7 @@ class Metaverse1Activity : AppCompatActivity() {
         }, 3000)
     }
 
-    private fun sendChatMessage(message: String) {
-        val chatData = """{
-        "type": "chat",
-        "nickname": "$nickname",
-        "message": "$message"
-    }"""
-        webSocket.send(chatData)
-        showChatMessage(nickname, message)
-    }
-
-    private fun updateChatMessagePosition() {
-        val characterLocation = IntArray(2)
-        character.getLocationOnScreen(characterLocation)
-
-        val characterX = characterLocation[0].toFloat()
-        val characterY = characterLocation[1].toFloat()
-
-        chatMessage.x = characterX + (character.width / 2) - (chatMessage.width / 2)
-        chatMessage.y = characterY - chatMessage.height
-    }
-
-    fun showChatMessage(nickname: String, message: String) {
-        chatMessage.text = "$nickname: $message"
-        chatMessage.visibility = TextView.VISIBLE
-        updateChatMessagePosition()
-
-        handler.postDelayed({
-            chatMessage.visibility = TextView.GONE
-        }, 3000)
-    }
+    // 다이얼로그
     private fun showInfoDialog() {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle("안녕하세요!\n야구친구 메타버스에 오신걸 환영합니다!\n")
@@ -231,8 +377,7 @@ class Metaverse1Activity : AppCompatActivity() {
                     "<이용 안내>\n" +
                     "화면 내 버튼으로 아바타를 이동할 수 있으며, 특정 위치에 도달하면 야구장이나 이벤트가 활성화됩니다.\n" +
                     "NPC 근처에서 대화를 나누거나 안내를 받을 수 있습니다.\n" +
-                    "메시지 입력 창을 통해 채팅을 입력하면, 3초간 대화풍선으로 표시됩니다.\n\n" +
-            "아래의 오늘의 경기 버튼을 눌러 오늘의 경기를 확인하고 가세요!"
+                    "메시지 입력 창을 통해 채팅을 입력하면, 3초간 대화풍선으로 표시됩니다."
         )
 
         dialogBuilder.setPositiveButton("확인") { dialog, _ -> dialog.dismiss() }
@@ -253,93 +398,8 @@ class Metaverse1Activity : AppCompatActivity() {
             it.setTextColor(ContextCompat.getColor(this, android.R.color.black))
             it.textSize = 15f
         }
-
     }
 
-    private fun drawUserAvatars() {
-        val userAvatarContainer: ViewGroup = findViewById(R.id.metverse1)
-        userAvatarContainer.removeAllViews()
-        userPositions.forEach { (nickname, position) ->
-            var (x, y) = position
-
-            val avatar = ImageView(this)
-            avatar.layoutParams = ViewGroup.LayoutParams(60, 60)
-            avatar.setImageResource(R.drawable.standing)
-            avatar.x = x
-            avatar.y = y
-
-            val nicknameTextView = TextView(this).apply {
-                text = nickname
-                setTextColor(Color.WHITE)
-                setBackgroundColor(Color.TRANSPARENT)
-                setPadding(5, 5, 5, 5)
-                layoutParams = ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                x = x
-                y = y - 20
-            }
-
-            userAvatarContainer.addView(avatar)
-            userAvatarContainer.addView(nicknameTextView)
-        }
-    }
-
-    fun updateUserPosition(nickname: String, x: Float, y: Float) {
-        userPositions[nickname] = Pair(x, y)
-        runOnUiThread {
-            drawUserAvatars()
-        }
-    }
-
-    fun showUserJoined(nickname: String) {
-        Toast.makeText(this, "$nickname 님이 입장하셨습니다!", Toast.LENGTH_SHORT).show()
-        userList.add(nickname)
-    }
-
-    private fun notifyUserJoined() {
-        val joinData = """{
-        "type": "join",
-        "nickname": "$nickname"
-    }"""
-        webSocket.send(joinData)
-        showUserJoined(nickname)
-    }
-
-    fun showUserLeft(nickname: String) {
-        Toast.makeText(this, "$nickname 님이 퇴장하셨습니다!", Toast.LENGTH_SHORT).show()
-        userList.remove(nickname)
-    }
-
-    private fun notifyUserLeft() {
-        val leftData = """{
-        "type": "leave",
-        "nickname": "$nickname"
-    }"""
-        webSocket.send(leftData)
-        showUserLeft(nickname)
-    }
-
-    fun updateUserList(userListJson: String) {
-        val jsonArray = JSONArray(userListJson)
-        userList.clear()
-        for (i in 0 until jsonArray.length()) {
-            userList.add(jsonArray.getString(i))
-        }
-        runOnUiThread {
-        }
-    }
-
-    fun showError(errorMessage: String) {
-        runOnUiThread {
-            AlertDialog.Builder(this)
-                .setTitle("오류")
-                .setMessage(errorMessage)
-                .setPositiveButton("확인", null)
-                .show()
-        }
-    }
     private fun showTodayScheduleDialog() {
         val scheduleDialogBuilder = AlertDialog.Builder(this)
         scheduleDialogBuilder.setTitle("오늘의 경기")

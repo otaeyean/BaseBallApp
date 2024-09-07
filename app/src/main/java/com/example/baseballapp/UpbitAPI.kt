@@ -16,6 +16,9 @@ interface UpbitAPI {
     @GET("schedule")
     fun getAllSchedule(): Call<List<GameListData>>
 
+    @GET("schedule")
+    fun getTeamSchedule(@Query("date") date: String): Call<List<MetaverseMatch>>
+
     @GET("team")
     fun getAllTeams(): Call<List<TeamRankData>>
 
@@ -53,4 +56,16 @@ interface UpbitAPI {
         @Query("type") type: String,
         @Query("page") page: Int
     ): Call<PagedBoardResponse>
+
+    // 특정 경기의 문자 중계 데이터 가져오기
+    @GET("live-stream/{teamName}/{matchDate}")
+    fun getLiveStream(
+        @Path("teamName") teamName: String,
+        @Path("matchDate") matchDate: String
+    ): Call<List<String>> // 여기서 반환값은 서버의 문자 중계 데이터 형식에 따라 조정
+    @GET("match/get")
+    fun getMatchDetails(
+        @Query("teamName") teamName: String,
+        @Query("matchDate") matchDate: String
+    ): Call<MatchResponse>
 }

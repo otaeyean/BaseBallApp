@@ -1,10 +1,12 @@
 package com.example.baseballapp
 
+import android.app.Activity
+import android.util.Log
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import org.json.JSONObject
 
-class MetaverseWebSocketListener(private val activity: Metaverse1Activity) : WebSocketListener() {
+class MetaverseWebSocketListener(private val metaverseListener: MetaverseListener) : WebSocketListener() {
 
     override fun onOpen(webSocket: WebSocket, response: okhttp3.Response) {
         println("WebSocket 연결됨")
@@ -12,50 +14,53 @@ class MetaverseWebSocketListener(private val activity: Metaverse1Activity) : Web
 
     override fun onMessage(webSocket: WebSocket, text: String) {
         val jsonObject = JSONObject(text)
+        Log.d("WebSocket", "Received message: $text")
+
         when (jsonObject.getString("type")) {
             "move" -> {
                 val nickname = jsonObject.getString("nickname")
                 val x = jsonObject.getDouble("x").toFloat()
                 val y = jsonObject.getDouble("y").toFloat()
 
-                activity.runOnUiThread {
-                    activity.updateUserPosition(nickname, x, y)
+                (metaverseListener.getContext()as Activity).runOnUiThread {
+                    metaverseListener.updateUserPosition(nickname, x, y)
                 }
             }
             "chat" -> {
                 val nickname = jsonObject.getString("nickname")
                 val message = jsonObject.getString("message")
 
-                activity.runOnUiThread {
-                    activity.showChatMessage(nickname, message)
+                (metaverseListener.getContext()as Activity).runOnUiThread {
+                    metaverseListener.showChatMessage(nickname, message)
                 }
             }
             "user-joined" -> {
                 val nickname = jsonObject.getString("nickname")
-                activity.runOnUiThread {
-                    activity.showUserJoined(nickname)
+                (metaverseListener.getContext()as Activity).runOnUiThread {
+                    metaverseListener.showUserJoined(nickname)
                 }
             }
-            "user-list"->{
-                val usersArray=jsonObject.getJSONArray("users")
-                val users= mutableListOf<String>()
-                for(i in 0 until usersArray.length()){
+            "user-list" -> {
+                val usersArray = jsonObject.getJSONArray("users")
+                val users = mutableListOf<String>()
+                for (i in 0 until usersArray.length()) {
                     users.add(usersArray.getString(i))
                 }
-                activity.runOnUiThread {
-                    activity.updateUserList(users.toString())
+                (metaverseListener.getContext()as Activity).runOnUiThread {
+                    metaverseListener.updateUserList(users.toString())
                 }
             }
+
             "user-left" -> {
                 val nickname = jsonObject.getString("nickname")
-                activity.runOnUiThread {
-                    activity.showUserLeft(nickname)
+                (metaverseListener.getContext()as Activity).runOnUiThread {
+                    metaverseListener.showUserLeft(nickname)
                 }
             }
             "error" -> {
                 val errorMessage = jsonObject.getString("message")
-                activity.runOnUiThread {
-                    activity.showError(errorMessage)
+                (metaverseListener.getContext()as Activity).runOnUiThread {
+                    metaverseListener.showError(errorMessage)
                 }
             }
         }
@@ -63,6 +68,5 @@ class MetaverseWebSocketListener(private val activity: Metaverse1Activity) : Web
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: okhttp3.Response?) {
         println("WebSocket 오류: ${t.message}")
-
     }
 }
