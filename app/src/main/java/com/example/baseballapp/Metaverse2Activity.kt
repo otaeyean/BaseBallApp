@@ -35,9 +35,6 @@ import okhttp3.WebSocket
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 class Metaverse2Activity : AppCompatActivity(){
 
@@ -50,13 +47,12 @@ class Metaverse2Activity : AppCompatActivity(){
     private lateinit var liveStreamTextView: TextView
     private lateinit var matchResponse: MatchResponse
     private lateinit var webSocket: WebSocket
+    private val charactersMap = mutableMapOf<String, ImageView>()
+    private val timersMap = mutableMapOf<String, Handler>()
     private var selectedTeam= "KIA"
     private var date="08.31(토)"
     private var nickname: String = ""
     private val userList= mutableListOf<String>()
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    val todayDate = LocalDate.now().format(DateTimeFormatter.ofPattern("MM.dd(E)", Locale.KOREAN))
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -258,6 +254,59 @@ class Metaverse2Activity : AppCompatActivity(){
         showChatMessage(nickname, message)
     }
 
+    fun onChatMessageReceived(nickname: String, message: String) {
+
+        val characterView = charactersMap[nickname] ?: run {
+
+            val newCharacterX = character.x - convertDpToPx(100)
+            val newCharacterY = character.y
+            createCharacterForUser(nickname, newCharacterX, newCharacterY)
+            charactersMap[nickname]
+        }
+        showChatMessageForUser(nickname, message)
+        resetUserTimer(nickname)
+    }
+
+    fun showChatMessageForUser(nickname: String, message: String) {
+        val characterView = charactersMap[nickname] ?: return
+
+        val textView = TextView(this).apply {
+            text = "$nickname: $message"
+            setBackgroundResource(R.drawable.chat_bubble_background)
+            setPadding(8, 8, 8, 8)
+            setTextColor(resources.getColor(android.R.color.black, null))
+            textSize = 16f
+            gravity = Gravity.CENTER
+            id = ViewCompat.generateViewId()
+        }
+
+        mainLayout.addView(textView)
+
+        textView.post {
+            textView.x = characterView.x + (characterView.width - textView.width) / 2 +30
+            textView.y = characterView.y - textView.height + 65
+        }
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            mainLayout.removeView(textView)
+        }, 3000)
+    }
+
+    fun createCharacterForUser(nickname: String, x: Float, y: Float) {
+        if (nickname == this.nickname || charactersMap.containsKey(nickname)) {
+            return
+        }
+
+        val newCharacter = ImageView(this).apply {
+            setImageResource(R.drawable.standing)
+            layoutParams = ViewGroup.LayoutParams(convertDpToPx(150), convertDpToPx(150))
+            this.x = x
+            this.y = y
+        }
+        mainLayout.addView(newCharacter)
+        charactersMap[nickname] = newCharacter
+    }
+
     fun showChatMessage(nickname: String, message: String) {
         val textView = TextView(this).apply {
             text = "$nickname: $message"
@@ -284,6 +333,51 @@ class Metaverse2Activity : AppCompatActivity(){
     fun updateUserList(users: String) {
         userList.clear()
         userList.addAll(users.split(","))
+    }
+
+    fun showUserJoined(nickname: String) {
+        val newCharacter = ImageView(this).apply {
+            setImageResource(R.drawable.standing)
+            contentDescription = nickname
+        }
+
+        val params = ConstraintLayout.LayoutParams(150, 150)
+        mainLayout.addView(newCharacter, params)
+
+        val characterX = character.x
+        val characterY = character.y
+        val newCharacterX = characterX - convertDpToPx(200)
+        val newCharacterY = characterY
+
+        newCharacter.x = newCharacterX
+        newCharacter.y = newCharacterY
+
+        charactersMap[nickname] = newCharacter
+    }
+
+    private fun resetUserTimer(nickname: String) {
+
+        timersMap[nickname]?.removeCallbacksAndMessages(null)
+
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+
+            showUserLeft(nickname)
+            timersMap.remove(nickname)
+        }, 20000)
+
+        timersMap[nickname] = handler
+    }
+    fun showUserLeft(nickname: String) {
+        charactersMap[nickname]?.let { characterView ->
+            mainLayout.removeView(characterView)
+            charactersMap.remove(nickname)
+            timersMap.remove(nickname)
+        }
+    }
+
+    private fun convertDpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
     }
 
     fun showError(errorMessage: String) {

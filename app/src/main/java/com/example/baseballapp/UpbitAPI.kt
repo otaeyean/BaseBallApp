@@ -62,7 +62,8 @@ interface UpbitAPI {
     fun getLiveStream(
         @Path("teamName") teamName: String,
         @Path("matchDate") matchDate: String
-    ): Call<List<String>> // 여기서 반환값은 서버의 문자 중계 데이터 형식에 따라 조정
+    ): Call<List<String>>
+
     @GET("match/get")
     fun getMatchDetails(
         @Query("teamName") teamName: String,

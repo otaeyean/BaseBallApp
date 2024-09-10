@@ -1,16 +1,15 @@
 package com.example.baseballapp
 
+import RankingFragment
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.baseballapp.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
-import RankingFragment
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import com.example.yourapp.CommunityFragment
 import androidx.appcompat.app.ActionBarDrawerToggle
+import android.widget.Button
+import com.example.yourapp.CommunityFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,34 +39,12 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.frame, ScheduleFragment())
             .commit()
 
-        binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            val fragment = when (item.itemId) {
-                R.id.ScheduleFragment -> ScheduleFragment()
-                R.id.RankingFragment -> RankingFragment()
-                R.id.InformationFragment -> InformationFragment()
-                R.id.CommunityFragment -> CommunityFragment()
-                R.id.ShopFragment -> ShopFragment()
-                else -> null
-            }
-            fragment?.let {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame, it)
-                    .commit()
-                true
-            } ?: false
-        }
-
         val headerView = navView.getHeaderView(0)
-        val profileImage: ImageView = headerView.findViewById(R.id.profile_image)
-        val userName: TextView = headerView.findViewById(R.id.user_name)
-        val userEmail: TextView = headerView.findViewById(R.id.user_email)
-        val logoutButton: Button = headerView.findViewById(R.id.logout_button)
+        val loginButton: Button = headerView.findViewById(R.id.login_button)
 
-        userName.text = "Yoonsojoung"
-        userEmail.text = "Yoonsojoung@naver.com"
-
-        logoutButton.setOnClickListener {
-            handleLogout()
+        loginButton.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
         }
 
         navView.setNavigationItemSelectedListener { menuItem ->
@@ -87,9 +64,6 @@ class MainActivity : AppCompatActivity() {
                 true
             } ?: false
         }
-    }
-
-    private fun handleLogout() {
     }
 
     override fun onBackPressed() {

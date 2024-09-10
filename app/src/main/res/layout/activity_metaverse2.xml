@@ -8,7 +8,7 @@
 
     <ImageView
         android:id="@+id/background"
-        android:layout_width="850dp"
+        android:layout_width="790dp"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -133,17 +133,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/background"
         app:layout_constraintStart_toStartOf="parent"
         tools:srcCompat="@drawable/standing" />
-
-    <TextView
-        android:id="@+id/chat_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/chat_bubble_background"
-        android:padding="8dp"
-        android:textColor="@android:color/black"
-        android:visibility="gone"
-        android:layout_marginTop="16dp"
-        />
 
     <EditText
         android:id="@+id/editTextMessage"

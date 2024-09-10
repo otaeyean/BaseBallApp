@@ -1,11 +1,12 @@
 package com.example.baseballapp
 
+import android.app.Activity
 import android.util.Log
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import org.json.JSONObject
 
-class MetaverseWebSocketListener(private val activity: Metaverse1Activity) : WebSocketListener() {
+class MetaverseWebSocketListener2(private val activity: Metaverse2Activity) : WebSocketListener() {
 
     override fun onOpen(webSocket: WebSocket, response: okhttp3.Response) {
         println("WebSocket 연결됨")
@@ -16,29 +17,16 @@ class MetaverseWebSocketListener(private val activity: Metaverse1Activity) : Web
         Log.d("WebSocket", "Received message: $text")
 
         when (jsonObject.getString("type")) {
-            "move" -> {
-                val nickname = jsonObject.getString("nickname")
-                val x = jsonObject.getDouble("x").toFloat()
-                val y = jsonObject.getDouble("y").toFloat()
-
-                activity.runOnUiThread {
-                    activity.updateUserPosition(nickname, x, y)
-                }
-            }
             "chat" -> {
                 val nickname = jsonObject.getString("nickname")
                 val message = jsonObject.getString("message")
 
                 activity.runOnUiThread {
-                    activity.showChatMessage(nickname, message)
+                    activity.onChatMessageReceived(nickname, message)  // 수정된 부분
+                    Log.d("Metaverse2Activity", "Chat message: $nickname: $message")
                 }
             }
-            "user-joined" -> {
-                val nickname = jsonObject.getString("nickname")
-                activity.runOnUiThread {
-                    activity.showUserJoined(nickname)
-                }
-            }
+
             "user-list" -> {
                 val usersArray = jsonObject.getJSONArray("users")
                 val users = mutableListOf<String>()
@@ -49,10 +37,15 @@ class MetaverseWebSocketListener(private val activity: Metaverse1Activity) : Web
                     activity.updateUserList(users.toString())
                 }
             }
-
+            "user-joined" -> {
+                val nickname = jsonObject.getString("nickname")
+                (activity as Activity).runOnUiThread {
+                    activity.showUserJoined(nickname)
+                }
+            }
             "user-left" -> {
                 val nickname = jsonObject.getString("nickname")
-                activity.runOnUiThread {
+                (activity as Activity).runOnUiThread {
                     activity.showUserLeft(nickname)
                 }
             }

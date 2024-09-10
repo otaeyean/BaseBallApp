@@ -1,13 +1,11 @@
 package com.example.baseballapp
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
@@ -30,7 +28,7 @@ import java.util.Locale
 import okhttp3.WebSocket
 import org.json.JSONArray
 
-class Metaverse1Activity : AppCompatActivity(),MetaverseListener {
+class Metaverse1Activity : AppCompatActivity() {
 
     private lateinit var character: ImageView
     private lateinit var chatMessage: TextView
@@ -44,7 +42,7 @@ class Metaverse1Activity : AppCompatActivity(),MetaverseListener {
     private lateinit var webSocket: WebSocket
 
     private val userPositions = mutableMapOf<String, Pair<Float, Float>>()
-    private var nickname = "soo_.ob"
+    private var nickname = "sumin"
     private val userList= mutableListOf<String>()
     private val userCharacters = mutableMapOf<String, ImageView>()
 
@@ -181,7 +179,7 @@ class Metaverse1Activity : AppCompatActivity(),MetaverseListener {
         chatMessage.y = characterY - chatMessage.height
     }
 
-    override fun showChatMessage(nickname: String, message: String) {
+    fun showChatMessage(nickname: String, message: String) {
         val chatBubble = chatBubbles[nickname] ?: createChatBubbleForUser(nickname)
 
         chatBubble.text = "$nickname: $message"
@@ -229,7 +227,7 @@ class Metaverse1Activity : AppCompatActivity(),MetaverseListener {
         chatBubble.y = chatBubble.y.coerceIn(0f, (rootLayout.height - chatBubble.height).toFloat())
     }
 
-    override fun updateUserPosition(nickname: String, x: Float, y: Float) {
+    fun updateUserPosition(nickname: String, x: Float, y: Float) {
         userPositions[nickname] = Pair(x, y)
         runOnUiThread {
             val characterView = if (nickname == this.nickname) character else userCharacters[nickname]
@@ -260,7 +258,7 @@ class Metaverse1Activity : AppCompatActivity(),MetaverseListener {
         userCharacters[nickname] = newCharacter
     }
 
-    override fun showUserJoined(nickname: String) {
+    fun showUserJoined(nickname: String) {
         userList.add(nickname)
 
         runOnUiThread {
@@ -268,7 +266,7 @@ class Metaverse1Activity : AppCompatActivity(),MetaverseListener {
         }
     }
 
-    override fun updateUserList(userListJson: String) {
+    fun updateUserList(userListJson: String) {
         val jsonArray = JSONArray(userListJson)
         userList.clear()
         for (i in 0 until jsonArray.length()) {
@@ -278,7 +276,7 @@ class Metaverse1Activity : AppCompatActivity(),MetaverseListener {
         }
     }
 
-    override fun showUserLeft(nickname: String) {
+    fun showUserLeft(nickname: String) {
         sendNicknameData(nickname)
         userPositions.remove(nickname)
         userList.remove(nickname)
@@ -295,7 +293,7 @@ class Metaverse1Activity : AppCompatActivity(),MetaverseListener {
         }
     }
 
-    override fun showError(errorMessage: String) {
+    fun showError(errorMessage: String) {
         runOnUiThread {
             AlertDialog.Builder(this)
                 .setTitle("오류")
@@ -304,11 +302,6 @@ class Metaverse1Activity : AppCompatActivity(),MetaverseListener {
                 .show()
         }
     }
-
-    override fun getContext(): Context {
-        return this
-    }
-
     private fun moveCharacter(deltaX: Int, deltaY: Int) {
         val backgroundMap: ImageView = findViewById(R.id.background_map)
 
@@ -334,23 +327,26 @@ class Metaverse1Activity : AppCompatActivity(),MetaverseListener {
     }
 
     private fun moveBackground(adjustedCharacterX: Float, adjustedCharacterY: Float) {
-        if ((adjustedCharacterX == 420f && adjustedCharacterY == 210f)
-            || (adjustedCharacterX == 420f && adjustedCharacterY == 180f)) {
-            val intent=Intent(this, Metaverse2Activity::class.java)
-            intent.putExtra("nickname", nickname)
+        if ((adjustedCharacterX == 585f && adjustedCharacterY == 285f)
+            || (adjustedCharacterX == 615f && adjustedCharacterY == 285f)) {
+            val intent = Intent(this, Metaverse2Activity::class.java).apply {
+                putExtra("nickname", nickname)
+                putExtra("characterX", character.x)
+                putExtra("characterY", character.y)
+            }
             startActivity(intent)
         }
 
-        if (adjustedCharacterX == 510f && adjustedCharacterY == 300f) {
+        if (adjustedCharacterX == 765f && adjustedCharacterY == 435f) {
             showNpcMessage(npc1Text, "야구장에 오신걸 환영해요")
         }
 
-        if (adjustedCharacterX == 750f && adjustedCharacterY == 420f) {
+        if ((adjustedCharacterX == 1095f && adjustedCharacterY == 615f)
+            ||(adjustedCharacterX==1065f && adjustedCharacterY==615f)){
             showNpcMessage(npc2Text, "오늘은 좋은 경기가 펼쳐질 거예요")
         }
 
-        if ((adjustedCharacterX == 1020f && adjustedCharacterY == 420f)
-            || (adjustedCharacterX == 990f && adjustedCharacterY == 420f)) {
+        if ((adjustedCharacterX == 1515f && adjustedCharacterY == 615f)) {
             showNpcMessage(npc3Text, "재밌는 시간 보내세요!")
         }
     }

@@ -11,6 +11,13 @@
         android:scaleType="centerCrop"
         android:src="@drawable/background" />
 
+    <TextView
+        android:id="@+id/chat_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="10dp" />
+
     <ImageView
         android:id="@+id/metainfo"
         android:layout_width="wrap_content"
@@ -21,21 +28,10 @@
 
     <ImageView
         android:id="@+id/character"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginTop="570dp"
-        android:layout_marginLeft="1110dp"
-        android:src="@drawable/standing" />
-
-    <TextView
-        android:id="@+id/chat_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/chat_bubble_background"
-        android:padding="8dp"
-        android:textColor="@android:color/black"
-        android:visibility="gone"
-        android:layout_marginTop="16dp" />
+        android:layout_marginLeft="1110dp" />
 
     <ImageView
         android:id="@+id/npc1"
@@ -50,10 +46,10 @@
         android:id="@+id/npc1text"
         android:background="@drawable/balloon_background"
         android:layout_marginLeft="440dp"
-        android:layout_marginTop="295dp"
+        android:layout_marginTop="285dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="4dp"
+        android:padding="8dp"
         android:visibility="invisible"
         android:text="TextView" />
 
@@ -70,10 +66,10 @@
         android:id="@+id/npc2text"
         android:background="@drawable/balloon_background"
         android:layout_marginLeft="670dp"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="390dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="4dp"
+        android:padding="8dp"
         android:visibility="invisible"
         android:text="TextView" />
 
@@ -89,10 +85,10 @@
         android:id="@+id/npc3text"
         android:background="@drawable/balloon_background"
         android:layout_marginLeft="960dp"
-        android:layout_marginTop="415dp"
+        android:layout_marginTop="405dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="4dp"
+        android:padding="8dp"
         android:visibility="invisible"
         android:text="TextView" />
 
