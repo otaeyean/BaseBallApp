@@ -1,5 +1,7 @@
 package com.example.baseballapp
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -16,12 +18,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.baseballapp.ApiObject
-import com.example.baseballapp.ChatAdapter
-import com.example.baseballapp.ChatMessageData
-import com.example.baseballapp.ChatWebSocketListener
-import com.example.baseballapp.MatchResponse
-import com.example.baseballapp.R
 import com.example.baseballapp.databinding.FragmentChatingBinding
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -41,6 +37,7 @@ class ChatingFragment : Fragment() {
     private val messageList = ArrayList<ChatMessageData>()
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var matchResponse: MatchResponse
+    private val loginService by lazy { LoginService(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,22 +51,35 @@ class ChatingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val roomId = arguments?.getString("ROOM_ID") ?: "default"
-        nickname = arguments?.getString("NICKNAME") ?: "sumin"
+        nickname = loginService.getUsername().toString()
+
+        loadMessages(roomId)
 
         // 웹소켓 설정 및 연결
         setupWebSocket(roomId)
 
-        chatAdapter = ChatAdapter(messageList)
+        chatAdapter = ChatAdapter(messageList,nickname)
         binding.recyclerViewMessages.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewMessages.adapter = chatAdapter
 
         binding.buttonSend.setOnClickListener {
-            val message = binding.editTextMessage.text.toString()
-            if (message.isNotEmpty()) {
-                val time = getCurrentTimeInKorea()
-                val formattedMessage = "$nickname  $time\n$message"
-                webSocket.send(formattedMessage)
-                binding.editTextMessage.text.clear()
+
+            loginService.checkToken { isValid ->
+                if (isValid) {
+                    val message = binding.editTextMessage.text.toString()
+                    if (message.isNotEmpty()) {
+                        val time = getCurrentTimeInKorea()
+                        val formattedMessage = "$nickname $time ] $message"
+
+                        webSocket.send(formattedMessage)
+                        saveMessage(roomId, formattedMessage)
+                        binding.editTextMessage.text.clear()
+                    }
+                } else {
+                    val intent = Intent(activity, LoginActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
             }
         }
 
@@ -247,5 +257,25 @@ class ChatingFragment : Fragment() {
         messageList.add(chatMessage)
         chatAdapter.notifyDataSetChanged()
         binding.recyclerViewMessages.scrollToPosition(messageList.size - 1)
+    }
+
+    private fun saveMessage(roomId: String, message: String) {
+        val sharedPreferences = requireActivity().getSharedPreferences("ChatPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val currentMessages = sharedPreferences.getString(roomId, "") ?: ""
+        editor.putString(roomId, currentMessages + message + "\n")
+        editor.apply()
+    }
+
+    private fun loadMessages(roomId: String) {
+        val sharedPreferences = requireActivity().getSharedPreferences("ChatPrefs", Context.MODE_PRIVATE)
+        val savedMessages = sharedPreferences.getString(roomId, "") ?: ""
+
+        savedMessages.split("\n").forEach { msg ->
+            if (msg.isNotEmpty()) {
+                val chatMessage = ChatMessageData(R.drawable.baseball, msg)
+                messageList.add(chatMessage)
+            }
+        }
     }
 }

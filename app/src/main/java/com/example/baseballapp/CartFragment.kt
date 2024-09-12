@@ -1,6 +1,7 @@
 package com.example.baseballapp
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ class CartFragment : Fragment() {
 
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding!!
+    private val loginService by lazy { LoginService(requireContext()) }
 
     private lateinit var cartAdapter: CartAdapter
 
@@ -28,9 +30,16 @@ class CartFragment : Fragment() {
         binding.lvCartItems.adapter = cartAdapter
 
         binding.btnCheckout.setOnClickListener {
-            // 결제 로직 처리
+            loginService.checkToken { isValid ->
+                if (isValid) {
+                    // 여기에 결제 로직 추가
+                } else {
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+            }
         }
-
         return view
     }
 

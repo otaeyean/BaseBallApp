@@ -24,6 +24,7 @@ class ScheduleFragment : Fragment() {
     private lateinit var schedule: TextView
     private lateinit var gameListAdapter: GameListAdapter
     private var gameList = ArrayList<GameListData>()
+    private val loginService by lazy { LoginService(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,13 +51,11 @@ class ScheduleFragment : Fragment() {
 
         gameListAdapter.notifyDataSetChanged()
 
-        // 경기 선택 시 처리
         binding.gamelist.setOnItemClickListener { parent, view, position, id ->
             val game = gameList[position]
             val roomId = "${game.date}_${game.team1}"
-            val nickname = "soo_ob"
+            val nickname = "sumin"
 
-            // 선택한 경기의 팀 이름과 날짜를 가져와 ChatingFragment에 전달
             val teamName = game.team1  // team1을 기준으로 합니다.
             val matchDate = game.date
 
@@ -78,12 +77,21 @@ class ScheduleFragment : Fragment() {
                 .commitAllowingStateLoss()
         }
 
-        binding.switch1.setOnCheckedChangeListener { CompoundButton, onSwitch ->
-            if (onSwitch) {
-                val intent = Intent(requireContext(), Metaverse1Activity::class.java)
-                startActivity(intent)
+        binding.switch1.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                loginService.checkToken { isValid ->
+                    if (isValid) {
+                        val intent = Intent(requireContext(), Metaverse1Activity::class.java)
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(requireContext(), LoginActivity::class.java)
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                }
             }
         }
+
     }
 
     override fun onResume() {

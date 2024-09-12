@@ -43,7 +43,7 @@ class InformationFragment : Fragment() {
         binding.spinner.adapter = adapter
 
         playerAdapter = PlayerAdapter()
-        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
+        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerView.adapter = playerAdapter
 
         fetchPlayers() //모든 선수 데이터 가져오기

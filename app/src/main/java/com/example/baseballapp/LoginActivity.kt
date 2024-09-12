@@ -1,5 +1,6 @@
 package com.example.baseballapp
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,8 +8,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.login.LoginService
-import com.example.login.saveToken
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -27,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginService: LoginService
     private lateinit var buttonSignUp: Button
 
-    private val TAG = "Login"
+    private val TAG = "LoginActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,8 +57,7 @@ class LoginActivity : AppCompatActivity() {
             put("username", username)
             put("password", password)
         }
-        val requestBody =
-            json.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+        val requestBody = json.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 
         val request = Request.Builder()
             .url("http://35.216.0.159:8080/auth/login")
@@ -85,27 +83,21 @@ class LoginActivity : AppCompatActivity() {
 
                     // JWT 토큰을 SharedPreferences에 저장하는 코드
                     saveToken(this@LoginActivity, token)
+                    saveUsername(this@LoginActivity, username)
 
                     runOnUiThread {
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "$username 로그인 성공하셨습니다.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@LoginActivity, "Login successful", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     }
                 } else {
                     runOnUiThread {
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Invalid username or password",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@LoginActivity, "Invalid username or password", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         })
     }
 }
+

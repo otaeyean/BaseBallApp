@@ -1,12 +1,19 @@
-package com.example.login
+package com.example.baseballapp
 
 import android.content.Context
-import android.content.SharedPreferences
 
 fun saveToken(context: Context, token: String) {
     val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
     with(sharedPreferences.edit()) {
         putString("auth_token", token)
+        apply()
+    }
+}
+
+fun saveUsername(context: Context, username: String) {
+    val sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE)
+    with(sharedPreferences.edit()) {
+        putString("username", username)
         apply()
     }
 }

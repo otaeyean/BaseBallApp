@@ -3,12 +3,15 @@ package com.example.baseballapp
 import RankingFragment
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.baseballapp.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.widget.Button
+import android.widget.TextView
+import com.example.login.TokenManager
 import com.example.yourapp.CommunityFragment
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
     private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var loginService: LoginService
+    private lateinit var tokenManager: TokenManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,17 +40,15 @@ class MainActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+        tokenManager = TokenManager(this)
+
         supportFragmentManager.beginTransaction()
             .replace(R.id.frame, ScheduleFragment())
             .commit()
 
-        val headerView = navView.getHeaderView(0)
-        val loginButton: Button = headerView.findViewById(R.id.login_button)
+        loginService = LoginService(this)
 
-        loginButton.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-        }
+        updateDrawerUI()
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             val fragment = when (item.itemId) {
@@ -83,6 +86,40 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun updateDrawerUI() {
+        val headerView = navView.getHeaderView(0)
+        val loginButton: Button = headerView.findViewById(R.id.login_button)
+        val userNameTextView: TextView = headerView.findViewById(R.id.user_name)
+
+        loginService.checkToken { isLoggedIn ->
+            runOnUiThread {
+                if (isLoggedIn) {
+                    val token = tokenManager.getToken()
+                    if (token != null) {
+                        // 로그인 상태
+                        val username = loginService.getUsername()
+                        userNameTextView.text = username  // 사용자 이름을 설정
+                        loginButton.text = "Logout"
+                        loginButton.setOnClickListener {
+                            // 로그아웃 처리
+                            tokenManager.clearToken()
+                            Log.d("MainActivity", "Token cleared: ${tokenManager.getToken() == null}")
+                            updateDrawerUI() // 로그아웃 후 UI 업데이트
+                        }
+                    }
+                } else {
+                    // 로그아웃 상태
+                    userNameTextView.text = "User Name"
+                    loginButton.text = "Login"
+                    loginButton.setOnClickListener {
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(navView)) {
             drawerLayout.closeDrawer(navView)
@@ -90,5 +127,4 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
-
 }
