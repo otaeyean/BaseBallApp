@@ -47,6 +47,23 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            val fragment = when (item.itemId) {
+                R.id.ScheduleFragment -> ScheduleFragment()
+                R.id.RankingFragment -> RankingFragment()
+                R.id.InformationFragment -> InformationFragment()
+                R.id.CommunityFragment -> CommunityFragment()
+                R.id.ShopFragment -> ShopFragment()
+                else -> null
+            }
+            fragment?.let {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.frame, it)
+                    .commit()
+                true
+            } ?: false
+        }
+
         navView.setNavigationItemSelectedListener { menuItem ->
             val fragment = when (menuItem.itemId) {
                 R.id.ScheduleFragment -> ScheduleFragment()
@@ -73,4 +90,5 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+
 }
