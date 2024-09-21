@@ -90,31 +90,50 @@ class MainActivity : AppCompatActivity() {
         val headerView = navView.getHeaderView(0)
         val loginButton: Button = headerView.findViewById(R.id.login_button)
         val userNameTextView: TextView = headerView.findViewById(R.id.user_name)
+        val signUpTextView: TextView = headerView.findViewById(R.id.sign_up)
+        val teamSelectionTextView: TextView = headerView.findViewById(R.id.team_selection)
 
         loginService.checkToken { isLoggedIn ->
             runOnUiThread {
                 if (isLoggedIn) {
                     val token = tokenManager.getToken()
                     if (token != null) {
-                        // 로그인 상태
                         val username = loginService.getUsername()
-                        userNameTextView.text = username  // 사용자 이름을 설정
+                        userNameTextView.text = username
                         loginButton.text = "Logout"
                         loginButton.setOnClickListener {
-                            // 로그아웃 처리
                             tokenManager.clearToken()
                             Log.d("MainActivity", "Token cleared: ${tokenManager.getToken() == null}")
-                            updateDrawerUI() // 로그아웃 후 UI 업데이트
+                            updateDrawerUI()
                         }
                     }
                 } else {
-                    // 로그아웃 상태
                     userNameTextView.text = "User Name"
                     loginButton.text = "Login"
                     loginButton.setOnClickListener {
                         val intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     }
+                    signUpTextView.setOnClickListener {
+                        val intent = Intent(this, SignupActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+
+        teamSelectionTextView.setOnClickListener {
+
+            loginService.checkToken { isValid ->
+                if (isValid) {
+                    teamSelectionTextView.setOnClickListener {
+                        val intent = Intent(this, TeamSelectActivity::class.java)
+                        startActivity(intent)
+                    }
+
+                } else {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }

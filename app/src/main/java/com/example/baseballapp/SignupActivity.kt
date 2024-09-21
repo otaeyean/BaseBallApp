@@ -1,9 +1,11 @@
 package com.example.baseballapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.baseballapp.R
@@ -20,6 +22,7 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var nameEditText: EditText
     private lateinit var phoneNumberEditText: EditText
     private lateinit var signupButton: Button
+    private lateinit var backTextView: TextView
 
     private val retrofit = Retrofit.Builder()
         .baseUrl("http://35.216.0.159:8080/auth/")
@@ -37,9 +40,15 @@ class SignupActivity : AppCompatActivity() {
         nameEditText = findViewById(R.id.nameEditText)
         phoneNumberEditText = findViewById(R.id.phoneNumberEditText)
         signupButton = findViewById(R.id.signupButton)
+        backTextView = findViewById(R.id.back)
 
         signupButton.setOnClickListener {
             performSignup()
+        }
+
+        backTextView.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -74,6 +83,5 @@ class SignupActivity : AppCompatActivity() {
                 Toast.makeText(this@SignupActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
-
     }
 }

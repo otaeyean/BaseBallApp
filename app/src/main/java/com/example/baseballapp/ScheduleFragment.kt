@@ -86,12 +86,10 @@ class ScheduleFragment : Fragment() {
                     } else {
                         val intent = Intent(requireContext(), LoginActivity::class.java)
                         startActivity(intent)
-                        requireActivity().finish()
                     }
                 }
             }
         }
-
     }
 
     override fun onResume() {

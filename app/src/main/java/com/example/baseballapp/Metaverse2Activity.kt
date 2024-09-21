@@ -35,6 +35,9 @@ import okhttp3.WebSocket
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class Metaverse2Activity : AppCompatActivity(){
 
@@ -48,16 +51,21 @@ class Metaverse2Activity : AppCompatActivity(){
     private lateinit var matchResponse: MatchResponse
     private lateinit var webSocket: WebSocket
     private val charactersMap = mutableMapOf<String, ImageView>()
-    private val timersMap = mutableMapOf<String, Handler>()
     private var selectedTeam= "KIA"
-    private var date="08.31(토)"
+    private var date="09.24(화)"
     private var nickname: String = ""
-    private val userList= mutableListOf<String>()
+    private val userList = mutableListOf<String>()
+    private val timersMap = mutableMapOf<String, Handler>()
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    val todayDate = LocalDate.now().format(DateTimeFormatter.ofPattern("MM.dd(E)", Locale.KOREAN))
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_metaverse2)
+
+        selectedTeam = getSelectedTeam()?:return
 
         character = findViewById(R.id.character)
         editTextMessage = findViewById(R.id.editTextMessage)
@@ -79,9 +87,17 @@ class Metaverse2Activity : AppCompatActivity(){
             }
         }
         setupTabs()
+
+        fetchMatchDetails(selectedTeam, date, 1)
+
         initializeWebSocket()
 
         getTeamSchedule(date)
+    }
+
+    private fun getSelectedTeam(): String? {
+        val sharedPreferences = getSharedPreferences("baseballAppPrefs", MODE_PRIVATE)
+        return sharedPreferences.getString("selectedTeam", null)
     }
 
     private fun initializeWebSocket() {
@@ -169,7 +185,7 @@ class Metaverse2Activity : AppCompatActivity(){
     }
 
     private fun fetchMatchDetails(teamName: String, matchDate: String, inningNumber: Int) {
-        getRetrofitService.getMatchDetails(teamName, matchDate)
+        getRetrofitService.getMatchDetails(selectedTeam, date)
             .enqueue(object : Callback<MatchResponse> {
                 override fun onResponse(call: Call<MatchResponse>, response: Response<MatchResponse>) {
                     if (response.isSuccessful) {
@@ -179,6 +195,7 @@ class Metaverse2Activity : AppCompatActivity(){
                         liveStreamTextView.text = "문자 중계 데이터를 불러오지 못했습니다."
                     }
                 }
+
                 override fun onFailure(call: Call<MatchResponse>, t: Throwable) {
                     liveStreamTextView.text = "문자 중계 데이터를 불러오지 못했습니다."
                 }
@@ -241,7 +258,6 @@ class Metaverse2Activity : AppCompatActivity(){
             }
         }
         liveStreamTextView.text = stringBuilder
-        liveStreamTextView.visibility = View.VISIBLE
     }
 
     private fun sendChatMessage(message: String) {
@@ -255,14 +271,14 @@ class Metaverse2Activity : AppCompatActivity(){
     }
 
     fun onChatMessageReceived(nickname: String, message: String) {
-
-        val characterView = charactersMap[nickname] ?: run {
+        charactersMap[nickname] ?: run {
 
             val newCharacterX = character.x - convertDpToPx(100)
             val newCharacterY = character.y
             createCharacterForUser(nickname, newCharacterX, newCharacterY)
             charactersMap[nickname]
         }
+
         showChatMessageForUser(nickname, message)
         resetUserTimer(nickname)
     }
@@ -308,6 +324,7 @@ class Metaverse2Activity : AppCompatActivity(){
     }
 
     fun showChatMessage(nickname: String, message: String) {
+
         val textView = TextView(this).apply {
             text = "$nickname: $message"
             setBackgroundResource(R.drawable.chat_bubble_background)

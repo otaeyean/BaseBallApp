@@ -6,21 +6,18 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,8 +50,17 @@ class CalendarFragment : Fragment() {
 
         sharedPreferences = requireContext().getSharedPreferences("memo_prefs", 0)
 
-        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            selectedDate = convertDateToServerFormat(year, month, dayOfMonth)
+        val today = Calendar.getInstance()
+        val year = today.get(Calendar.YEAR)
+        val month = today.get(Calendar.MONTH)
+        val day = today.get(Calendar.DAY_OF_MONTH)
+
+        selectedDate = convertDateToServerFormat(year, month, day)
+
+        fetchSchedule(selectedDate!!)
+
+        calendarView.setOnDateChangeListener { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+            selectedDate = convertDateToServerFormat(selectedYear, selectedMonth, selectedDayOfMonth)
             fetchSchedule(selectedDate!!)
         }
 
@@ -170,7 +176,6 @@ class CalendarFragment : Fragment() {
                 .setTitle("이미 사진이 존재합니다.")
                 .setMessage("이미 저장된 사진이 있습니다. 기존 사진을 덮어쓰시겠습니까?")
                 .setPositiveButton("확인") { _, _ ->
-                    // 기존 사진 파일 삭제
                     val existingFile = File(photoPath)
                     if (existingFile.exists()) {
                         existingFile.delete()

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:layout_above="@+id/btnProceedToPayment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvCheckoutTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kbo_bold"
+                android:text="결제하기"
+                android:textSize="27sp"
+                android:textColor="@android:color/black"
+                android:layout_margin="16dp"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/tvRecipient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="수령인:"
+                android:fontFamily="@font/kbo_bold"
+                android:textSize="23sp"
+                android:layout_below="@id/tvCheckoutTitle"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp" />
+
+            <EditText
+                android:id="@+id/etRecipientName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvRecipient"
+                android:fontFamily="@font/kbo_medium"
+                android:layout_margin="16dp"
+                android:hint="수령인 이름 입력" />
+
+            <TextView
+                android:id="@+id/tvAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="배송지:"
+                android:textSize="23sp"
+                android:fontFamily="@font/kbo_bold"
+                android:layout_below="@id/etRecipientName"
+                android:layout_marginStart="16dp" />
+
+            <EditText
+                android:id="@+id/etDeliveryAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvAddress"
+                android:fontFamily="@font/kbo_medium"
+                android:layout_margin="16dp"
+                android:hint="배송지 입력" />
+
+            <TextView
+                android:id="@+id/tvPhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전화번호:"
+                android:textSize="23sp"
+                android:fontFamily="@font/kbo_bold"
+                android:layout_below="@id/etDeliveryAddress"
+                android:layout_marginStart="16dp" />
+
+            <EditText
+                android:id="@+id/etPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvPhoneNumber"
+                android:fontFamily="@font/kbo_medium"
+                android:layout_margin="16dp"
+                android:hint="010-****-****" />
+
+            <TextView
+                android:id="@+id/tvDeliveryRequest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="배송 요청 사항:"
+                android:textSize="23sp"
+                android:fontFamily="@font/kbo_bold"
+                android:layout_below="@id/etPhoneNumber"
+                android:layout_marginStart="16dp" />
+
+            <EditText
+                android:id="@+id/etDeliveryRequest"
+                android:layout_width="match_parent"
+                android:fontFamily="@font/kbo_medium"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvDeliveryRequest"
+                android:layout_margin="16dp"
+                android:hint="요청 사항 입력" />
+
+            <TextView
+                android:id="@+id/tvSelectedItems"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="선택한 물품:"
+                android:textSize="23sp"
+                android:layout_below="@id/etDeliveryRequest"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/kbo_bold"
+                android:layout_marginTop="20dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSelectedItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/kbo_medium"
+                android:layout_below="@id/tvSelectedItems"
+                android:layout_margin="16dp"
+                android:scrollbars="vertical" />
+
+            <TextView
+                android:id="@+id/tvTotalAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="총 합계: ₩0"
+                android:textSize="23sp"
+                android:fontFamily="@font/kbo_bold"
+                android:layout_below="@id/rvSelectedItems"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/tvPaymentMethod"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="결제 수단:"
+                android:textSize="19sp"
+                android:fontFamily="@font/kbo_bold"
+                android:layout_below="@id/tvTotalAmount"
+                android:layout_marginStart="16dp" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnProceedToPayment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="결제 진행하기"
+        android:backgroundTint="@color/dozerblue"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp" />
+
+
+</RelativeLayout>

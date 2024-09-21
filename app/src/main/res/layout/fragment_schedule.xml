@@ -18,6 +18,7 @@
             android:text="@string/left"
             android:textSize="30sp"
             android:layout_marginTop="2dp"
+            android:fontFamily="@font/kbo_medium"
             android:foreground="?attr/selectableItemBackground"
             android:layout_marginRight="13dp"/>
 
@@ -27,6 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="07.19(화)"
+            android:fontFamily="@font/kbo_medium"
             android:textSize="20sp" />
 
         <TextView
@@ -34,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
+            android:fontFamily="@font/kbo_medium"
             android:text="@string/right"
             android:foreground="?attr/selectableItemBackground"
             android:textSize="30sp"
@@ -63,6 +66,7 @@
         android:textSize="17dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="메타버스" />
+        android:text="메타버스"
+        android:fontFamily="@font/kbo_medium"/>
 
 </FrameLayout>

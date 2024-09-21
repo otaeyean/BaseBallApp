@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:text="[TEAMKOREA] KOREA  응원 머플러"
                     android:textSize="22sp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/kbo_bold"
                     android:textColor="#333333"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp" />
@@ -65,6 +65,7 @@
                     android:layout_height="wrap_content"
                     android:text="가격 : 15,000원"
                     android:textSize="18sp"
+                    android:fontFamily="@font/kbo_medium"
                     android:textColor="#FF5722"
                     android:layout_gravity="center_horizontal" />
             </LinearLayout>
@@ -88,6 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="장바구니"
+                android:fontFamily="@font/kbo_medium"
                 android:layout_marginEnd="12dp"
                 android:backgroundTint="#1E90FF"
                 android:textColor="@android:color/white"
@@ -99,6 +101,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/kbo_medium"
                 android:text="장바구니 바로가기"
                 android:backgroundTint="#1E90FF"
                 android:textColor="@android:color/white"
@@ -106,17 +109,6 @@
                 android:paddingStart="5dp"
                 android:paddingVertical="12dp" />
 
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="결제하기"
-                android:backgroundTint="#1E90FF"
-                android:layout_marginStart="10dp"
-                android:textColor="@android:color/white"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="12dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -132,7 +124,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="- 단 시간 내 동시 주문 건 발생 시 결제 순서에 따라 발송됨을 알립니다. \n 또한 시스템 상 결제가 완료되었어도 동시 주문으로 인한 과주문 발생 시 주문 취소될 수 있습니다.\n\n- 마킹 유니폼과 같은 출고가 즉시 되지 않는 상품과 다른 상품 함께 구매시 전상품 출고가 지연될 수 있습니다."
-                android:textSize="16sp"
+                android:textSize="18sp"
+                android:fontFamily="@font/kbo_medium"
                 android:layout_gravity="center_horizontal" />
         </LinearLayout>
 
@@ -142,6 +135,7 @@
             android:layout_height="wrap_content"
             android:text="상품코드: 1000001350"
             android:textSize="16sp"
+            android:fontFamily="@font/kbo_medium"
             android:layout_marginTop="16dp"
             android:layout_gravity="start"
             />
@@ -151,6 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="제조사: (주)케이엔코리아"
+            android:fontFamily="@font/kbo_medium"
             android:textSize="16sp"
             android:layout_marginTop="16dp"
             android:layout_gravity="start"
@@ -161,6 +156,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="원산지: KOREA"
+            android:fontFamily="@font/kbo_medium"
             android:textSize="16sp"
             android:layout_marginTop="16dp"
             android:layout_gravity="start"
@@ -171,6 +167,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="제조일: 2019-05-01"
+            android:fontFamily="@font/kbo_medium"
             android:textSize="16sp"
             android:layout_marginTop="16dp"
             android:layout_gravity="start"

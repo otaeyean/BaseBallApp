@@ -3,16 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="8dp">
+    android:padding="16dp">
 
     <TextView
-        android:id="@+id/schedule_text"
+        android:id="@+id/tvItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:fontFamily="@font/kbo_medium"
-        android:textColor="@android:color/black"
-        />
-
+        android:textColor="@android:color/black" />
 </LinearLayout>

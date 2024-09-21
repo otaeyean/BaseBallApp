@@ -106,6 +106,7 @@
             android:background="@drawable/edittext_background"
             android:hint="채팅을 통해 소통하세요!"
             android:inputType="text"
+            android:fontFamily="@font/kbo_medium"
             android:padding="12dp"
             android:textColor="@android:color/black"
             android:textColorHint="@color/gray"

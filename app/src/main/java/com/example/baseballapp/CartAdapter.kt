@@ -11,7 +11,8 @@ import com.google.gson.reflect.TypeToken
 class CartAdapter(
     private val context: Context,
     private val layout: Int,
-    private val cartItemList: MutableList<CartItem> // MutableList로 변경
+    private val cartItemList: MutableList<CartItem>,
+    private val updateTotalPrice: () -> Unit
 ) : BaseAdapter() {
 
     override fun getCount(): Int {
@@ -40,6 +41,7 @@ class CartAdapter(
             holder.tvProductPrice = view.findViewById(R.id.tvProductPrice)
             holder.spinnerProductQuantity = view.findViewById(R.id.spinnerProductQuantity)
             holder.btnRemoveItem = view.findViewById(R.id.btnRemoveItem)
+            holder.cbSelectProduct = view.findViewById(R.id.cbSelectProduct) // CheckBox 추가
 
             view.tag = holder
         } else {
@@ -56,23 +58,29 @@ class CartAdapter(
         val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, quantities)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         holder.spinnerProductQuantity?.adapter = adapter
-
         holder.spinnerProductQuantity?.setSelection(cartItem.productQuantity - 1)
 
         holder.spinnerProductQuantity?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 cartItem.productQuantity = position + 1
+                saveCartItems()
+                updateTotalPrice()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
             }
         }
 
+        holder.cbSelectProduct?.setOnCheckedChangeListener { _, _ ->
+            updateTotalPrice()
+        }
+
         holder.btnRemoveItem?.setOnClickListener {
             cartItemList.removeAt(position)
             notifyDataSetChanged()
             saveCartItems()
-            Toast.makeText(context, "아이템이 장바구니에서 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "장바구니에서 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+            updateTotalPrice()
         }
 
         return view
@@ -92,5 +100,6 @@ class CartAdapter(
         var tvProductPrice: TextView? = null
         var spinnerProductQuantity: Spinner? = null
         var btnRemoveItem: Button? = null
+        var cbSelectProduct: CheckBox? = null
     }
 }

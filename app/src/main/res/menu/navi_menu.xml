@@ -4,25 +4,30 @@
     <item
         android:id="@+id/ScheduleFragment"
         android:icon="@drawable/schedule"
+        android:fontFamily="@font/kbo_bold"
         android:title="일정" />
 
     <item
         android:id="@+id/RankingFragment"
         android:icon="@drawable/rank"
+        android:fontFamily="@font/kbo_bold"
         android:title="순위" />
 
     <item
         android:id="@+id/InformationFragment"
         android:icon="@drawable/info"
+        android:fontFamily="@font/kbo_bold"
         android:title="팀 정보" />
 
     <item
         android:id="@+id/CommunityFragment"
         android:icon="@drawable/community"
+        android:fontFamily="@font/kbo_bold"
         android:title="게시판" />
 
     <item
         android:id="@+id/ShopFragment"
         android:icon="@drawable/shop"
+        android:fontFamily="@font/kbo_bold"
         android:title="쇼핑" />
 </menu>

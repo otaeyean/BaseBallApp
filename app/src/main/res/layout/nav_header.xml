@@ -22,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="User Name"
+        android:fontFamily="@font/kbo_bold"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:layout_gravity="center_horizontal"
@@ -32,6 +33,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login"
+        android:fontFamily="@font/kbo_bold"
         android:textColor="@android:color/black"
         android:backgroundTint="@color/white"/>
+
+    <TextView
+        android:id="@+id/sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sign up"
+        android:textColor="@android:color/white"
+        android:textSize="13sp"
+        android:fontFamily="@font/kbo_medium"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/team_selection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="team selection"
+        android:fontFamily="@font/kbo_medium"
+        android:textColor="@android:color/white"
+        android:textSize="13sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="4dp" />
 </LinearLayout>

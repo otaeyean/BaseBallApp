@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="홍창기"
+                android:fontFamily="@font/kbo_bold"
                 android:layout_marginRight="5dp"
                 android:textSize="21dp" />
             <TextView
@@ -38,6 +39,7 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginRight="7dp"
                 android:text="51"
+                android:fontFamily="@font/kbo_bold"
                 android:textSize="21dp" />
 
             <TextView
@@ -47,6 +49,7 @@
                 android:layout_marginTop="3dp"
                 android:text="외야수"
                 android:layout_marginRight="5dp"
+                android:fontFamily="@font/kbo_medium"
                 android:textSize="17dp" />
 
             <TextView
@@ -56,13 +59,14 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginRight="20dp"
                 android:text="좌타"
+                android:fontFamily="@font/kbo_medium"
                 android:textSize="17dp" />
 
             <TextView
                 android:id="@+id/team"
-                android:fontFamily="@font/kbo_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:fontFamily="@font/kbo_medium"
                 android:visibility="invisible"/>
 
         </LinearLayout>
@@ -79,6 +83,7 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginRight="8dp"
                 android:text="1993.05.05"
+                android:fontFamily="@font/kbo_medium"
                 android:textSize="16dp" />
 
             <TextView
@@ -88,6 +93,7 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginRight="5dp"
                 android:text="189cm"
+                android:fontFamily="@font/kbo_medium"
                 android:textSize="16dp" />
             <TextView
                 android:id="@+id/weight"
@@ -96,13 +102,8 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginRight="5dp"
                 android:text="90kg"
+                android:fontFamily="@font/kbo_medium"
                 android:textSize="16dp" />
         </LinearLayout>
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/playerPosImg"
-        android:layout_width="60dp"
-        android:layout_height="75dp"
-        android:scaleType="centerCrop"/>
 </LinearLayout>

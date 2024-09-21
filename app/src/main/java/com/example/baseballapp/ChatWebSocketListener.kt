@@ -10,7 +10,6 @@ class ChatWebSocketListener(private val fragment: ChatingFragment) : WebSocketLi
     override fun onOpen(webSocket: WebSocket, response: Response) {
         Log.d("WebSocket", "Connected")
         fragment.activity?.runOnUiThread {
-            fragment.showMessage("Connected to server")
         }
     }
 

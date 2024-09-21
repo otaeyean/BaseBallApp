@@ -13,27 +13,36 @@
         android:background="?attr/colorPrimary"
         android:backgroundTint="@color/white"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toTopOf="@+id/frame"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"/>
+        android:theme="?attr/actionBarTheme" />
 
-    <ImageView
-        android:id="@+id/imageView"
+    <TextView
+        android:id="@+id/tvDiscountInfo"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/appbar"
-        />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textSize="35sp"
+        android:fontFamily="@font/kbo_bold"
+        android:textColor="@android:color/black" />
+
+    <!-- 추가된 주문 상태 안내 메시지 -->
+    <TextView
+        android:id="@+id/tvOrderInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:padding="16dp"
+        android:text="상품들 중 주문 상태가 상품 준비 중, 배송 중 상태로 변경된 건은 출고 처리 진행 중으로 교환, 환불 신청 시 즉시 처리가 불가하며 배송이 진행될 수 있습니다. \n 감사합니다 :)"
+        android:textSize="20sp"
+        android:textColor="@android:color/darker_gray" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="200dp"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_main" />
+
 </FrameLayout>
