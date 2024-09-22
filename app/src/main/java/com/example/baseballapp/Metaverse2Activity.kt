@@ -52,7 +52,7 @@ class Metaverse2Activity : AppCompatActivity(){
     private lateinit var webSocket: WebSocket
     private val charactersMap = mutableMapOf<String, ImageView>()
     private var selectedTeam= "KIA"
-    private var date="09.24(화)"
+    private var date="09.17(화)"
     private var nickname: String = ""
     private val userList = mutableListOf<String>()
     private val timersMap = mutableMapOf<String, Handler>()
@@ -184,8 +184,17 @@ class Metaverse2Activity : AppCompatActivity(){
         })
     }
 
-    private fun fetchMatchDetails(teamName: String, matchDate: String, inningNumber: Int) {
-        getRetrofitService.getMatchDetails(selectedTeam, date)
+    private fun fetchMatchDetails(selectedTeam: String, matchDate: String, inningNumber: Int) {
+        val selectedTeam = when (selectedTeam) {
+            "NC" -> "한화"
+            "SSG" -> "KIA"
+            "키움" -> "KT"
+            "롯데" -> "LG"
+            "두산" -> "삼성"
+            else -> ""
+        }
+
+        getRetrofitService.getMatchDetails(selectedTeam, matchDate)
             .enqueue(object : Callback<MatchResponse> {
                 override fun onResponse(call: Call<MatchResponse>, response: Response<MatchResponse>) {
                     if (response.isSuccessful) {
@@ -300,7 +309,7 @@ class Metaverse2Activity : AppCompatActivity(){
 
         textView.post {
             textView.x = characterView.x + (characterView.width - textView.width) / 2 +30
-            textView.y = characterView.y - textView.height + 65
+            textView.y = characterView.y - textView.height + 80
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
@@ -339,7 +348,7 @@ class Metaverse2Activity : AppCompatActivity(){
 
         textView.post {
             textView.x = character.x + (character.width - textView.width) / 2 + 30
-            textView.y = character.y - textView.height + 50
+            textView.y = character.y - textView.height + 80
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
