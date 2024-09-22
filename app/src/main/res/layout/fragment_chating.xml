@@ -13,7 +13,7 @@
         android:orientation="horizontal"
         android:padding="8dp"
         android:gravity="center"
-        android:background="@color/darkgray">
+        android:background="@color/navy">
 
         <ImageView
             android:id="@+id/team1Logo"
@@ -265,7 +265,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="전송"
-                android:backgroundTint="@color/dozerblue"
+                android:backgroundTint="@color/navy"
                 android:textColor="@android:color/white"
                 android:padding="12dp"/>
         </LinearLayout>

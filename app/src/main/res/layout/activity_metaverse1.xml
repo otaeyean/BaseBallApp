@@ -117,7 +117,7 @@
             android:id="@+id/chat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/blue"
+            android:backgroundTint="@color/navy"
             android:text="전송"
             />
     </LinearLayout>

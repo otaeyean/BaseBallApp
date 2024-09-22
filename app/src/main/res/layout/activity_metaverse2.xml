@@ -156,7 +156,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/dozerblue"
+        android:backgroundTint="@color/navy"
         android:padding="12dp"
         android:text="전송"
         app:layout_constraintBottom_toBottomOf="parent"

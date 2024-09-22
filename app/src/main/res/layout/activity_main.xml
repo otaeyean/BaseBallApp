@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
+            android:fontFamily="@font/kbo_bold"
             app:layout_constraintBottom_toTopOf="@+id/frame"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

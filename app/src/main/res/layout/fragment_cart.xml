@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:text="결제하기"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/dozerblue"
+        android:backgroundTint="@color/navy"
         android:layout_margin="16dp" />
 
 </RelativeLayout>
