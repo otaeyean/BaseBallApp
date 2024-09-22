@@ -1,23 +1,34 @@
-package com.example.baseballapp
+package com.example.baseballapp.community
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.baseballapp.ApiObject
+import com.example.baseballapp.BoardData
+import com.example.baseballapp.CommentData
+import com.example.baseballapp.LoginActivity
+import com.example.baseballapp.LoginService
+import com.example.baseballapp.R
 import com.example.baseballapp.databinding.FragmentPostDetailBinding
+import com.example.login.TokenManager
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class PostDetailFragment : Fragment() {
-
+    private val loginService by lazy { LoginService(requireContext()) }
     private var _binding: FragmentPostDetailBinding? = null
     private val binding get() = _binding!!
     private lateinit var post: BoardData
     private lateinit var commentAdapter: CommentAdapter
+    private lateinit var tokenManager: TokenManager  // TokenManager 추가
 
     companion object {
         private const val ARG_POST = "post"
@@ -34,6 +45,7 @@ class PostDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentPostDetailBinding.inflate(inflater, container, false)
+        tokenManager = TokenManager(requireContext())  // TokenManager 초기화
         return binding.root
     }
 
@@ -54,15 +66,37 @@ class PostDetailFragment : Fragment() {
         fetchComments(post.id.toLong())
 
         binding.btnSubmitComment.setOnClickListener {
-            val commentContent = binding.etComment.text.toString()
-            if (commentContent.isNotEmpty()) {
-                submitComment(commentContent)
-            } else {
-                Toast.makeText(context, "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            loginService.checkToken { isValid ->
+                if (isValid) {
+                    val commentContent = binding.etComment.text.toString()
+                    val author = tokenManager.getUsername() ?: "알 수 없는 사용자" // 사용자 이름 가져오기
+                    if (commentContent.isNotEmpty()) {
+                        submitComment(author, commentContent)
+                    } else {
+                        Toast.makeText(context, "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
             }
         }
+
         binding.btnDetailDelete.setOnClickListener {
-            deletePost(post.id.toLong())
+            loginService.checkToken { isValid ->
+                if (isValid) {
+                    deletePost(post.id.toLong())
+                } else {
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+            }
+        }
+
+        binding.btnDetailUpvote.setOnClickListener {
+            upvotePost(post.id.toLong())
         }
     }
 
@@ -83,8 +117,47 @@ class PostDetailFragment : Fragment() {
         })
     }
 
-    private fun submitComment(content: String) {
-        val newComment = CommentData(0, content, "사용자 이름", "2024-08-05T07:23:21.610Z", post.title)
+    private fun upvotePost(postId: Long) {
+        val userNickname = tokenManager.getUsername() ?: return
+        val token = tokenManager.getToken() ?: return
+
+        Log.d("PostDetailFragment", "Upvoting post with ID: $postId and userNickname: $userNickname")
+
+        ApiObject.getRetrofitService.upvotePost(postId, userNickname, "Bearer $token").enqueue(object : Callback<ResponseBody> { // ResponseBody로 변경
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()?.string()
+                    if (responseBody == "Successfully upvote") {
+                        Toast.makeText(context, "추천하였습니다.", Toast.LENGTH_SHORT).show()
+                        updateUpvoteInCommunity(postId)
+                    } else if (responseBody == "already upvote") {
+                        Toast.makeText(context, "이미 추천된 게시글입니다.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Log.d("PostDetailFragment", "Error code: ${response.code()} - ${response.message()}")
+                    Toast.makeText(context, "추천에 실패했습니다. 오류 코드: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("PostDetailFragment", "Network failure: ${t.message}")
+                Toast.makeText(context, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+
+
+
+    private fun updateUpvoteInCommunity(postId: Long) {
+        val parentFragment = parentFragmentManager.findFragmentById(R.id.boardContainer)
+        if (parentFragment is CommunityFragment) {
+            parentFragment.updateUpvoteForPost(postId)
+        }
+    }
+
+    private fun submitComment(author: String, content: String) {
+        val newComment = CommentData(0, content, author, "2024-08-05T07:23:21.610Z", post.title)
         ApiObject.getRetrofitService.submitComment(post.id.toLong(), newComment).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
@@ -99,6 +172,13 @@ class PostDetailFragment : Fragment() {
                 Toast.makeText(context, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun updateCommentCountInCommunity(postId: Long) {
+        val parentFragment = parentFragmentManager.findFragmentById(R.id.boardContainer)
+        if (parentFragment is CommunityFragment) {
+            parentFragment.updateCommentCountForPost(postId)
+        }
     }
 
     private fun deletePost(postId: Long) {

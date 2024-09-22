@@ -13,14 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.baseballapp.ApiObject
 import com.example.baseballapp.PagedBoardResponse
 import com.example.baseballapp.R
-import com.example.baseballapp.databinding.FragmentQuestionBoardBinding
+import com.example.baseballapp.databinding.FragmentTradeBoardBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class QuestionBoardFragment : Fragment() {
+class TradeBoardFragment : Fragment() {
 
-    private var _binding: FragmentQuestionBoardBinding? = null
+    private var _binding: FragmentTradeBoardBinding? = null
     private val binding get() = _binding!!
     private lateinit var postAdapter: PostAdapter
 
@@ -28,7 +28,7 @@ class QuestionBoardFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentQuestionBoardBinding.inflate(inflater, container, false)
+        _binding = FragmentTradeBoardBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -73,13 +73,13 @@ class QuestionBoardFragment : Fragment() {
                     // 선택된 페이지 번호 스타일 변경
                     selectedTextView?.apply {
                         setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-                        textSize = 23f  // 기본 크기
+                        textSize = 18f  // 기본 크기
                         paintFlags = paintFlags and Paint.UNDERLINE_TEXT_FLAG.inv()  // 밑줄 제거
                     }
 
                     // 클릭된 페이지 번호 스타일을 업데이트
                     setTextColor(ContextCompat.getColor(requireContext(), R.color.navy))  // 네이비 색상
-                    textSize = 18f  // 글씨 크기 크게
+                    textSize = 23f  // 글씨 크기 크게
                     paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG  // 밑줄 추가
 
                     // 현재 선택된 페이지 번호를 저장
@@ -98,10 +98,9 @@ class QuestionBoardFragment : Fragment() {
             paginationLayout.addView(textView)
         }
     }
-
     private fun loadPage(page: Int) {
         currentPage = page  // 페이지 로드 시 currentPage 업데이트
-        ApiObject.getRetrofitService.getBoardsByPage("질문게시판", page, 1).enqueue(object : Callback<PagedBoardResponse> {
+        ApiObject.getRetrofitService.getBoardsByPage("나눔게시판", page, 1).enqueue(object : Callback<PagedBoardResponse> {
             override fun onResponse(call: Call<PagedBoardResponse>, response: Response<PagedBoardResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.let { pagedResponse ->
@@ -118,7 +117,6 @@ class QuestionBoardFragment : Fragment() {
             }
         })
     }
-
 
 
     override fun onDestroyView() {

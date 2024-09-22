@@ -13,7 +13,7 @@
         android:orientation="horizontal"
         android:padding="8dp"
         android:gravity="center"
-        android:background="@color/gray">
+        android:background="@color/darkgray">
 
         <ImageView
             android:id="@+id/team1Logo"
@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:text="팀1"
             android:textSize="18sp"
+            android:fontFamily="@font/kbo_medium"
             android:textStyle="bold"
             android:textColor="@android:color/white"
             android:layout_marginEnd="16dp" />
@@ -37,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
+            android:fontFamily="@font/kbo_medium"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@android:color/white"
@@ -47,6 +49,7 @@
             android:layout_height="wrap_content"
             android:text="vs"
             android:textSize="18sp"
+            android:fontFamily="@font/kbo_medium"
             android:textColor="@android:color/white"
             android:layout_marginEnd="8dp" />
 
@@ -56,7 +59,7 @@
             android:layout_height="wrap_content"
             android:text="0"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/kbo_medium"
             android:textColor="@android:color/white"
             android:layout_marginEnd="16dp" />
 
@@ -66,7 +69,7 @@
             android:layout_height="wrap_content"
             android:text="팀2"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/kbo_medium"
             android:textColor="@android:color/white"
             android:layout_marginEnd="8dp" />
 
@@ -78,7 +81,7 @@
 
     </LinearLayout>
 
-    <!-- 이닝 버튼을 가로로 1열 촘촘히 배치 -->
+    <!-- 이닝 버튼을 가로로 배열 -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -89,7 +92,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <!-- 각 버튼을 촘촘히 배치하고 배경을 흰색으로 설정 -->
             <Button
                 android:id="@+id/buttonInning1"
                 android:layout_width="wrap_content"
@@ -251,6 +253,7 @@
                 android:layout_weight="1"
                 android:hint="메시지를 입력하세요..."
                 android:inputType="text"
+                android:fontFamily="@font/kbo_medium"
                 android:background="@drawable/edittext_background"
                 android:padding="12dp"
                 android:textColor="@android:color/black"

@@ -1,6 +1,5 @@
 package com.example.baseballapp
 
-import RankingFragment
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,8 +10,9 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.widget.Button
 import android.widget.TextView
+import com.example.baseballapp.Ranking.RankingFragment
+import com.example.baseballapp.community.CommunityFragment
 import com.example.login.TokenManager
-import com.example.yourapp.CommunityFragment
 
 class MainActivity : AppCompatActivity() {
 

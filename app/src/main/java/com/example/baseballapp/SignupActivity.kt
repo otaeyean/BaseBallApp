@@ -1,5 +1,6 @@
 package com.example.baseballapp
 
+import SignupRequest
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,9 +9,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.baseballapp.R
 import com.example.login.AuthService
-import com.example.login.SignupRequest
 import com.example.login.SignupResponse
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory

@@ -1,7 +1,3 @@
-package com.example.baseballapp
-
-import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -11,12 +7,19 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.baseballapp.ApiObject
+import com.example.baseballapp.ChatAdapter
+import com.example.baseballapp.ChatMessageData
+import com.example.baseballapp.ChatWebSocketListener
+import com.example.baseballapp.MatchResponse
+import com.example.baseballapp.R
 import com.example.baseballapp.databinding.FragmentChatingBinding
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -36,7 +39,6 @@ class ChatingFragment : Fragment() {
     private val messageList = ArrayList<ChatMessageData>()
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var matchResponse: MatchResponse
-    private val loginService by lazy { LoginService(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,34 +52,22 @@ class ChatingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val roomId = arguments?.getString("ROOM_ID") ?: "default"
-        nickname = loginService.getUsername().toString()
-
-        loadMessages(roomId)
+        nickname = arguments?.getString("NICKNAME") ?: "sumin"
 
         // 웹소켓 설정 및 연결
         setupWebSocket(roomId)
 
-        chatAdapter = ChatAdapter(messageList,nickname)
+        chatAdapter = ChatAdapter(messageList)
         binding.recyclerViewMessages.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewMessages.adapter = chatAdapter
 
         binding.buttonSend.setOnClickListener {
-
-            loginService.checkToken { isValid ->
-                if (isValid) {
-                    val message = binding.editTextMessage.text.toString()
-                    if (message.isNotEmpty()) {
-                        val time = getCurrentTimeInKorea()
-                        val formattedMessage = "$nickname $time ] $message"
-
-                        webSocket.send(formattedMessage)
-                        saveMessage(roomId, formattedMessage)
-                        binding.editTextMessage.text.clear()
-                    }
-                } else {
-                    val intent = Intent(activity, LoginActivity::class.java)
-                    startActivity(intent)
-                }
+            val message = binding.editTextMessage.text.toString()
+            if (message.isNotEmpty()) {
+                val time = getCurrentTimeInKorea()
+                val formattedMessage = "$nickname  $time\n$message"
+                webSocket.send(formattedMessage)
+                binding.editTextMessage.text.clear()
             }
         }
 
@@ -199,7 +189,7 @@ class ChatingFragment : Fragment() {
                     )
                     stringBuilder.append(spannableString)
                 } else if (part.contains("타자")) {
-
+                    // 타자 문구를 빨간색으로 볼드체로 설정
                     val spannableString = SpannableString(part.trim() + "\n")
                     spannableString.setSpan(
                         ForegroundColorSpan(Color.RED),
@@ -214,8 +204,8 @@ class ChatingFragment : Fragment() {
                     stringBuilder.append(spannableString)
                     stringBuilder.append("\n")
                 } else if (part.contains(":")) {
-
-                    val darkBlueColor = ContextCompat.getColor(requireContext(), R.color.dozerblue)
+                    // 결과 문구를  darkblue로 설정
+                    val darkBlueColor = ContextCompat.getColor(requireContext(), R.color.darkblue)
                     val resultStartIndex = part.indexOf(":") + 1
                     val resultText = part.substring(resultStartIndex).trim()
                     if (resultText.isNotEmpty()) {
@@ -255,25 +245,5 @@ class ChatingFragment : Fragment() {
         messageList.add(chatMessage)
         chatAdapter.notifyDataSetChanged()
         binding.recyclerViewMessages.scrollToPosition(messageList.size - 1)
-    }
-
-    private fun saveMessage(roomId: String, message: String) {
-        val sharedPreferences = requireActivity().getSharedPreferences("ChatPrefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        val currentMessages = sharedPreferences.getString(roomId, "") ?: ""
-        editor.putString(roomId, currentMessages + message + "\n")
-        editor.apply()
-    }
-
-    private fun loadMessages(roomId: String) {
-        val sharedPreferences = requireActivity().getSharedPreferences("ChatPrefs", Context.MODE_PRIVATE)
-        val savedMessages = sharedPreferences.getString(roomId, "") ?: ""
-
-        savedMessages.split("\n").forEach { msg ->
-            if (msg.isNotEmpty()) {
-                val chatMessage = ChatMessageData(R.drawable.baseball, msg)
-                messageList.add(chatMessage)
-            }
-        }
     }
 }

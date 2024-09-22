@@ -1,4 +1,4 @@
-package com.example.baseballapp
+package com.example.baseballapp.Ranking
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.baseballapp.R
 
 class TeamRankAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -32,9 +33,17 @@ class TeamRankAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is TeamRankViewHolder) {
             holder.bind(teamList[position - 1]) // Adjust for header
+
+            // 1위부터 5위까지 배경색을 lightgray로 변경
+            if (position in 1..5) {
+                holder.itemView.setBackgroundColor(holder.itemView.context.getColor(R.color.lightgray2))
+            } else {
+                holder.itemView.setBackgroundColor(holder.itemView.context.getColor(android.R.color.white)) // 나머지 배경 흰색
+            }
         }
     }
 
@@ -81,7 +90,7 @@ class TeamRankAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 "삼성" -> R.drawable.samsung_logo
                 "SSG" -> R.drawable.ssg_logo
                 "한화" -> R.drawable.hanwha_logo
-                else -> R.drawable.baseball // 기본 로고 (팀 이름이 일치하지 않을 경우)
+                else -> R.drawable.baseball
             }
             teamLogo.setImageResource(logoResource)
         }

@@ -1,13 +1,14 @@
-package com.example.baseballapp
+package com.example.baseballapp.community
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.baseballapp.BoardData
+import com.example.baseballapp.R
 
 class PostAdapter(
-
     private var postList: List<BoardData>,
     private val onItemClick: (BoardData) -> Unit
 ) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
@@ -34,7 +35,7 @@ class PostAdapter(
         holder.author.text = post.authorId
         holder.title.text = post.title
         holder.createdAt.text = post.createdAt.substring(0, 10)
-        holder.comments.text = (post.comments?.size ?: 0).toString()  // 댓글 수를 표시, null인 경우 0으로 표시
+        holder.comments.text = post.commentCount.toString()  // 댓글 수를 표시
         holder.upVote.text = post.upVote.toString()
     }
 
@@ -42,6 +43,28 @@ class PostAdapter(
 
     fun setPosts(posts: List<BoardData>) {
         postList = posts
+        notifyDataSetChanged()
+    }
+    fun updateUpvote(postId: Long) {
+        postList = postList.map { post ->
+            if (post.id.toLong() == postId) {
+                post.copy(upVote = post.upVote + 1)
+            } else {
+                post
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    // 댓글 수를 업데이트하는 함수
+    fun updateCommentCount(postId: Long, newCommentCount: Int) {
+        postList = postList.map { post ->
+            if (post.id.toLong() == postId) {
+                post.copy(commentCount = newCommentCount)
+            } else {
+                post
+            }
+        }
         notifyDataSetChanged()
     }
 }

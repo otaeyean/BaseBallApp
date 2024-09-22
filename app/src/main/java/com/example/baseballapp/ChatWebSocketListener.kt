@@ -1,5 +1,7 @@
 package com.example.baseballapp
 
+
+import ChatingFragment
 import android.util.Log
 import okhttp3.Response
 import okhttp3.WebSocket
@@ -10,6 +12,7 @@ class ChatWebSocketListener(private val fragment: ChatingFragment) : WebSocketLi
     override fun onOpen(webSocket: WebSocket, response: Response) {
         Log.d("WebSocket", "Connected")
         fragment.activity?.runOnUiThread {
+            fragment.showMessage("Connected to server")
         }
     }
 

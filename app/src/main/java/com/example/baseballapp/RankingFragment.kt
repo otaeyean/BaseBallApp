@@ -1,5 +1,5 @@
-import android.graphics.Color
-import android.graphics.Typeface
+package com.example.baseballapp.Ranking
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +12,6 @@ import com.example.baseballapp.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 class RankingFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
@@ -20,16 +19,17 @@ class RankingFragment : Fragment() {
     private lateinit var hitterRankAdapter: HitterRankAdapter
     private lateinit var pitcherRankAdapter: PitcherRankAdapter
     private lateinit var headerScrollView: HorizontalScrollView
+    private lateinit var rootView: View
     private val dataScrollViews = mutableListOf<HorizontalScrollView>()
+    private var isDataScrollInitiated = false // 스크롤 동기화 플래그 추가
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_ranking, container, false)
+        rootView = inflater.inflate(R.layout.fragment_ranking, container, false)
 
-        val rankingImage = rootView.findViewById<ImageView>(R.id.ranking_image)
-        val spinner = rootView.findViewById<Spinner>(R.id.spinner_ranking_category)
+        // View 초기화
         recyclerView = rootView.findViewById(R.id.recycler_view_rankings)
         headerScrollView = rootView.findViewById(R.id.header_scroll_view)
 
@@ -38,37 +38,18 @@ class RankingFragment : Fragment() {
         pitcherRankAdapter = PitcherRankAdapter(emptyList(), ::registerScrollView)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = teamRankAdapter // 기본적으로 팀 순위 어댑터 설정
+        recyclerView.adapter = teamRankAdapter
 
+        // Spinner 설정
+        val spinner = rootView.findViewById<Spinner>(R.id.spinner_ranking_category)
         val categories = resources.getStringArray(R.array.ranking_categories)
-        val adapter = object : ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            categories
-        ) {
-            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = super.getView(position, convertView, parent) as TextView
-                view.setTextColor(Color.parseColor("#123269"))
-                view.setTypeface(null, Typeface.BOLD)
-                view.textSize = 23f
-                return view
-            }
 
-            override fun getDropDownView(
-                position: Int,
-                convertView: View?,
-                parent: ViewGroup
-            ): View {
-                val view = super.getDropDownView(position, convertView, parent) as TextView
-                view.setTextColor(Color.parseColor("#123269"))
-                view.setTypeface(null, Typeface.BOLD)
-                view.textSize = 23f
-                return view
-            }
-        }
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // 커스텀 ArrayAdapter 생성
+        val adapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_item, categories)
+        adapter.setDropDownViewResource(R.layout.custom_spinner_item)
         spinner.adapter = adapter
 
+        // Spinner 아이템 선택 리스너
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedCategory = parent.getItemAtPosition(position).toString()
@@ -79,24 +60,18 @@ class RankingFragment : Fragment() {
                 }
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // 아무것도 선택되지 않았을 때 처리
-            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
+        // ScrollView 동기화
         headerScrollView.setOnScrollChangeListener { _, scrollX, _, _, _ ->
-            dataScrollViews.forEach { it.scrollTo(scrollX, 0) }
+            if (!isDataScrollInitiated) {
+                dataScrollViews.forEach { it.scrollTo(scrollX, 0) }
+            }
+            isDataScrollInitiated = false // 다른 스크롤이 발생할 수 있게 초기화
         }
 
         return rootView
-    }
-
-    private fun registerScrollView(scrollView: HorizontalScrollView) {
-        dataScrollViews.add(scrollView)
-        scrollView.setOnScrollChangeListener { _, scrollX, _, _, _ ->
-            headerScrollView.scrollTo(scrollX, 0)
-            dataScrollViews.forEach { if (it != scrollView) it.scrollTo(scrollX, 0) }
-        }
     }
 
     private fun showTeamRankings() {
@@ -127,8 +102,22 @@ class RankingFragment : Fragment() {
         ApiObject.getRetrofitService.getAllTeams().enqueue(object : Callback<List<TeamRankData>> {
             override fun onResponse(call: Call<List<TeamRankData>>, response: Response<List<TeamRankData>>) {
                 if (response.isSuccessful) {
-                    response.body()?.let {
-                        teamRankAdapter.setList(it)
+                    response.body()?.let { teamList ->
+                        teamRankAdapter.setList(teamList)
+
+                        val logoFirst = rootView.findViewById<ImageView>(R.id.logo_first)
+                        val logoSecond = rootView.findViewById<ImageView>(R.id.logo_second)
+                        val logoThird = rootView.findViewById<ImageView>(R.id.logo_third)
+                        val teamFirst = rootView.findViewById<TextView>(R.id.team_first)
+                        val teamSecond = rootView.findViewById<TextView>(R.id.team_second)
+                        val teamThird = rootView.findViewById<TextView>(R.id.team_third)
+
+                        logoFirst.setImageResource(getTeamLogoResource(teamList[0].teamName))
+                        teamFirst.text = "${teamList[0].teamName} (1위)"
+                        logoSecond.setImageResource(getTeamLogoResource(teamList[1].teamName))
+                        teamSecond.text = "${teamList[1].teamName} (2위)"
+                        logoThird.setImageResource(getTeamLogoResource(teamList[2].teamName))
+                        teamThird.text = "${teamList[2].teamName} (3위)"
                     }
                 }
             }
@@ -169,5 +158,32 @@ class RankingFragment : Fragment() {
                 Toast.makeText(context, "데이터를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun getTeamLogoResource(teamName: String): Int {
+        return when (teamName) {
+            "두산" -> R.drawable.doosan_logo
+            "KIA" -> R.drawable.kia_logo
+            "키움" -> R.drawable.kiwoom_logo
+            "KT" -> R.drawable.kt_logo
+            "LG" -> R.drawable.lg_logo
+            "롯데" -> R.drawable.lotte_logo
+            "NC" -> R.drawable.nc_logo
+            "삼성" -> R.drawable.samsung_logo
+            "SSG" -> R.drawable.ssg_logo
+            "한화" -> R.drawable.hanwha_logo
+            else -> R.drawable.baseball
+        }
+    }
+
+    private fun registerScrollView(scrollView: HorizontalScrollView) {
+        dataScrollViews.add(scrollView)
+        scrollView.setOnScrollChangeListener { _, scrollX, _, _, _ ->
+            // 데이터 스크롤 시 헤더도 같이 스크롤
+            isDataScrollInitiated = true
+            headerScrollView.scrollTo(scrollX, 0)
+            // 다른 데이터도 같이 스크롤
+            dataScrollViews.forEach { it.scrollTo(scrollX, 0) }
+        }
     }
 }

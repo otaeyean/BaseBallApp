@@ -23,14 +23,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Author"
-            android:fontFamily="@font/kbo_bold" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_comment_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Comment content"
-            android:fontFamily="@font/kbo_medium"/>
+            android:text="Comment content" />
 
         <TextView
             android:id="@+id/tv_comment_created_at"
