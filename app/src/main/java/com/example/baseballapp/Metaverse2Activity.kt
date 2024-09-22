@@ -185,16 +185,17 @@ class Metaverse2Activity : AppCompatActivity(){
     }
 
     private fun fetchMatchDetails(selectedTeam: String, matchDate: String, inningNumber: Int) {
-        val selectedTeam = when (selectedTeam) {
+
+        val mappedTeam = when (selectedTeam) {
             "NC" -> "한화"
             "SSG" -> "KIA"
             "키움" -> "KT"
             "롯데" -> "LG"
             "두산" -> "삼성"
-            else -> ""
+            else -> selectedTeam
         }
 
-        getRetrofitService.getMatchDetails(selectedTeam, matchDate)
+        getRetrofitService.getMatchDetails(mappedTeam, matchDate)
             .enqueue(object : Callback<MatchResponse> {
                 override fun onResponse(call: Call<MatchResponse>, response: Response<MatchResponse>) {
                     if (response.isSuccessful) {
