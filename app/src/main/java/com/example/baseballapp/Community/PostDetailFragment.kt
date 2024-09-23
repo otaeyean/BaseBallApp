@@ -1,5 +1,4 @@
 package com.example.baseballapp.Community
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -59,17 +58,25 @@ class PostDetailFragment : Fragment() {
         binding.tvDetailAuthor.text = post.authorId
         binding.tvDetailCreatedAt.text = post.createdAt.substring(0, 10)
 
-        commentAdapter = CommentAdapter(emptyList())
+        // 로그인된 사용자 이름 가져오기
+        val currentUsername = tokenManager.getUsername() ?: "알 수 없는 사용자"
+
+        // 댓글 어댑터 초기화 - 현재 로그인된 사용자 이름과 댓글 삭제 콜백 전달
+        commentAdapter = CommentAdapter(emptyList(), currentUsername) { commentId ->
+            deleteComment(commentId) // 댓글 삭제 기능 호출
+        }
         binding.rvComments.layoutManager = LinearLayoutManager(context)
         binding.rvComments.adapter = commentAdapter
 
+        // 댓글 가져오기
         fetchComments(post.id.toLong())
 
+        // 댓글 작성 버튼 클릭 이벤트
         binding.btnSubmitComment.setOnClickListener {
             loginService.checkToken { isValid ->
                 if (isValid) {
                     val commentContent = binding.etComment.text.toString()
-                    val author = tokenManager.getUsername() ?: "알 수 없는 사용자" // 사용자 이름 가져오기
+                    val author = currentUsername
                     if (commentContent.isNotEmpty()) {
                         submitComment(author, commentContent)
                     } else {
@@ -83,6 +90,7 @@ class PostDetailFragment : Fragment() {
             }
         }
 
+        // 게시글 삭제 버튼 클릭 이벤트
         binding.btnDetailDelete.setOnClickListener {
             loginService.checkToken { isValid ->
                 if (isValid) {
@@ -95,11 +103,32 @@ class PostDetailFragment : Fragment() {
             }
         }
 
+        // 게시글 추천 버튼 클릭 이벤트
         binding.btnDetailUpvote.setOnClickListener {
             upvotePost(post.id.toLong())
         }
     }
 
+    // 댓글 작성 기능 추가
+    private fun submitComment(author: String, content: String) {
+        val newComment = CommentData(0, content, author, "2024-08-05T07:23:21.610Z", post.title) // 임시 시간 설정
+        ApiObject.getRetrofitService.submitComment(post.id.toLong(), newComment).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    fetchComments(post.id.toLong()) // 댓글 목록 갱신
+                    binding.etComment.text.clear() // 댓글 입력 필드 초기화
+                } else {
+                    Toast.makeText(context, "댓글 작성에 실패했습니다. 오류 코드: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Toast.makeText(context, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    // 댓글 목록 가져오기
     private fun fetchComments(postId: Long) {
         ApiObject.getRetrofitService.getComments(postId).enqueue(object : Callback<List<CommentData>> {
             override fun onResponse(call: Call<List<CommentData>>, response: Response<List<CommentData>>) {
@@ -117,19 +146,41 @@ class PostDetailFragment : Fragment() {
         })
     }
 
+    // 댓글 삭제 기능
+
+    private fun deleteComment(commentId: Long) {
+        val token = tokenManager.getToken() ?: return // 토큰을 가져옴
+        ApiObject.getRetrofitService.deleteComment(commentId, "Bearer $token").enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(context, "댓글이 성공적으로 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    fetchComments(post.id.toLong()) // 삭제 후 댓글 목록 갱신
+                } else {
+                    Toast.makeText(context, "댓글 삭제에 실패했습니다. 오류 코드: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Toast.makeText(context, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+
+    // 게시글 추천 기능
     private fun upvotePost(postId: Long) {
         val userNickname = tokenManager.getUsername() ?: return
         val token = tokenManager.getToken() ?: return
 
         Log.d("PostDetailFragment", "Upvoting post with ID: $postId and userNickname: $userNickname")
 
-        ApiObject.getRetrofitService.upvotePost(postId, userNickname, "Bearer $token").enqueue(object : Callback<ResponseBody> { // ResponseBody로 변경
+        ApiObject.getRetrofitService.upvotePost(postId, userNickname, "Bearer $token").enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     val responseBody = response.body()?.string()
                     if (responseBody == "Successfully upvote") {
                         Toast.makeText(context, "추천하였습니다.", Toast.LENGTH_SHORT).show()
-                        updateUpvoteInCommunity(postId)
+                        updateUpvoteInCommunity(postId) // 추천 후 UI 업데이트
                     } else if (responseBody == "already upvote") {
                         Toast.makeText(context, "이미 추천된 게시글입니다.", Toast.LENGTH_SHORT).show()
                     }
@@ -146,9 +197,7 @@ class PostDetailFragment : Fragment() {
         })
     }
 
-
-
-
+    // PostDetailFragment의 updateUpvoteInCommunity 메서드
     private fun updateUpvoteInCommunity(postId: Long) {
         val parentFragment = parentFragmentManager.findFragmentById(R.id.boardContainer)
         if (parentFragment is CommunityFragment) {
@@ -156,37 +205,13 @@ class PostDetailFragment : Fragment() {
         }
     }
 
-    private fun submitComment(author: String, content: String) {
-        val newComment = CommentData(0, content, author, "2024-08-05T07:23:21.610Z", post.title)
-        ApiObject.getRetrofitService.submitComment(post.id.toLong(), newComment).enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                if (response.isSuccessful) {
-                    fetchComments(post.id.toLong()) // 댓글 목록 갱신
-                    binding.etComment.text.clear()
-                } else {
-                    Toast.makeText(context, "댓글 작성에 실패했습니다. 오류 코드: ${response.code()}", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                Toast.makeText(context, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    private fun updateCommentCountInCommunity(postId: Long) {
-        val parentFragment = parentFragmentManager.findFragmentById(R.id.boardContainer)
-        if (parentFragment is CommunityFragment) {
-            parentFragment.updateCommentCountForPost(postId)
-        }
-    }
-
+    // 게시글 삭제 기능
     private fun deletePost(postId: Long) {
         ApiObject.getRetrofitService.deletePost(postId).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
                     Toast.makeText(context, "게시글이 성공적으로 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-                    parentFragmentManager.popBackStack()
+                    parentFragmentManager.popBackStack() // 게시글 삭제 후 뒤로 이동
                 } else {
                     Toast.makeText(context, "게시글 삭제에 실패했습니다. 오류 코드: ${response.code()}", Toast.LENGTH_SHORT).show()
                 }
@@ -203,3 +228,5 @@ class PostDetailFragment : Fragment() {
         _binding = null
     }
 }
+
+

@@ -22,7 +22,10 @@ interface AuthService {
     fun checkToken(@Header("Authorization") token: String): Call<String>
 
     @DELETE("comments/delete/{commentId}")
-    fun deleteComment(@Path("commentId") commentId: Long): Call<Void>
+    fun deleteComment(
+        @Path("commentId") commentId: Long,
+        @Header("Authorization") token: String // 인증 토큰 추가
+    ): Call<Void>
 
 }
 
