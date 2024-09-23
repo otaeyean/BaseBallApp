@@ -11,7 +11,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import android.widget.Button
 import android.widget.TextView
 import com.example.baseballapp.Ranking.RankingFragment
-import com.example.baseballapp.community.CommunityFragment
+import com.example.baseballapp.Community.CommunityFragment
 import com.example.login.TokenManager
 
 class MainActivity : AppCompatActivity() {

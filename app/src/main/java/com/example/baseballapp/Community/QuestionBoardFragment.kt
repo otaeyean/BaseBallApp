@@ -1,4 +1,4 @@
-package com.example.baseballapp.community
+package com.example.baseballapp.Community
 
 import android.graphics.Paint
 import android.os.Bundle
@@ -13,14 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.baseballapp.ApiObject
 import com.example.baseballapp.PagedBoardResponse
 import com.example.baseballapp.R
-import com.example.baseballapp.databinding.FragmentFreeBoardBinding
+import com.example.baseballapp.community.PostAdapter
+import com.example.baseballapp.databinding.FragmentQuestionBoardBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FreeBoardFragment : Fragment() {
+class QuestionBoardFragment : Fragment() {
 
-    private var _binding: FragmentFreeBoardBinding? = null
+    private var _binding: FragmentQuestionBoardBinding? = null
     private val binding get() = _binding!!
     private lateinit var postAdapter: PostAdapter
 
@@ -28,7 +29,7 @@ class FreeBoardFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentFreeBoardBinding.inflate(inflater, container, false)
+        _binding = FragmentQuestionBoardBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -48,10 +49,7 @@ class FreeBoardFragment : Fragment() {
 
         loadPage(0) // 첫 페이지 로드
     }
-
-
     private var currentPage = 0  // 현재 페이지를 기억하는 변수
-
     private fun setupPagination(totalPages: Int) {
         val paginationLayout = binding.paginationLayout
         paginationLayout.removeAllViews() // 기존 버튼 제거
@@ -76,13 +74,13 @@ class FreeBoardFragment : Fragment() {
                     // 선택된 페이지 번호 스타일 변경
                     selectedTextView?.apply {
                         setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-                        textSize = 18f  // 기본 크기
+                        textSize = 23f  // 기본 크기
                         paintFlags = paintFlags and Paint.UNDERLINE_TEXT_FLAG.inv()  // 밑줄 제거
                     }
 
                     // 클릭된 페이지 번호 스타일을 업데이트
                     setTextColor(ContextCompat.getColor(requireContext(), R.color.navy))  // 네이비 색상
-                    textSize = 23f  // 글씨 크기 크게
+                    textSize = 18f  // 글씨 크기 크게
                     paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG  // 밑줄 추가
 
                     // 현재 선택된 페이지 번호를 저장
@@ -104,7 +102,7 @@ class FreeBoardFragment : Fragment() {
 
     private fun loadPage(page: Int) {
         currentPage = page  // 페이지 로드 시 currentPage 업데이트
-        ApiObject.getRetrofitService.getBoardsByPage("자유게시판", page, 1).enqueue(object : Callback<PagedBoardResponse> {
+        ApiObject.getRetrofitService.getBoardsByPage("질문게시판", page, 1).enqueue(object : Callback<PagedBoardResponse> {
             override fun onResponse(call: Call<PagedBoardResponse>, response: Response<PagedBoardResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.let { pagedResponse ->
@@ -121,6 +119,8 @@ class FreeBoardFragment : Fragment() {
             }
         })
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

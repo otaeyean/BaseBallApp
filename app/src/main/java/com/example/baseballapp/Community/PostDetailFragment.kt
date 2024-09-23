@@ -1,4 +1,4 @@
-package com.example.baseballapp.community
+package com.example.baseballapp.Community
 
 import android.content.Intent
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package com.example.baseballapp.community
+package com.example.baseballapp.Community
 
 import android.graphics.Paint
 import android.os.Bundle
@@ -13,14 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.baseballapp.ApiObject
 import com.example.baseballapp.PagedBoardResponse
 import com.example.baseballapp.R
-import com.example.baseballapp.databinding.FragmentTradeBoardBinding
+import com.example.baseballapp.community.PostAdapter
+import com.example.baseballapp.databinding.FragmentFreeBoardBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TradeBoardFragment : Fragment() {
+class FreeBoardFragment : Fragment() {
 
-    private var _binding: FragmentTradeBoardBinding? = null
+    private var _binding: FragmentFreeBoardBinding? = null
     private val binding get() = _binding!!
     private lateinit var postAdapter: PostAdapter
 
@@ -28,7 +29,7 @@ class TradeBoardFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentTradeBoardBinding.inflate(inflater, container, false)
+        _binding = FragmentFreeBoardBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -48,7 +49,10 @@ class TradeBoardFragment : Fragment() {
 
         loadPage(0) // 첫 페이지 로드
     }
+
+
     private var currentPage = 0  // 현재 페이지를 기억하는 변수
+
     private fun setupPagination(totalPages: Int) {
         val paginationLayout = binding.paginationLayout
         paginationLayout.removeAllViews() // 기존 버튼 제거
@@ -98,9 +102,10 @@ class TradeBoardFragment : Fragment() {
             paginationLayout.addView(textView)
         }
     }
+
     private fun loadPage(page: Int) {
         currentPage = page  // 페이지 로드 시 currentPage 업데이트
-        ApiObject.getRetrofitService.getBoardsByPage("나눔게시판", page, 1).enqueue(object : Callback<PagedBoardResponse> {
+        ApiObject.getRetrofitService.getBoardsByPage("자유게시판", page, 1).enqueue(object : Callback<PagedBoardResponse> {
             override fun onResponse(call: Call<PagedBoardResponse>, response: Response<PagedBoardResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.let { pagedResponse ->
@@ -117,7 +122,6 @@ class TradeBoardFragment : Fragment() {
             }
         })
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

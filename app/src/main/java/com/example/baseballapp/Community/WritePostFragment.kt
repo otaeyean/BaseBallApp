@@ -1,4 +1,4 @@
-package com.example.baseballapp.community
+package com.example.baseballapp.Community
 
 import android.os.Bundle
 import android.view.LayoutInflater
