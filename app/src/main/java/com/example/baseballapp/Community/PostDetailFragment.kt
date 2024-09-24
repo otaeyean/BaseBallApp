@@ -20,7 +20,6 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 class PostDetailFragment : Fragment() {
     private val loginService by lazy { LoginService(requireContext()) }
     private var _binding: FragmentPostDetailBinding? = null
@@ -60,6 +59,13 @@ class PostDetailFragment : Fragment() {
 
         // 로그인된 사용자 이름 가져오기
         val currentUsername = tokenManager.getUsername() ?: "알 수 없는 사용자"
+
+        // 게시글 작성자와 로그인된 사용자가 같으면 삭제 버튼을 보이게 함
+        if (post.authorId == currentUsername) {
+            binding.btnDetailDelete.visibility = View.VISIBLE
+        } else {
+            binding.btnDetailDelete.visibility = View.GONE
+        }
 
         // 댓글 어댑터 초기화 - 현재 로그인된 사용자 이름과 댓글 삭제 콜백 전달
         commentAdapter = CommentAdapter(emptyList(), currentUsername) { commentId ->
@@ -166,7 +172,6 @@ class PostDetailFragment : Fragment() {
         })
     }
 
-
     // 게시글 추천 기능
     private fun upvotePost(postId: Long) {
         val userNickname = tokenManager.getUsername() ?: return
@@ -228,5 +233,3 @@ class PostDetailFragment : Fragment() {
         _binding = null
     }
 }
-
-
