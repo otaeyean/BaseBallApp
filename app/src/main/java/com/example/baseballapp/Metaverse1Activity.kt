@@ -2,6 +2,7 @@ package com.example.baseballapp
 
 import android.content.Intent
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -37,7 +38,7 @@ class Metaverse1Activity : AppCompatActivity() {
     private lateinit var npc3Text: TextView
     private val chatBubbles = mutableMapOf<String, TextView>()
 
-    private val step = 30
+    private val step = 70
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var webSocket: WebSocket
 
@@ -53,6 +54,7 @@ class Metaverse1Activity : AppCompatActivity() {
         character = findViewById(R.id.character)
         chatMessage = findViewById(R.id.chat_message)
 
+        lateinit var mediaPlayer : MediaPlayer
         val buttonUp: Button = findViewById(R.id.button_up)
         val buttonDown: Button = findViewById(R.id.button_down)
         val buttonLeft: Button = findViewById(R.id.button_left)
@@ -63,7 +65,13 @@ class Metaverse1Activity : AppCompatActivity() {
         npc1Text = findViewById(R.id.npc1text)
         npc2Text = findViewById(R.id.npc2text)
         npc3Text = findViewById(R.id.npc3text)
+        mediaPlayer = MediaPlayer.create(this, R.raw.metaverse1)
 
+        findViewById<Button>(R.id.button_play).setOnClickListener {
+            if (!mediaPlayer.isPlaying) {
+                mediaPlayer.start()
+            }
+        }
         val metainfoImageView: ImageView = findViewById(R.id.metainfo)
         metainfoImageView.setOnClickListener {
             showInfoDialog()

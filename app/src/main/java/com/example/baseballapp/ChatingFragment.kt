@@ -14,12 +14,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.baseballapp.ApiObject
-import com.example.baseballapp.ChatAdapter
-import com.example.baseballapp.ChatMessageData
-import com.example.baseballapp.ChatWebSocketListener
-import com.example.baseballapp.MatchResponse
-import com.example.baseballapp.R
+import com.example.baseballapp.*
 import com.example.baseballapp.databinding.FragmentChatingBinding
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -28,9 +23,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
+import java.util.*
 
 class ChatingFragment : Fragment() {
     private lateinit var webSocket: WebSocket
@@ -39,6 +32,7 @@ class ChatingFragment : Fragment() {
     private val messageList = ArrayList<ChatMessageData>()
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var matchResponse: MatchResponse
+    private val loginService by lazy { LoginService(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,9 +46,8 @@ class ChatingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val roomId = arguments?.getString("ROOM_ID") ?: "default"
-        nickname = arguments?.getString("NICKNAME") ?: "sumin"
+        nickname = loginService.getUsername().toString()
 
-        // 웹소켓 설정 및 연결
         setupWebSocket(roomId)
 
         chatAdapter = ChatAdapter(messageList)
@@ -66,6 +59,8 @@ class ChatingFragment : Fragment() {
             if (message.isNotEmpty()) {
                 val time = getCurrentTimeInKorea()
                 val formattedMessage = "$nickname  $time\n$message"
+                val myMessageData = ChatMessageData(R.drawable.baseball, formattedMessage, true)
+                addMessage(myMessageData)
                 webSocket.send(formattedMessage)
                 binding.editTextMessage.text.clear()
             }
@@ -77,7 +72,6 @@ class ChatingFragment : Fragment() {
         val team1Score = arguments?.getString("TEAM1_SCORE") ?: "0"
         val team2Score = arguments?.getString("TEAM2_SCORE") ?: "0"
 
-        // UI에 팀 정보와 스코어 설정
         setTeamInfo(team1Name, team2Name, team1Score, team2Score)
 
         val teamName = arguments?.getString("TEAM_NAME")
@@ -90,7 +84,6 @@ class ChatingFragment : Fragment() {
         setInningButtonListeners()
     }
 
-    // 웹소켓 설정 메서드
     private fun setupWebSocket(roomId: String) {
         val client = OkHttpClient()
         val request = Request.Builder().url("ws://35.216.0.159:8080/ws/chat/$roomId").build()
@@ -98,21 +91,18 @@ class ChatingFragment : Fragment() {
         webSocket = client.newWebSocket(request, listener)
     }
 
-    // 추가: 팀 정보 설정 메서드
     private fun setTeamInfo(team1Name: String, team2Name: String, team1Score: String, team2Score: String) {
         binding.team1Name.text = team1Name
         binding.team2Name.text = team2Name
         binding.team1Score.text = team1Score
         binding.team2Score.text = team2Score
 
-        // 로고 설정 (팀 이름에 따라 로고 리소스를 설정, 예시로 팀 이름으로 매핑)
         val team1Logo = getLogoResource(team1Name)
         val team2Logo = getLogoResource(team2Name)
         binding.team1Logo.setImageResource(team1Logo)
         binding.team2Logo.setImageResource(team2Logo)
     }
 
-    // 팀 이름에 따라 로고 리소스를 매핑하는 메서드 예시
     private fun getLogoResource(teamName: String): Int {
         return when (teamName) {
             "두산" -> R.drawable.doosan_logo
@@ -125,7 +115,7 @@ class ChatingFragment : Fragment() {
             "삼성" -> R.drawable.samsung_logo
             "SSG" -> R.drawable.ssg_logo
             "한화" -> R.drawable.hanwha_logo
-            else -> R.drawable.baseball // 기본 로고 (팀 이름이 일치하지 않을 경우)
+            else -> R.drawable.baseball
         }
     }
 
@@ -175,7 +165,6 @@ class ChatingFragment : Fragment() {
 
             detailParts.forEachIndexed { index, part ->
                 if (index == 0 && part.contains("공격")) {
-
                     val spannableString = SpannableString(part.trim() + "\n")
                     spannableString.setSpan(
                         StyleSpan(Typeface.BOLD),
@@ -189,7 +178,6 @@ class ChatingFragment : Fragment() {
                     )
                     stringBuilder.append(spannableString)
                 } else if (part.contains("타자")) {
-                    // 타자 문구를 빨간색으로 볼드체로 설정
                     val spannableString = SpannableString(part.trim() + "\n")
                     spannableString.setSpan(
                         ForegroundColorSpan(Color.RED),
@@ -204,7 +192,6 @@ class ChatingFragment : Fragment() {
                     stringBuilder.append(spannableString)
                     stringBuilder.append("\n")
                 } else if (part.contains(":")) {
-                    // 결과 문구를  darkblue로 설정
                     val darkBlueColor = ContextCompat.getColor(requireContext(), R.color.darkblue)
                     val resultStartIndex = part.indexOf(":") + 1
                     val resultText = part.substring(resultStartIndex).trim()
@@ -237,13 +224,19 @@ class ChatingFragment : Fragment() {
     }
 
     fun showMessage(message: String) {
-        val chatMessage = ChatMessageData(R.drawable.baseball, message)
+        val chatMessage = ChatMessageData(R.drawable.baseball, message, false)
         addMessage(chatMessage)
     }
 
     private fun addMessage(chatMessage: ChatMessageData) {
-        messageList.add(chatMessage)
-        chatAdapter.notifyDataSetChanged()
-        binding.recyclerViewMessages.scrollToPosition(messageList.size - 1)
+        activity?.runOnUiThread {
+            val isDuplicate = messageList.isNotEmpty() && messageList.last().message == chatMessage.message && messageList.last().isCurrentUser
+
+            if (!isDuplicate) {
+                messageList.add(chatMessage)
+                chatAdapter.notifyItemInserted(messageList.size - 1)
+                binding.recyclerViewMessages.scrollToPosition(messageList.size - 1)
+            }
+        }
     }
 }

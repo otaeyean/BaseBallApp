@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.baseballapp.ApiObject
 import com.example.baseballapp.PagedBoardResponse
 import com.example.baseballapp.R
-import com.example.baseballapp.community.PostAdapter
 import com.example.baseballapp.databinding.FragmentQuestionBoardBinding
 import retrofit2.Call
 import retrofit2.Callback

@@ -139,7 +139,7 @@ class ScheduleFragment : Fragment() {
                         val filterGame = it.filter { game -> game.date == selectedDate }
                         gameList.clear()
                         gameList.addAll(filterGame)
-                        if (selectedDate.endsWith("(월)") || filterGame.isEmpty()) {
+                        if (selectedDate.endsWith("(월)") && filterGame.isEmpty()) {
                             gameList.add(GameListData("", "", "", "", "", "", "오늘은 경기가 없습니다.", "", ""))
                         }
                         gameListAdapter.notifyDataSetChanged()
