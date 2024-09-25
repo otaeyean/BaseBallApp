@@ -339,7 +339,7 @@ class Metaverse2Activity : AppCompatActivity(){
             text = "$nickname: $message"
             setBackgroundResource(R.drawable.chat_bubble_background)
             setPadding(8, 8, 8, 8)
-            setTextColor(resources.getColor(android.R.color.black, null))
+            setTextColor(resources.getColor(android.R.color.black, null))//이
             textSize = 16f
             gravity = Gravity.CENTER
             id = ViewCompat.generateViewId()
