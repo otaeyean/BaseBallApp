@@ -33,7 +33,7 @@ class ChatingFragment : Fragment() {
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var matchResponse: MatchResponse
     private val loginService by lazy { LoginService(requireContext()) }
-
+//수정
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
