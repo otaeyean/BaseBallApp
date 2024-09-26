@@ -412,7 +412,7 @@ class Metaverse1Activity : AppCompatActivity() {
         scheduleDialog.show()
 
         val todayDate = SimpleDateFormat("MM.dd(E)", Locale.KOREAN).format(Date())
-
+//수정
         ApiObject.getRetrofitService.getSchedule(todayDate).enqueue(object : Callback<List<ScheduleData>> {
             override fun onResponse(call: Call<List<ScheduleData>>, response: Response<List<ScheduleData>>) {
                 if (response.isSuccessful) {

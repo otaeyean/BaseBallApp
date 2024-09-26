@@ -125,7 +125,7 @@ class Metaverse2Activity : AppCompatActivity(){
             }
         })
     }
-
+//수정
     private fun displayMatch(metaverseMatch: MetaverseMatch) {
         val team1: TextView = findViewById(R.id.team1)
         val team2: TextView = findViewById(R.id.team2)
