@@ -38,7 +38,7 @@ class Metaverse1Activity : AppCompatActivity() {
     private lateinit var npc3Text: TextView
     private val chatBubbles = mutableMapOf<String, TextView>()
 
-    private val step = 70
+    private val step = 80
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var webSocket: WebSocket
 
@@ -335,8 +335,8 @@ class Metaverse1Activity : AppCompatActivity() {
     }
 
     private fun moveBackground(adjustedCharacterX: Float, adjustedCharacterY: Float) {
-        if ((adjustedCharacterX == 585f && adjustedCharacterY == 285f)
-            || (adjustedCharacterX == 615f && adjustedCharacterY == 285f)) {
+        if ((adjustedCharacterX == 625f && adjustedCharacterY == 295f)
+            || (adjustedCharacterX == 545f && adjustedCharacterY == 295f)) {
             val intent = Intent(this, Metaverse2Activity::class.java).apply {
                 putExtra("nickname", nickname)
                 putExtra("characterX", character.x)
@@ -345,16 +345,15 @@ class Metaverse1Activity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        if (adjustedCharacterX == 765f && adjustedCharacterY == 435f) {
+        if (adjustedCharacterX == 785f && adjustedCharacterY == 455f) {
             showNpcMessage(npc1Text, "야구장에 오신걸 환영해요")
         }
 
-        if ((adjustedCharacterX == 1095f && adjustedCharacterY == 615f)
-            ||(adjustedCharacterX==1065f && adjustedCharacterY==615f)){
+        if ((adjustedCharacterX == 1105f && adjustedCharacterY == 615f)){
             showNpcMessage(npc2Text, "오늘은 좋은 경기가 펼쳐질 거예요")
         }
 
-        if ((adjustedCharacterX == 1515f && adjustedCharacterY == 615f)) {
+        if ((adjustedCharacterX == 1505f && adjustedCharacterY == 615f)) {
             showNpcMessage(npc3Text, "재밌는 시간 보내세요!")
         }
     }
