@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.baseballapp.ApiObject.getRetrofitService
 import com.example.baseballapp.databinding.FragmentInformationBinding
-import com.example.baseballapp.databinding.PlayerBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,7 +22,7 @@ class InformationFragment : Fragment() {
     private lateinit var playerAdapter: PlayerAdapter
     private val playerList: MutableList<PlayerData> = mutableListOf()
     private lateinit var homeground: TextView
-    private lateinit var selectedTeam:String
+    private lateinit var selectedTeam: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +44,12 @@ class InformationFragment : Fragment() {
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerView.adapter = playerAdapter
 
-        fetchPlayers() //모든 선수 데이터 가져오기
+        // 기본 선택 팀을 "LG 트윈스"로 설정
+        selectedTeam = "LG 트윈스"
+        binding.spinner.setSelection(1) // "LG 트윈스"는 배열의 두 번째 항목이므로 1번 인덱스
+
+        // 데이터를 가져온 후에 선수 목록을 로드
+        fetchPlayers()
 
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -114,7 +117,7 @@ class InformationFragment : Fragment() {
         }
     }
 
-    private fun fetchPlayers() { //모든 선수 가져오기
+    private fun fetchPlayers() { // 모든 선수 데이터를 가져오는 함수
         val call = getRetrofitService.getAllPlayers()
         call.enqueue(object : Callback<List<PlayerData>> {
             override fun onResponse(
@@ -125,7 +128,8 @@ class InformationFragment : Fragment() {
                     response.body()?.let {
                         playerList.addAll(it)
                         playerAdapter.setList(playerList)
-                        filterPlayersByTeam(selectedTeam)
+                        // 데이터를 받은 후 "LG 트윈스" 선수 목록 로드
+                        loadPlayer(selectedTeam)
                     }
                 } else {
                     Toast.makeText(requireContext(), "Failed to load data", Toast.LENGTH_SHORT).show()
@@ -138,7 +142,7 @@ class InformationFragment : Fragment() {
         })
     }
 
-    private fun filterPlayersByTeam(team: String) { //팀 별로 선수 필터링
+    private fun filterPlayersByTeam(team: String) { // 팀 별로 선수 필터링
         val filteredList = when (team) {
             "팀 선택" -> listOf(PlayerData(null, "", "팀을 선택하세요", null, null, null, null, null))
             else -> playerList.filter { it.team == team }

@@ -1,4 +1,4 @@
-package com.example.baseballapp.Community
+
 
 import android.graphics.Paint
 import android.os.Bundle
@@ -11,9 +11,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.baseballapp.ApiObject
+import com.example.baseballapp.Community.PostDetailFragment
 import com.example.baseballapp.PagedBoardResponse
 import com.example.baseballapp.R
-import com.example.baseballapp.community.PostAdapter
+import com.example.baseballapp.Community.PostAdapter
 import com.example.baseballapp.databinding.FragmentTradeBoardBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -101,7 +102,7 @@ class TradeBoardFragment : Fragment() {
     }
     private fun loadPage(page: Int) {
         currentPage = page  // 페이지 로드 시 currentPage 업데이트
-        ApiObject.getRetrofitService.getBoardsByPage("나눔게시판", page, 1).enqueue(object : Callback<PagedBoardResponse> {
+        ApiObject.getRetrofitService.getBoardsByPage("중고거래게시판", page, 1).enqueue(object : Callback<PagedBoardResponse> {
             override fun onResponse(call: Call<PagedBoardResponse>, response: Response<PagedBoardResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.let { pagedResponse ->

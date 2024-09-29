@@ -52,7 +52,7 @@ class Metaverse2Activity : AppCompatActivity(){
     private lateinit var webSocket: WebSocket
     private val charactersMap = mutableMapOf<String, ImageView>()
     private var selectedTeam= "KIA"
-    private var date="09.24(화)"
+    private var date="09.25(수)"
     private var nickname: String = ""
     private val userList = mutableListOf<String>()
     private val timersMap = mutableMapOf<String, Handler>()
@@ -125,7 +125,7 @@ class Metaverse2Activity : AppCompatActivity(){
             }
         })
     }
-
+//수정
     private fun displayMatch(metaverseMatch: MetaverseMatch) {
         val team1: TextView = findViewById(R.id.team1)
         val team2: TextView = findViewById(R.id.team2)
@@ -187,11 +187,10 @@ class Metaverse2Activity : AppCompatActivity(){
     private fun fetchMatchDetails(selectedTeam: String, matchDate: String, inningNumber: Int) {
 
         val mappedTeam = when (selectedTeam) {
-            "키움" -> "한화"
-            "KT" -> "롯데"
-            "KIA" -> "삼성"
-            "SSG" -> "LG"
-            "두산" -> "NC"
+            "LG" -> "한화"
+            "NC" -> "SSG"
+            "삼성" -> "키움"
+            "KIA" -> "롯데"
             else -> selectedTeam
         }
 

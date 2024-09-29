@@ -16,4 +16,8 @@
         android:backgroundTint="@color/lightblue"
         android:fontFamily="@font/kbo_medium"
         android:textColor="@android:color/black" />
+<<<<<<< HEAD
 </LinearLayout>
+=======
+</LinearLayout>
+>>>>>>> 19dca05bedf10b70f22f41a0af35e1654a68d8a0

@@ -11,6 +11,14 @@
         android:scaleType="centerCrop"
         android:src="@drawable/background" />
 
+    <Button
+        android:id="@+id/button_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/lightblue"
+        android:fontFamily="@font/kbo_medium"
+        android:text="음악 재생" />
+
     <TextView
         android:id="@+id/chat_message"
         android:layout_width="wrap_content"
@@ -93,40 +101,9 @@
         android:text="TextView" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:orientation="horizontal"
-        android:padding="16dp">
-
-        <EditText
-            android:id="@+id/editTextMessage"
-            android:layout_width="400dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edittext_background"
-            android:hint="채팅을 통해 소통하세요!"
-            android:inputType="text"
-            android:fontFamily="@font/kbo_medium"
-            android:padding="12dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="@color/gray"
-            android:layout_marginEnd="8dp"
-            />
-
-        <Button
-            android:id="@+id/chat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/navy"
-            android:text="전송"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/control_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="bottom|start"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -134,9 +111,9 @@
             android:id="@+id/button_up"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="47dp"
             android:backgroundTint="@color/gray"
-            android:text="상" />
+            android:text="상"
+            android:layout_gravity="center" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -165,6 +142,35 @@
                 android:backgroundTint="@color/gray"
                 android:text="우" />
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/control_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/editTextMessage"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_background"
+            android:hint="채팅을 통해 소통하세요!"
+            android:inputType="text"
+            android:fontFamily="@font/kbo_medium"
+            android:padding="12dp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/gray"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/navy"
+            android:text="전송" />
     </LinearLayout>
 
 </FrameLayout>

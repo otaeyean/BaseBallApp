@@ -1,5 +1,6 @@
 package com.example.baseballapp.Community
 
+import TradeBoardFragment
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
@@ -18,7 +19,6 @@ import com.example.baseballapp.LoginActivity
 import com.example.baseballapp.LoginService
 import com.example.baseballapp.PagedBoardResponse
 import com.example.baseballapp.R
-import com.example.baseballapp.community.PostAdapter
 import com.example.baseballapp.databinding.FragmentCommunityBinding
 import retrofit2.Call
 import retrofit2.Callback

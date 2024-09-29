@@ -79,4 +79,12 @@ interface UpbitAPI {
         @Query("teamName") teamName: String,
         @Query("matchDate") matchDate: String
     ): Call<MatchResponse>
-}
+
+        @POST("comments/delete/{commentId}")
+        fun deleteComment(
+            @Path("commentId") commentId: Long,
+            @Header("Authorization") token: String // 인증 토큰 추가
+        ): Call<Void>
+    }
+
+

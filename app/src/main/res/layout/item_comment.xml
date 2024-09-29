@@ -39,4 +39,15 @@
             android:textSize="12sp"
             android:textColor="#888888" />
     </LinearLayout>
+
+    <!-- 삭제 버튼 추가 -->
+    <Button
+        android:id="@+id/btn_delete_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="삭제"
+        android:backgroundTint="@android:color/holo_red_dark"
+        android:layout_gravity="center_vertical"
+        android:visibility="gone" />
+
 </LinearLayout>
